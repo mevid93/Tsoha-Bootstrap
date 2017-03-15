@@ -14,16 +14,19 @@ kuvaan. Tämä sovellus mullistaa drinkkien valmistamisen ja se on merkittävin 
 ihmiskunnan historiassa sitten… No joo, ei ehkä liioitella. Todellisuudessa sovelluksesta voisi
 kuitenkin olla hyötyä esimerkiksi aloittelevalle baarimikolle, tai miksei myös aiheesta
 kiinnostuneelle tavalliselle yksityishenkilölle.
+<br />
 Sovellus on siis eräänlainen www-sivulla toimiva drinkkihakulomake. Sen tarkoituksena on auttaa
 muistamaan ja pitämään kirjaa erilaisista drinkkiresepteistä. Drinkkireseptit kuvaavat cocktaileja ja
 muita juomasekoituksia. Sovelluksessa käyttäjät voivat hakea reseptejä juoman nimeen liittyvällä
 hakusanalla tai vaihtoehtoiesti jollakin tietyllä ainesosalla. Resepteistä voi pyytää myös listan
 aakkosjärjestyksen, ainesosan tai juomalajin mukaan.
+<br />
 Tavallinen käyttäjä voi hakea drinkkireseptejä kannasta ja myös ehdottaa uusien lisäämistä
 drinkkikantaan. Järjestelmän ylläpitäjä on enemmän oikeuksia. Hän voi lisätä järjestelmään
 reseptejä joko kokonaan itse, tai hyväksyä käyttäjien ehdotuksia. Lisääminen tapahtuu syöttämällä
 tietoja lomakkeeseen. Myös tavalliselle käyttäjälle voidaan ylläpitäjän toimesta antaa enemmän
 käyttöoikeuksia.
+<br />
 Työ toteutetaan laitoksen users-palvelimella, PHP:llä, käyttäen Postgre SQL-tietokantapalvelinta.
 Koska sovellus käyttää PHP:tä, niin sovelluksen alustajärjestelmältä edellytetään myös tukea tälle
 ohjelmointikielelle. Selaimen puolestaan olisi syytä myös tukea javascriptiä, sillä sitä hyödynnetään
