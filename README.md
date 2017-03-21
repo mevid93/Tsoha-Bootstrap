@@ -37,6 +37,7 @@ sovelluksessa jonkin verran (Bootstrap). Sovellus toimii vain yhdellä tietokann
 
 <br />
 <br />
+
 ## Linkit staattisiin HTML sivuihin
 
 * [Linkki sovelluksen etusivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/)
