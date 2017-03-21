@@ -34,3 +34,21 @@ Työ toteutetaan laitoksen users-palvelimella, PHP:llä, käyttäen Postgre SQL-
 Koska sovellus käyttää PHP:tä, niin sovelluksen alustajärjestelmältä edellytetään myös tukea tälle
 ohjelmointikielelle. Selaimen puolestaan olisi syytä myös tukea javascriptiä, sillä sitä hyödynnetään
 sovelluksessa jonkin verran (Bootstrap). Sovellus toimii vain yhdellä tietokannalla. 
+
+<br />
+<br />
+## Linkit staattisiin HTML sivuihin
+
+* [Linkki sovelluksen etusivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/)
+* [Linkki rekisteröitymissivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/)
+* [Linkki kirjautumissivulle](https://github.com/mevid93/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
+* [Linkki tilin muokkaussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/)
+* [Linkki käyttäjätilien listaussivulle](https://github.com/mevid93/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
+* [Linkki reseptien listaussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/)
+* [Linkki ehdotettujen reseptien listaussivulle](https://github.com/mevid93/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
+* [Linkki reseptin esittelysivulle](https://github.com/mevid93/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
+* [Linkki reseptin muokkaussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/)
+* [Linkki reseptin ehdotussivulle](https://github.com/mevid93/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
+
+
+
