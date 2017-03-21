@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Sovellukseen rekisteröityneet käyttäjät</h1>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Käyttäjätunnus</th>
+            <th>Etunimi</th>
+            <th>Sukunimi</th>
+            <th>Sähköposti</th>
+            <th>Rekisteröitynyt</th>
+            <th>Poista käyttäjä</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <!-- Listataan drinkit tähän -->
+        <tr>
+            <td>TeekkariElämää</td>
+            <td>Teemu</td>
+            <td>Teekkari</td>
+            <td>teemu.teekkari@aalto.fi</td>
+            <td>19.3.2017</td>
+            <th><a class="btn btn-default btn-sm" href="#">Poista käyttäjä</a></th>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

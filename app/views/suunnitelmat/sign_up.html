@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Rekisteröi käyttäjätili</h1>
+
+  <!-- Kaikki lomakkeen elementit form-tagin sisään -->
+  <form>
+    <!-- Tekstikenttä etunimelle -->
+    <div class="form-group">
+      <label>Etunimi</label>
+      <input class="form-control" type="text">
+    </div>
+    
+    <!-- Tekstikenttä sukunimelle -->
+    <div class="form-group">
+      <label>Sukunimi</label>
+      <input class="form-control" type="text">
+    </div>
+    
+    <!-- Tekstikenttä sähköpostille -->
+    <div class="form-group">
+      <label>Sähköposti</label>
+      <input class="form-control" type="text">
+    </div>
+    
+    <!-- Tekstikenttä käyttäjätunnukselle -->
+    <div class="form-group">
+      <label>Käyttäjätunnus</label>
+      <input class="form-control" type="text">
+    </div>
+
+    <!-- Salasanakenttä salasanalle -->
+    <div class="form-group">
+      <label>Salasana</label>
+      <input class="form-control" type="password">
+    </div>
+    
+    <!-- Salasanakenttä salasanan vahvistukselle -->
+    <div class="form-group">
+      <label>Vahvista salasana</label>
+      <input class="form-control" type="password">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Luo käyttäjätili</button>
+  </form>
+{% endblock %}
