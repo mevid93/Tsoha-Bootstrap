@@ -8,11 +8,11 @@
     HelloWorldController::sandbox();
   });
   
-  $routes->get('/recipi', function() {
+  $routes->get('/recipe', function() {
     HelloWorldController::recipe_list();
   });
   
-  $routes->get('/recipi/1', function() {
+  $routes->get('/recipe/1', function() {
     HelloWorldController::recipe_show();
   });
   
