@@ -50,5 +50,10 @@ sovelluksessa jonkin verran (Bootstrap). Sovellus toimii vain yhdellä tietokann
 * [Linkki reseptin muokkaussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/recipe/1/edit)
 * [Linkki reseptin ehdotussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/suggest)
 
+<br />
+
+## Linkki tietokantayhteys sivulle
+
+* [Linkki tietokantayhteys sivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/tietokantayhteys)
 
 
