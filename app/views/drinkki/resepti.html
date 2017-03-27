@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{drinkki.ensisijainennimi}}</h1>
+
+<!-- Perustiedot tulee listana tähän -->
+<ul>
+    <li><strong>Nimi:</strong> {{drinkki.ensisijainennimi}}</li>
+    <li><strong>Tyyppi:</strong> {{drinkki.drinkkityyppi}}</li>
+    <li><strong>Lasi:</strong> {{drinkki.lasi}}</li>
+    <li><strong>Lämpötila:</strong> {{drinkki.lampotila}}</li>
+    <li><strong>Lisäyspäivä:</strong> {{drinkki.lisayspaiva}}</li>
+    <li><strong>Lisääjä:</strong> {{drinkki.lisaaja}}</li>
+</ul>
+
+<br>
+
+<!-- Muut nimet tulee listana tähän -->
+<h5><strong> Muut tunnetut nimet </strong></h5>
+{% for muunimi in drinkki.muutnimet %}
+<ul>
+    <li>{{muunimi.nimi}}</li>
+</ul>
+{% endfor %}
+
+<!-- Kuvaus tulee tähän -->
+<p>
+<h3> Kuvaus </h3>
+{{drinkki.kuvaus}}
+</p>
+
+{% endblock %}

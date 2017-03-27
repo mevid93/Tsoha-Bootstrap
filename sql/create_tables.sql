@@ -33,6 +33,7 @@ CREATE TABLE Drinkki(
     lampotila varchar(20) NOT NULL,
     lisayspaiva DATE NOT NULL,
     lisaaja varchar(50) NOT NULL,
+    hyvaksytty boolean DEFAULT FALSE,
     drinkkityyppi INTEGER REFERENCES Drinkkityyppi(id)
 );
 

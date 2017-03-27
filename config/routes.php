@@ -1,45 +1,59 @@
 <?php
 
-  $routes->get('/', function() {
-    HelloWorldController::index();
-  });
+// GET metodit
 
-  $routes->get('/hiekkalaatikko', function() {
-    HelloWorldController::sandbox();
-  });
-  
-  $routes->get('/recipe', function() {
-    HelloWorldController::recipe_list();
-  });
-  
-  $routes->get('/recipe/1', function() {
-    HelloWorldController::recipe_show();
-  });
-  
-  $routes->get('/login', function() {
+$routes->get('/', function() {
+    EtusivuController::index();
+});
+
+$routes->get('/drinkki', function() {
+    DrinkkiController::index();
+});
+
+$routes->get('/drinkki/:id', function($id) {
+    DrinkkiController::naytaResepti($id);
+});
+
+$routes->get('/kirjaudu', function() {
     HelloWorldController::sign_in();
-  });
-  
-  $routes->get('/register', function() {
+});
+
+$routes->get('/rekisteroidy', function() {
     HelloWorldController::sign_up();
-  });
-  
-  $routes->get('/settings', function() {
+});
+
+$routes->get('/asetukset', function() {
     HelloWorldController::change_settings();
-  });
-  
-  $routes->get('/suggest', function() {
-    HelloWorldController::recipe_suggest();
-  });
-  
-  $routes->get('/suggestion', function() {
-    HelloWorldController::suggest_list();
-  });
-  
-  $routes->get('/user', function() {
+});
+
+$routes->get('/ehdota', function() {
+    EhdotusController::index();
+});
+
+$routes->get('/ehdotukset', function() {
+    EhdotuksetController::index();
+});
+
+$routes->get('/kayttajat', function() {
     HelloWorldController::user_list();
-  });
-  
-  $routes->get('/recipe/1/edit', function() {
+});
+
+$routes->get('/drinkki/1/muokkaa', function() {
     HelloWorldController::recipi_edit();
-  });
+});
+
+
+// POST metodit
+// Ehdotuksen lisääminen tietokantaan
+$routes->post('/ehdota', function() {
+    EhdotusController::lisaa();
+});
+
+$routes->post('/ehdotukset/hylkaa', function() {
+    EhdotuksetController::hylkaa();
+});
+
+$routes->post('/ehdotukset/hyvaksy', function() {
+    EhdotuksetController::hyvaksy();
+});
+

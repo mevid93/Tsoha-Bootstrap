@@ -20,8 +20,8 @@ VALUES ('Shotti', 'Pieni annos väkevää alkoholijuomaa. Tarjoillaan yleensä n
 
 
 -- Lisätään kaksi drinkkiä
-INSERT INTO Drinkki(ensisijainenNimi, lasi, kuvaus, lampotila, lisayspaiva, lisaaja, drinkkityyppi)
-VALUES ('Valkovenäläinen', 'Grogilasi', 'Kuvaus, jota en jaksa kirjoittaa','Viileä', NOW(), 'TeekkariElämää', 1);
+INSERT INTO Drinkki(ensisijainenNimi, lasi, kuvaus, lampotila, lisayspaiva, lisaaja, hyvaksytty, drinkkityyppi)
+VALUES ('Valkovenäläinen', 'Grogilasi', 'Kuvaus, jota en jaksa kirjoittaa','Viileä', NOW(), 'TeekkariElämää', 'true', 1);
 
 INSERT INTO Drinkki(ensisijainenNimi, lasi, kuvaus, lampotila, lisayspaiva, lisaaja, drinkkityyppi)
 VALUES ('Bloody Mary', 'Highball-lasi', 'Kuvaus, jota en jaksa kirjoittaa','Viileä', NOW(), 'TeekkariElämää', 1);

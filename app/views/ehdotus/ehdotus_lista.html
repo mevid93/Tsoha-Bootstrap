@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Käyttäjien ehdottamat drinkit</h1>
+
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Nimi</th>
+            <th>Muut nimet</th>
+            <th>Tyyppi</th>
+            <th>Suositeltu lasi</th>
+            <th>Lämpötila</th>
+            <th>Lisäyspäivä</th>
+            <th>Lisääjä</th>
+            <th>Hyväksy / Hylkää</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <!-- Listataan drinkit tähän -->
+        {% for drinkki in drinkit %}
+        <tr>
+            <td><a href="{{base_path}}/ehdotukset/{{drinkki.id}}">{{drinkki.ensisijainennimi}}</a></td>
+            <td>
+                {% for muunimi in drinkki.muutnimet %}
+                <ul>
+                    <li>{{muunimi.nimi}}</li>
+                </ul>
+                {% endfor %}
+            </td>
+            <td>{{drinkki.drinkkityyppi}}</td>
+            <td>{{drinkki.lasi}}</td>
+            <td>{{drinkki.lampotila}}</td>
+            <td>{{drinkki.lisayspaiva}}</td>
+            <td>{{drinkki.lisaaja}}</td>
+            <td>
+                <form method="post" action="{{base_path}}/ehdotukset/hyvaksy">
+                    <button name="id" value={{drinkki.id}} type="submit" class="btn btn-primary">Hyväksy</button>
+                </form>
+                <form method="post" action="{{base_path}}/ehdotukset/hylkaa">
+                    <button name="id" value={{drinkki.id}} type="submit" class="btn btn-primary">Hylkää</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</form>
+{% endblock %}
