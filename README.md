@@ -40,15 +40,15 @@ sovelluksessa jonkin verran (Bootstrap). Sovellus toimii vain yhdellä tietokann
 ## Linkit staattisiin HTML sivuihin
 
 * [Linkki sovelluksen etusivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/)
-* [Linkki rekisteröitymissivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/register)
-* [Linkki kirjautumissivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/login)
-* [Linkki tilin muokkaussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/settings)
-* [Linkki käyttäjätilien listaussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/user)
-* [Linkki reseptien listaussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/recipe)
-* [Linkki ehdotettujen reseptien listaussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/suggestion)
-* [Linkki reseptin esittelysivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/recipe/1)
-* [Linkki reseptin muokkaussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/recipe/1/edit)
-* [Linkki reseptin ehdotussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/suggest)
+* [Linkki rekisteröitymissivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/rekisteroidy)
+* [Linkki kirjautumissivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/kirjaudu)
+* [Linkki tilin muokkaussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/asetukset)
+* [Linkki käyttäjätilien listaussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/kayttajat)
+* [Linkki reseptien listaussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/drinkki)
+* [Linkki ehdotettujen reseptien listaussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/ehdotukset)
+* [Linkki reseptin esittelysivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/drinkki/1)
+* [Linkki reseptin muokkaussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/drinkki/1/muokkaa)
+* [Linkki reseptin ehdotussivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/ehdota)
 
 <br />
 
