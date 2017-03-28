@@ -32,8 +32,8 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <!-- Sovelluksen nimi -->
-                    <a class="navbar-brand" href="{{base_path}}">Drinkkiarkisto</a>
+                    <!-- Sovelluksen nimi UPDATE: linkki poistettu turhana-->
+                    <a class="navbar-brand">Drinkkiarkisto</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="navigation">
@@ -41,11 +41,45 @@
                         <!-- Navigaation linkit -->
                         <li><a href="{{base_path}}">Etusivu</a></li>
                         <li><a href="{{base_path}}/drinkki">Selaa drinkkejä</a></li>
+                        <li><a href="{{base_path}}/ehdota">Ehdota uutta drinkkiä</a></li>
                     </ul>
 
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="" data-toggle="tooltip" title="Kirjaudu sisään">Kirjaudu</a></li>
-                        <li><a href="" data-toggle="tooltip" title="Rekisteröi käyttäjätili">Rekisteröidy</a></li>
+                    <ul id="signInDropdown" class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <button type="button" id="dropdownMenu1" data-toggle="dropdown" class="btn btn-info navbar-btn dropdown-toggle"><i class="glyphicon glyphicon-user"></i> Kirjautuminen <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li style="width: 250px;">
+                                    <form class="navbar-form form" role="form">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
+
+                                                <input id="emailInput" placeholder="sähköposti" class="form-control" oninvalid="setCustomValidity('Syötä validi sähköpostiosoite!')" onchange="try {
+                                                        setCustomValidity('')
+                                                    } catch (e) {
+                                                    }" required="" type="email">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock color-blue"></i></span>
+
+                                                <input id="passwordInput" placeholder="salasana" class="form-control" oninvalid="setCustomValidity('Syötä salasana!')" onchange="try {
+                                                        setCustomValidity('')
+                                                    } catch (e) {
+                                                    }" required="" type="password">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary form-control">Kirjaudu</button>
+                                        </div>
+                                        <div class="form-group">
+                                            <span class="pull-right"><a href="{{base_path}}/rekisteroidy">Rekisteröi tili</a></span>
+                                        </div>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>

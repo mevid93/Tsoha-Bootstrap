@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Drinkit</h1>
+<br>
+
+<!-- Listan järjestäminen nimen mukaan aakkosjärjestyksessä, ainesosan perusteella juomalajin perusteella-->
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Järjestä
+        <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+        <li><a href="#">Aakkosjärjestyksessä</a></li>
+        <li><a href="#">Ainesosan perusteella</a></li>
+        <li><a href="#">Drinkkityypin perusteella</a></li>
+    </ul>
+</div> 
 
 <table class="table table-striped table-bordered">
     <thead>
@@ -18,21 +30,21 @@
     <tbody>
         <!-- Listataan drinkit tähän -->
         {% for drinkki in drinkit %}
-            <tr>
-                <td><a href="{{base_path}}/drinkki/{{drinkki.id}}">{{drinkki.ensisijainennimi}}</a></td>
-                <td>
-                    {% for muunimi in drinkki.muutnimet %}
-                    <ul>
-                        <li>{{muunimi.nimi}}</li>
-                    </ul>
-                    {% endfor %}
-                </td>
-                <td>{{drinkki.drinkkityyppi}}</td>
-                <td>{{drinkki.lasi}}</td>
-                <td>{{drinkki.lampotila}}</td>
-                <td>{{drinkki.lisayspaiva}}</td>
-                <td>{{drinkki.lisaaja}}</td>
-            </tr>
+        <tr>
+            <td><a href="{{base_path}}/drinkki/{{drinkki.id}}">{{drinkki.ensisijainennimi}}</a></td>
+            <td>
+                {% for muunimi in drinkki.muutnimet %}
+                <ul>
+                    <li>{{muunimi.nimi}}</li>
+                </ul>
+                {% endfor %}
+            </td>
+            <td>{{drinkki.drinkkityyppi}}</td>
+            <td>{{drinkki.lasi}}</td>
+            <td>{{drinkki.lampotila}}</td>
+            <td>{{drinkki.lisayspaiva}}</td>
+            <td>{{drinkki.lisaaja}}</td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>

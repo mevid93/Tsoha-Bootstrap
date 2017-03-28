@@ -45,6 +45,11 @@ $routes->get('/drinkki/1/muokkaa', function() {
 
 // POST metodit
 // Ehdotuksen lisääminen tietokantaan
+
+$routes->post('/', function(){
+    DrinkkiController::listaaHaunPerusteela(); 
+});
+
 $routes->post('/ehdota', function() {
     EhdotusController::lisaa();
 });
