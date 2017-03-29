@@ -16,15 +16,25 @@
 
 <!-- Muut nimet tulee listana tähän -->
 <h5><strong> Muut tunnetut nimet </strong></h5>
-{% for muunimi in drinkki.muutnimet %}
+
 <ul>
+    {% for muunimi in drinkki.muutnimet %}
     <li>{{muunimi.nimi}}</li>
+    {% endfor %}
 </ul>
-{% endfor %}
+<br>
+
+<!-- Tarvittavat ainesosat tulee listana tähän -->
+<h5><strong> Drinkkiin tulevat ainesosat </strong></h5>
+
+<ul>
+    <li>Ainesosat listaava ominaisuus työn alla...</li>
+</ul>
+<br>
 
 <!-- Kuvaus tulee tähän -->
 <p>
-<h3> Kuvaus </h3>
+<h5><strong>Kuvaus</strong></h5>
 {{drinkki.kuvaus}}
 </p>
 

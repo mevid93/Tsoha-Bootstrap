@@ -8,7 +8,7 @@ class EhdotusController extends BaseController {
 
     // metodi, joka hoitaa ainesosien ja drinkkityyppien listaamisen
     public static function index() {
-        $tyypit = Drinkkityyppi::all();
+        $tyypit = Drinkkityyppi::kaikki();
         $ainekset = Ainesosa::all();
         View::make('ehdotus/ehdota.html', array('tyypit' => $tyypit, 'ainekset' => $ainekset));
     }

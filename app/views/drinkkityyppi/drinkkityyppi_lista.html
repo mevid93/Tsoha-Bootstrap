@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Drinkkityypit</h1>
+<br>
+<a href="{{base_path}}/drinkkityyppi/lisaa">Lisää drinkkityyppi</a>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Nimi</th>
+            <th>Kuvaus</th>
+            <th>Muokkaa / Poista<th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <!-- Listataan drinkityypit tähän -->
+        {% for tyyppi in tyypit %}
+        <tr>
+            <td>{{tyyppi.nimi}}</td>
+            <td>{{tyyppi.kuvaus}}</td>
+            <td>
+                <form action="{{base_path}}/drinkkityyppi/muokkaa/{{tyyppi.id}}">
+                    <input type="submit" value="Muokkaa"/>
+                </form>
+                <form method="post" action="{{base_path}}/drinkkityyppi/poista">
+                    <button name="id" value={{tyyppi.id}} type="submit" class="btn btn-primary">Poista</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -38,6 +38,18 @@ $routes->get('/kayttajat', function() {
     HelloWorldController::user_list();
 });
 
+$routes->get('/drinkkityyppi', function() {
+    DrinkkityyppiController::index();
+});
+
+$routes->get('/drinkkityyppi/lisaa', function() {
+    DrinkkityyppiController::lisaysNakyma();
+});
+
+$routes->get('/drinkkityyppi/muokkaa/:id', function($id) {
+    DrinkkityyppiController::muokkausNakyma($id);
+});
+
 $routes->get('/drinkki/1/muokkaa', function() {
     HelloWorldController::recipi_edit();
 });
@@ -48,6 +60,22 @@ $routes->get('/drinkki/1/muokkaa', function() {
 
 $routes->post('/', function(){
     DrinkkiController::listaaHaunPerusteela(); 
+});
+
+$routes->post('/drinkki', function(){
+    DrinkkiController::indexJarjestys(); 
+});
+
+$routes->post('/drinkkityyppi/lisaa', function(){
+    DrinkkityyppiController::lisaa(); 
+});
+
+$routes->post('/drinkkityyppi/muokkaa', function(){
+    DrinkkityyppiController::muokkaa(); 
+});
+
+$routes->post('/drinkkityyppi/poista', function(){
+    DrinkkityyppiController::poista(); 
 });
 
 $routes->post('/ehdota', function() {

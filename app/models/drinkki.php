@@ -18,9 +18,35 @@ class Drinkki extends BaseModel {
     }
 
     // hae kaikki hyväksytyt drinkit tietokannasta
-    public static function etsiKaikkiHyvaksytyt() {
+    public static function etsiKaikkiHyvaksytytAakkosjarjestyksessa() {
         // haetaan kaikki tiedot Drinkkit-taulusta
-        $query = DB::connection()->prepare('SELECT * FROM Drinkki WHERE hyvaksytty = true');
+        $query = DB::connection()->prepare('SELECT * FROM Drinkki WHERE hyvaksytty = true ORDER BY ensisijainennimi');
+        $query->execute();
+        $rows = $query->fetchAll();
+        $drinkit = array();
+
+        foreach ($rows as $row) {
+            $drinkit[] = new Drinkki(array(
+            'id' => $row['id'],
+            'ensisijainennimi' => $row['ensisijainennimi'],
+            'muutnimet' => MuuNimi::findByDrinkId($row['id']),    
+            'lasi' => $row['lasi'],
+            'kuvaus' => $row['kuvaus'],
+            'lampotila' => $row['lampotila'],
+            'lisayspaiva' => $row['lisayspaiva'],
+            'lisaaja' => $row['lisaaja'],
+            'hyvaksytty' => $row['hyvaksytty'],
+            'drinkkityyppi' => Drinkkityyppi::find($row['drinkkityyppi'])->nimi
+            ));
+        }
+
+        return $drinkit;
+    }
+    
+    // hae kaikki hyväksytyt drinkit tietokannasta
+    public static function etsiKaikkiHyvaksytytDrinkkityypinPerusteella() {
+        // haetaan kaikki tiedot Drinkkit-taulusta
+        $query = DB::connection()->prepare('SELECT * FROM Drinkki WHERE hyvaksytty = true ORDER BY drinkkityyppi');
         $query->execute();
         $rows = $query->fetchAll();
         $drinkit = array();
@@ -96,7 +122,7 @@ class Drinkki extends BaseModel {
     
     // hae drinkit joiden nimeen sisältyy hakutermi
     public static function etsiNimenPerusteella($nimi) {
-        $query = DB::connection()->prepare("SELECT * FROM Drinkki WHERE ensisijainennimi LIKE '%'|| :nimi ||'%'");
+        $query = DB::connection()->prepare("SELECT DISTINCT Drinkki.* FROM Drinkki, MuuNimi WHERE ensisijainennimi LIKE '%'|| :nimi ||'%' OR (Drinkki.id = MuuNimi.drinkki AND MuuNimi.nimi LIKE '%'|| :nimi ||'%')");
         $query->execute(array('nimi' => $nimi));
         $rows = $query->fetchAll();
         $drinkit = array();

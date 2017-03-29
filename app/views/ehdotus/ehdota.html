@@ -13,11 +13,10 @@
         <label>Muut tunnetut nimet</label>
         <input name="muunimi1" class="form-control" placeholder="Toinen nimi..." type="text">
         <input name ="muunimi2" class="form-control" placeholder="Kolmas nimi..." type="text">
-        <input name =muunimi3" class="form-control" placeholder="Neljäs nimi..." type="text">
     </div>
 
     <div class="form-group">
-        <label for="sel1">Drinkin tyyppi</label>
+        <label for="sel1">Drinkkityyppi</label>
         <select name="tyyppi" class="form-control" id="sel1">
             {% for tyyppi in tyypit %}
             <option>{{tyyppi.nimi}}</option>

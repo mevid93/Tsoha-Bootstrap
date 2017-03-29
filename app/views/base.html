@@ -41,7 +41,9 @@
                         <!-- Navigaation linkit -->
                         <li><a href="{{base_path}}">Etusivu</a></li>
                         <li><a href="{{base_path}}/drinkki">Selaa drinkkejä</a></li>
+                        <li><a href="{{base_path}}/drinkkityyppi">Drinkkityypit</a></li>
                         <li><a href="{{base_path}}/ehdota">Ehdota uutta drinkkiä</a></li>
+                        <li><a href="{{base_path}}/ehdotukset">Käyttäjien ehdotukset</a></li>
                     </ul>
 
                     <ul id="signInDropdown" class="nav navbar-nav navbar-right">
@@ -53,21 +55,13 @@
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
-
-                                                <input id="emailInput" placeholder="sähköposti" class="form-control" oninvalid="setCustomValidity('Syötä validi sähköpostiosoite!')" onchange="try {
-                                                        setCustomValidity('')
-                                                    } catch (e) {
-                                                    }" required="" type="email">
+                                                <input id="emailInput" placeholder="sähköposti" class="form-control" type="text">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock color-blue"></i></span>
-
-                                                <input id="passwordInput" placeholder="salasana" class="form-control" oninvalid="setCustomValidity('Syötä salasana!')" onchange="try {
-                                                        setCustomValidity('')
-                                                    } catch (e) {
-                                                    }" required="" type="password">
+                                                <input id="passwordInput" placeholder="salasana" class="form-control" type="text">
                                             </div>
                                         </div>
                                         <div class="form-group">
