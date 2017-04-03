@@ -32,13 +32,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <!-- Sovelluksen nimi UPDATE: linkki poistettu turhana-->
-                    <a class="navbar-brand">Drinkkiarkisto</a>
+                    <span class="navbar-brand">Drinkkiarkisto</span>
                 </div>
 
                 <div class="collapse navbar-collapse" id="navigation">
                     <ul class="nav navbar-nav">
-                        <!-- Navigaation linkit -->
+                        <!-- Kirjautumattomille käyttäjille navigaation linkit -->
                         <li><a href="{{base_path}}">Etusivu</a></li>
                         <li><a href="{{base_path}}/drinkki">Selaa drinkkejä</a></li>
                         <li><a href="{{base_path}}/drinkkityyppi">Drinkkityypit</a></li>
@@ -52,6 +51,7 @@
                         {% endif %}
                     </ul>
 
+                    <!--Kirjautumis/rekisteröitymis/asetus/uloskirjautumisvalikko-->
                     <ul id="signInDropdown" class="nav navbar-nav navbar-right">
                         <li class="dropdown">
                             {% if user_logged_in %}
@@ -73,7 +73,7 @@
                                     <form class="navbar-form form" method="post" action="{{base_path}}/kirjaudu">
                                         <div class="form-group">
                                             <div class="input-group">
-                                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-user color-blue"></i></span>
                                                 <input name="username" value="{{username}}" placeholder="käyttäjätunnus" class="form-control" type="text">
                                             </div>
                                         </div>
@@ -87,7 +87,7 @@
                                             <button type="submit" class="btn btn-primary form-control">Kirjaudu sisään</button>
                                         </div>
                                         <div class="form-group">
-                                            <span class="pull-right"><a href="{{base_path}}/rekisteroidy">Rekisteröi tili</a></span>
+                                            <span><a href="{{base_path}}/rekisteroidy" class="btn btn-primary form-control">Rekisteröi tili</a></span>
                                         </div>
                                     </form>
                                 </li>

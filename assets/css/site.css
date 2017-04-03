@@ -4,7 +4,63 @@
   margin: 0px auto;
 }
 
+
 .navbar .container-fluid{
   max-width: 1200px;
   margin: 0px auto;
+}
+
+/*
+Tästä eteenpäin omia virityksiä
+*/
+
+.navbar.navbar-default {
+    background-color: black;
+}
+
+/*
+Navbar brandin asetukset
+*/
+.navbar-default .navbar-brand{
+    color: white;
+    font-weight: bold;
+}
+.navbar-default .navbar-brand:hover{
+    color: white;
+    font-weight: bold;
+}
+
+
+/*
+Navbar linkkien asetukset
+*/
+.navbar-default .navbar-nav > li > a {
+    color: white;
+    font-weight: bold;
+}
+.navbar-default .navbar-nav > li > a:hover {
+    color: #B82601;
+    font-weight: bold;
+}
+
+
+/*
+Info napin väri
+*/
+.btn-info {
+    background-color: #0A4D83;
+    border-color: #0A4D83;
+}
+.btn-info:hover {
+    background-color: #0A4D83;
+    border-color: #0A4D83;
+}
+.btn-info:enabled {
+    background-color: #0A4D83;
+    border-color: #0A4D83;
+}
+
+.open > .dropdown-toggle.btn-info {
+    background-color: #0A4D83;
+    border-color: #0A4D83;
 }
