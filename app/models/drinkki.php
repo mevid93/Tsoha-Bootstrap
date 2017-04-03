@@ -10,11 +10,12 @@
 class Drinkki extends BaseModel {
 
     // mallin atribuutit
-    public $id, $ensisijainennimi, $muutnimet, $lasi, $kuvaus, $lampotila, $lisayspaiva, $lisaaja, $hyvaksytty, $drinkkityyppi;
+    public $id, $ensisijainennimi, $muutnimet, $lasi, $kuvaus, $lampotila, $lisayspaiva, $lisaaja, $hyvaksytty, $drinkkityyppi, $validators;
 
     // konstruktori
     public function __construct($attributes) {
         parent::__construct($attributes);
+        $this->validators = array('validoiNimi', 'validoiLasi', 'validoiKuvaus');
     }
 
     // hae kaikki hyväksytyt drinkit tietokannasta
@@ -179,6 +180,16 @@ class Drinkki extends BaseModel {
     
     }
     
+    // tee muutoksia tietokantaan
+    public function paivita(){
+        $query = DB::connection()->prepare('UPDATE Drinkki 
+                                            SET ensisijainennimi = :ensisijainennimi, lasi = :lasi, kuvaus = :kuvaus, lampotila = :lampotila, drinkkityyppi = :drinkkityyppi
+                                            WHERE id = :id');
+        $query->execute(array('ensisijainennimi' => $this->ensisijainennimi, 'lasi' => $this->lasi, 'kuvaus' => $this->kuvaus, 'lampotila' => $this->lampotila, 
+            'drinkkityyppi' => $this->drinkkityyppi, 'id' => $this->id));
+    
+    }
+    
     // poista drinkki tietokannasta
     public function poista(){
         $query = DB::connection()->prepare('DELETE FROM Drinkki WHERE id = :id');
@@ -191,6 +202,57 @@ class Drinkki extends BaseModel {
         $query = DB::connection()->prepare('UPDATE Drinkki SET hyvaksytty = true WHERE id = :id');
         $query->execute(array('id' => $this->id));
     
+    }
+    
+    // validoi drinkin nimi
+    public function validoiNimi(){
+        $errors = array();
+        if($this->ensisijainennimi == '' || $this->ensisijainennimi == null){
+            $errors[] = 'Nimi ei saa olla tyhjä';
+        }
+        if(strlen($this->ensisijainennimi) < 3){
+            $errors[] = 'Nimen pituuden tulee olla vähintään kolme merkkiä';
+        }
+        return $errors;
+    }
+    
+    // validoi drinkkilasi
+    public function validoiLasi(){
+        $errors = array();
+        if($this->lasi == '' || $this->lasi == null){
+            $errors[] = 'Suositeltu lasin nimi ei saa olla tyhjä';
+        }
+        if(strlen($this->lasi) < 3){
+            $errors[] = 'Lasin nimen pituuden tulee olla vähintään kolme merkkiä';
+        }
+        return $errors;
+    }
+    
+    // validoi kuvaus
+    public function validoiKuvaus(){
+        $errors = array();
+        if($this->kuvaus == '' || $this->kuvaus == null){
+            $errors[] = 'Drinkin kuvaus ei saa olla tyhjä';
+        }
+        if(strlen($this->kuvaus) < 20){
+            $errors[] = 'Kuvauksen pituuden tulee olla vähintään 20 merkkiä';
+        }
+        if(strlen($this->kuvaus) > 400){
+            $errors[] = 'Kuvauksen pituuden tulee olla korkeintaan 400 merkkiä';
+        }
+        return $errors;
+    }
+    
+    // metodi, joka käy läpi kaikki validointi funtiot
+    public function virheet(){
+        $errors = array();
+        
+        foreach($this->validators as $metodi){
+            $validator_errors = $this->{$metodi}();
+            $errors = array_merge($errors, $validator_errors);
+        }
+        
+        return $errors;
     }
 
 }

@@ -1,33 +1,75 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Muokkaa reseptiä</h1>
+<h1>Muokkaa drinkkiä</h1>
 
-<form>
+<!--Listataan virheet jos niitä oli-->
+{% if errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for error in errors %}
+        <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<form method="post" action="{{base_path}}/drinkki/{{drinkki.id}}/muokkaa">
+
     <div class="form-group">
         <label>Nimi</label>
-        <input class="form-control" value="Valkovenäläinen" type="text">
+        <input name="nimi" class="form-control" value="{{drinkki.ensisijainennimi}}" type="text">
     </div>
+
     <div class="form-group">
-        <label>Tyyppi</label>
-        <input class="form-control" value="Cocktail" type="text">
+        <label>Muut tunnetut nimet</label>
+        <input name="muunimi1" class="form-control" placeholder="Toinen nimi..." type="text">
+        <input name ="muunimi2" class="form-control" placeholder="Kolmas nimi..." type="text">
     </div>
+
+    <div class="form-group">
+        <label for="sel1">Drinkkityyppi</label>
+        <select name="tyyppi" class="form-control" id="sel1">
+            {% for tyyppi in tyypit %}
+            <option>{{tyyppi.nimi}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
     <div class="form-group">
         <label>Lasi</label>
-        <input class="form-control" value="Grogilasi" type="text">
+        <input name="lasi" class="form-control" value="{{drinkki.lasi}}" type="text">
     </div>
+
     <div class="form-group">
-        <label>Lämpötila</label>
-        <input class="form-control" value="Viileä" type="text">
+        <label for="sel2">Lämpötila</label>
+        <select name="lampotila" class="form-control" id="sel2">
+            <option>Jäinen</option>
+            <option>Viileä</option>
+            <option>Huoneenlämpöinen</option>
+            <option>Lämmin</option>
+            <option>Kuuma</option>
+        </select>
     </div>
+
+    <div class= "form-group">
+        <label>Drinkin ainesosat</label></br>
+        {% for aines in ainekset %}
+        <div class="checkbox-inline">
+            <label><input type="checkbox" name="opt{{aines.id}}">{{aines.nimi}}</label>
+        </div>
+        {% endfor %}
+    </div>
+
     <div class="form-group">
         <label>Kuvaus</label>
-        <textarea class="form-control">Valkovenäläinen on makea cocktail, eli drinkki. Juoma sekoitetaan yleensä vodkasta, kahvilikööristä (yleisimmin käytetään Kahlúaa) sekä kermasta tai nykyisin maidosta, ja se tarjoillaan usein grogilasissa jäiden kera. Valkovenäläiseen tulee yleensä yhtä paljon vodkaa ja kahvilikööriä. Päälle kaadetaan kerma, joka kuitenkin nykyisin usein korvataan maidolla. 
+        <textarea name="kuvaus" class="form-control"> 
+            {{drinkki.kuvaus}}
         </textarea>
     </div>
+
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Tallenna muutokset</button>
     </div>
-
 
 </form>
 {% endblock %}

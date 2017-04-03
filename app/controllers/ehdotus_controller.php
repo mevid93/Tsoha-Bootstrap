@@ -29,10 +29,18 @@ class EhdotusController extends BaseController {
             'lisaaja' => "Anonymous"  // automaattinen lisääjän nimen selvitys implementoitava
         ));
 
-        $drinkki->tallenna();
+        $errors = $drinkki->virheet();
 
-        // Ohjataan käyttäjä sovelluksen etusivulle
-        Redirect::to('/', array('message' => "Ehdotuksesi on lähetetty ylläpitäjän hyväksyttäväksi!"));
+        if (count($errors) == 0) {
+            $drinkki->tallenna();
+            // Ohjataan käyttäjä sovelluksen etusivulle
+            Redirect::to('/', array('message' => "Ehdotuksesi on lähetetty ylläpitäjän hyväksyttäväksi!"));
+        } else {
+            $tyypit = Drinkkityyppi::kaikki();
+            $ainekset = Ainesosa::all();
+            // Drinkissä oli jotain vikaa
+            View::make('ehdotus/ehdota.html', array('drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors));
+        }
     }
 
 }

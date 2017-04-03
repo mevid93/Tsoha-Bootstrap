@@ -9,7 +9,7 @@ class DrinkkiController extends BaseController {
     // metodi, joka hoitaa drinkkien listaamisen nimen mukaan aakkosjärjestyksessä
     public static function index() {
         $drinkit = Drinkki::etsiKaikkiHyvaksytytAakkosjarjestyksessa();
-        View::make('drinkki/drinkki_lista.html', array('drinkit' => $drinkit));
+        View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
     }
 
     // metodi, joka hoitaa yksittäisen drinkin näkymän näyttämisen
@@ -31,10 +31,10 @@ class DrinkkiController extends BaseController {
             Redirect::to('/', array('message' => 'Et syöttänyt hakutermiä!'));
         } elseif ($params['ehto'] == "nimi") {
             $drinkit = Drinkki::etsiNimenPerusteella($params['termi']);
-            View::make('drinkki/drinkki_lista.html', array('drinkit' => $drinkit));
+            View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
         } elseif ($params['ehto'] == "aines") {
             $drinkit = Drinkki::etsiAinesosanPerusteella($params['termi']);
-            View::make('drinkki/drinkki_lista.html', array('drinkit' => $drinkit));
+            View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
         }
     }
 
@@ -43,14 +43,59 @@ class DrinkkiController extends BaseController {
         $params = $_POST;
         if ($params['jarjestys'] == "2") {
             $drinkit = Drinkki::etsiKaikkiHyvaksytytDrinkkityypinPerusteella($params['jarjestys']);
-            View::make('drinkki/drinkki_lista.html', array('drinkit' => $drinkit));
+            View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
         } elseif ($params['jarjestys'] == "3") {
             $drinkit = Drinkki::etsiNimenPerusteella($params['termi']);
-            View::make('drinkki/drinkki_lista.html', array('drinkit' => $drinkit));
+            View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
         }
         //perustapaus
-        $drinkit = Drinkki::etsiKaikkiHyvaksytytAakkosjarjestyksessa();  
-        View::make('drinkki/drinkki_lista.html', array('drinkit' => $drinkit));
+        $drinkit = Drinkki::etsiKaikkiHyvaksytytAakkosjarjestyksessa();
+        View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
+    }
+
+    // drinkin muokkauksesta huolehtiva metodi
+    public static function muokkaa($id) {
+        $tyypit = Drinkkityyppi::kaikki();
+        $ainekset = Ainesosa::all();
+        $drinkki = Drinkki::etsiPerusteellaID($id);
+        View::make('drinkki/muokkaa.html', array('drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset));
+    }
+
+    // drinkin päivitys tietokantaan
+    public static function paivita($id) {
+        $params = $_POST;
+        $drinkki = new Drinkki(array(
+            'id' => $id,
+            'ensisijainennimi' => $params['nimi'],
+            'drinkkityyppi' => Drinkkityyppi::findByName($params['tyyppi'])->id,
+            'lasi' => $params['lasi'],
+            'kuvaus' => $params['kuvaus'],
+            'lampotila' => $params['lampotila'],
+            'lisayspaiva' => "Tämä päivä",
+            'hyvaksytty' => false,
+            'lisaaja' => "Anonymous"  // automaattinen lisääjän nimen selvitys implementoitava
+        ));
+
+        $errors = $drinkki->virheet();
+
+        if (count($errors) == 0) {
+            $drinkki->paivita();
+            // Ohjataan käyttäjä sovelluksen etusivulle
+            Redirect::to('/drinkki/'. $id, array('drinkki' => $drinkki, 'message' => "Muutokset tallennettu!"));
+        } else {
+            $tyypit = Drinkkityyppi::kaikki();
+            $ainekset = Ainesosa::all();
+            // Drinkissä oli jotain vikaa
+            View::make('drinkki/muokkaa.html', array('drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors));
+        }
+    }
+
+    // drinkin poistamisesta huolehtiva metodi
+    public static function poista($id) {
+        $drinkki = Drinkki::etsiPerusteellaID($id);
+        $drinkki->poista();
+        $drinkit = Drinkki::etsiKaikkiHyvaksytytAakkosjarjestyksessa();
+        Redirect::to('/drinkki', array('drinkit' => $drinkit, 'message' => "Drinkin poisto onnistui!"));
     }
 
 }

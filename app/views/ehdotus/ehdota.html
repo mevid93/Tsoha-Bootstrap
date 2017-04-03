@@ -2,11 +2,22 @@
 {% block content %}
 <h1>Ehdota drinkkiä</h1>
 
+<!--Listataan virheet jos niitä oli-->
+{% if errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for error in errors %}
+        <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
 <form method="post" action="{{base_path}}/ehdota">
 
     <div class="form-group">
         <label>Nimi</label>
-        <input name="nimi" class="form-control" placeholder="Drinkin nimi..." type="text">
+        <input name="nimi" class="form-control" value="{{drinkki.ensisijainennimi}}" type="text">
     </div>
 
     <div class="form-group">
@@ -26,7 +37,7 @@
 
     <div class="form-group">
         <label>Lasi</label>
-        <input name="lasi" class="form-control" placeholder="Suositeltu lasi drinkille..." type="text">
+        <input name="lasi" class="form-control" value="{{drinkki.lasi}}" type="text">
     </div>
 
     <div class="form-group">
@@ -52,7 +63,7 @@
     <div class="form-group">
         <label>Kuvaus</label>
         <textarea name="kuvaus" class="form-control"> 
-            
+            {{drinkki.kuvaus}}
         </textarea>
     </div>
 

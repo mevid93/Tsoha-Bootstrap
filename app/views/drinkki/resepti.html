@@ -37,5 +37,12 @@
 <h5><strong>Kuvaus</strong></h5>
 {{drinkki.kuvaus}}
 </p>
+<br>
+<a href ="{{base_path}}/drinkki/{{drinkki.id}}/muokkaa"><button type="button">Muokkaa</button></a>
+<br>
+<form method="post" action="{{base_path}}/drinkki/{{drinkki.id}}/poista" style="display: inline-block;">
+  <button type="submit" class="btn btn-danger">Poista</button>
+</form>
+
 
 {% endblock %}

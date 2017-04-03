@@ -50,13 +50,12 @@ $routes->get('/drinkkityyppi/muokkaa/:id', function($id) {
     DrinkkityyppiController::muokkausNakyma($id);
 });
 
-$routes->get('/drinkki/1/muokkaa', function() {
-    HelloWorldController::recipi_edit();
+$routes->get('/drinkki/:id/muokkaa', function($id) {
+    DrinkkiController::muokkaa($id);
 });
 
 
 // POST metodit
-// Ehdotuksen lisääminen tietokantaan
 
 $routes->post('/', function(){
     DrinkkiController::listaaHaunPerusteela(); 
@@ -64,6 +63,14 @@ $routes->post('/', function(){
 
 $routes->post('/drinkki', function(){
     DrinkkiController::indexJarjestys(); 
+});
+
+$routes->post('/drinkki/:id/muokkaa', function($id){
+    DrinkkiController::paivita($id); 
+});
+
+$routes->post('/drinkki/:id/poista', function($id){
+    DrinkkiController::poista($id); 
 });
 
 $routes->post('/drinkkityyppi/lisaa', function(){
