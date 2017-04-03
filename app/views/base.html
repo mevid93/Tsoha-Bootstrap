@@ -42,30 +42,49 @@
                         <li><a href="{{base_path}}">Etusivu</a></li>
                         <li><a href="{{base_path}}/drinkki">Selaa drinkkejä</a></li>
                         <li><a href="{{base_path}}/drinkkityyppi">Drinkkityypit</a></li>
+                        <!--Näkyy vain kirjautuneille käyttäjille-->
+                        {% if user_logged_in %}
                         <li><a href="{{base_path}}/ehdota">Ehdota uutta drinkkiä</a></li>
+                        {% endif %}
+                        <!--Näkyy vain ylläpitäjille-->
+                        {% if admin_logged_in %}
                         <li><a href="{{base_path}}/ehdotukset">Käyttäjien ehdotukset</a></li>
+                        {% endif %}
                     </ul>
 
                     <ul id="signInDropdown" class="nav navbar-nav navbar-right">
                         <li class="dropdown">
+                            {% if user_logged_in %}
+                            <button type="button" id="dropdownMenu1" data-toggle="dropdown" class="btn btn-info navbar-btn dropdown-toggle"><i class="glyphicon glyphicon-user"></i> Oma Tili <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li style="width: 250px;">
+                                    <form class="navbar-form form" method="post" action="{{base_path}}/kirjauduUlos">
+                                        <a href="{{base_path}}/asetukset" class="btn btn-primary" role="button"> Asetukset </a>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary form-control">Kirjaudu ulos</button>
+                                        </div>
+                                    </form>
+                                </li>
+                            </ul>
+                            {% else %}
                             <button type="button" id="dropdownMenu1" data-toggle="dropdown" class="btn btn-info navbar-btn dropdown-toggle"><i class="glyphicon glyphicon-user"></i> Kirjautuminen <span class="caret"></span></button>
                             <ul class="dropdown-menu">
                                 <li style="width: 250px;">
-                                    <form class="navbar-form form" role="form">
+                                    <form class="navbar-form form" method="post" action="{{base_path}}/kirjaudu">
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
-                                                <input id="emailInput" placeholder="sähköposti" class="form-control" type="text">
+                                                <input name="username" value="{{username}}" placeholder="käyttäjätunnus" class="form-control" type="text">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock color-blue"></i></span>
-                                                <input id="passwordInput" placeholder="salasana" class="form-control" type="text">
+                                                <input name="password" placeholder="salasana" class="form-control" type="password">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary form-control">Kirjaudu</button>
+                                            <button type="submit" class="btn btn-primary form-control">Kirjaudu sisään</button>
                                         </div>
                                         <div class="form-group">
                                             <span class="pull-right"><a href="{{base_path}}/rekisteroidy">Rekisteröi tili</a></span>
@@ -73,9 +92,12 @@
                                     </form>
                                 </li>
                             </ul>
+                            {% endif %}
                         </li>
                     </ul>
                 </div>
+
+
             </div>
         </nav>
 

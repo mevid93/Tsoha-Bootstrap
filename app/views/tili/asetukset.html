@@ -2,36 +2,41 @@
 {% block content %}
 <h1>Muokkaa käyttäjätiliäsi</h1>
 
-<form>
+<form method="post" action="{{base_path}}/asetukset">
     <div class="form-group">
         <label>Etunimi</label>
-        <input class="form-control" value="Teemu" type="text">
+        <input class="form-control" value="{{kayttaja.etunimi}}" type="text">
     </div>
     <div class="form-group">
         <label>Sukunimi</label>
-        <input class="form-control" value="Teekkari" type="text">
+        <input class="form-control" value="{{kayttaja.sukunimi}}" type="text">
     </div>
     <div class="form-group">
         <label>Sähköposti</label>
-        <input class="form-control" value="teemu.teekkari@aalto.fi" type="text">
+        <input class="form-control" value="{{kayttaja.sahkoposti}}" type="text">
     </div>
 
     <div class="panel-footer row"><!-- panel-footer -->
         <div class="col-xs-6 text-left">
             <div class="previous">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-lg">Tallenna</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-6 text-right">   
-            <div class="next">
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-sm pull-right">Poista tili</button>
+                    <button type="submit" class="btn btn-primary btn-lg">Tallenna muutokset</button>
                 </div>
             </div>
         </div>
     </div><!-- end panel-footer -->
 
+</form>
+
+<form method="post" action="{{base_path}}/poista">
+    <div class="panel-footer row"><!-- panel-footer -->
+        <div class="col-xs-6 text-left">
+            <div class="previous">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-sm">Poista tili</button>
+                </div>
+            </div>
+        </div>
+    </div><!-- end panel-footer -->
 </form>
 {% endblock %}

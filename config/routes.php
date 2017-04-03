@@ -14,16 +14,12 @@ $routes->get('/drinkki/:id', function($id) {
     DrinkkiController::naytaResepti($id);
 });
 
-$routes->get('/kirjaudu', function() {
-    HelloWorldController::sign_in();
-});
-
 $routes->get('/rekisteroidy', function() {
-    HelloWorldController::sign_up();
+    KayttajaController::rekisteroitymisNakyma();
 });
 
 $routes->get('/asetukset', function() {
-    HelloWorldController::change_settings();
+    KayttajaController::muokkausNakyma();
 });
 
 $routes->get('/ehdota', function() {
@@ -95,5 +91,25 @@ $routes->post('/ehdotukset/hylkaa', function() {
 
 $routes->post('/ehdotukset/hyvaksy', function() {
     EhdotuksetController::hyvaksy();
+});
+
+$routes->post('/kirjaudu', function() {
+    KayttajaController::hoidaSisaanKirjautuminen();
+});
+
+$routes->post('/kirjauduUlos', function() {
+    KayttajaController::hoidaUlosKirjautuminen();
+});
+
+$routes->post('/asetukset', function() {
+    KayttajaController::hoidaUlosKirjautuminen();
+});
+
+$routes->post('/poista', function() {
+    KayttajaController::poistaKayttajatili();
+});
+
+$routes->post('/rekisteroidy', function() {
+    KayttajaController::luoKayttajatili();
 });
 

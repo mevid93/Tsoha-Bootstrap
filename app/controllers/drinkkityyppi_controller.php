@@ -9,12 +9,12 @@ class DrinkkityyppiController extends BaseController {
     // metodi, joka hoitaa drinkkityypien listauksen ja näkymän luonnin
     public static function index() {
         $tyypit = Drinkkityyppi::kaikki();
-        View::make('drinkkityyppi/drinkkityyppi_lista.html', array('tyypit' => $tyypit));
+        View::make('drinkkityyppi/drinkkityyppiLista.html', array('tyypit' => $tyypit));
     }
     
     // metodi, joka ohjaa drinkkityypin lisys sivulle
     public static function lisaysNakyma() {
-        View::make('drinkkityyppi/drinkkityyppi_lisays.html');
+        View::make('drinkkityyppi/drinkkityyppiLisays.html');
     }
 
     // metodi, joka hoitaa uuden drinkkityypin lisäämisen tietokantaan

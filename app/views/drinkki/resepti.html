@@ -38,11 +38,13 @@
 {{drinkki.kuvaus}}
 </p>
 <br>
+{% if admin_logged_in %}
 <a href ="{{base_path}}/drinkki/{{drinkki.id}}/muokkaa"><button type="button">Muokkaa</button></a>
 <br>
 <form method="post" action="{{base_path}}/drinkki/{{drinkki.id}}/poista" style="display: inline-block;">
   <button type="submit" class="btn btn-danger">Poista</button>
 </form>
+{% endif %}
 
 
 {% endblock %}
