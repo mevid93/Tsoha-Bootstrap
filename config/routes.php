@@ -23,7 +23,7 @@ $routes->get('/asetukset', function() {
 });
 
 $routes->get('/ehdota', function() {
-    EhdotusController::index();
+    EhdotusController::ehdotusNakyma();
 });
 
 $routes->get('/ehdotukset', function() {

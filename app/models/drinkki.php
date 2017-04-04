@@ -174,9 +174,11 @@ class Drinkki extends BaseModel {
     // lisää drinkki tietokantaan
     public function tallenna(){
         $query = DB::connection()->prepare('INSERT INTO Drinkki(ensisijainenNimi, lasi, kuvaus, lampotila, lisayspaiva, lisaaja, drinkkityyppi)
-                                            VALUES (:ensisijainenNimi, :lasi, :kuvaus, :lampotila, NOW(), :lisaaja, :drinkkityyppi)');
+                                            VALUES (:ensisijainenNimi, :lasi, :kuvaus, :lampotila, NOW(), :lisaaja, :drinkkityyppi)  RETURNING id');
         $query->execute(array('ensisijainenNimi' => $this->ensisijainennimi, 'lasi' => $this->lasi, 'kuvaus' => $this->kuvaus, 'lampotila' => $this->lampotila, 
             'lisaaja' => $this->lisaaja, 'drinkkityyppi' => $this->drinkkityyppi));
+        $row = $query->fetch();
+        $this->id = $row['id'];
     
     }
     
@@ -190,8 +192,9 @@ class Drinkki extends BaseModel {
     
     }
     
-    // poista drinkki tietokannasta
+    // poista drinkki tietokannasta ja muut mahdolliset nimet.
     public function poista(){
+        MuuNimi::poistaPerusteellaID($this->id);
         $query = DB::connection()->prepare('DELETE FROM Drinkki WHERE id = :id');
         $query->execute(array('id' => $this->id));
     
