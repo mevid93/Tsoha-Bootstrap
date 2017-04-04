@@ -27,7 +27,7 @@ $routes->get('/ehdota', function() {
 });
 
 $routes->get('/ehdotukset', function() {
-    EhdotuksetController::index();
+    EhdotuksetController::ehdotuksetNakyma();
 });
 
 $routes->get('/kayttajat', function() {
@@ -35,7 +35,7 @@ $routes->get('/kayttajat', function() {
 });
 
 $routes->get('/drinkkityyppi', function() {
-    DrinkkityyppiController::index();
+    DrinkkityyppiController::listausNakyma();
 });
 
 $routes->get('/drinkkityyppi/lisaa', function() {

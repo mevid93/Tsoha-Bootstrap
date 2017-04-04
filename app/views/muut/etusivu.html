@@ -23,25 +23,36 @@
 
 <form method="post" action="{{base_path}}/"> 
 
-    <div class="input-group">
-        <h2>Drinkkihaku</h2>
+    <div class="container">
 
-        <div class="form-group">
-            <select name="ehto" class="form-control">
-                <option value="nimi">Nimi</option>
-                <option value="aines">Aines</option>
-            </select>
-        </div>     
+        <div class="row">
 
-        <div class="form-group">
-            <input name="termi" class="form-control" placeholder="Hakutermi..." type="text">
+
+            <div class="col-sm-6 col-sm-offset-3">
+                <div id="imaginary_container"> 
+                    <h2>Drinkkihaku</h2>
+
+
+                    <select style="width: 150px;" name="ehto" class="form-control">
+                        <option value="nimi">Nimi</option>
+                        <option value="aines">Aines</option>
+                    </select>
+                    <br>
+                    <div class="input-group">
+
+
+                        <input name="termi" class="form-control" placeholder="Hakutermi..." type="text">
+
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                        </span>
+                    </div> 
+
+                </div>
+            </div>
         </div>
-
-        <span class="form-group">
-            <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-        </span>
-
     </div>
+
 </form>
 
 {% endblock %}

@@ -1,25 +1,30 @@
 <?php
 
 /**
- * Tämä luokka on malli muuNimelle, eli drinkin toisille nimille.
- * Se sisältää tietokantaoperaatiot ja muutaman muun 
- * tarvittavan metodin.
+ * Tämä luokka toimii mallina MuuNimelle, eli drinkin toisille mahdollisille
+ * nimille. Se sisältää tietokantaoperaatiot muun muassa tietokannasta hakuun,
+ * lisäykseen ja poistoon.
  *
- * @author martin vidjeskog
  */
 class MuuNimi extends BaseModel {
 
-    // mallin atribuutit
+    // atribuutit
     public $id, $nimi, $drinkki, $validators;
 
-    // konstruktori
+    /*
+     * Luokan konstruktori
+     */
+
     public function __construct($attributes) {
         parent::__construct($attributes);
         $this->validators = array('validoiNimi');
     }
 
-    // hae kaikki muutNimet tietokannasta
-    public static function all() {
+    /*
+     * Metodi, joka hakee kaikki muut nimet tietokannasta (ei kaiketi tarvita)
+     */
+
+    public static function kaikki() {
         $query = DB::connection()->prepare('SELECT * FROM muunimi');
         $query->execute();
         $rows = $query->fetchAll();
@@ -36,8 +41,11 @@ class MuuNimi extends BaseModel {
         return $nimet;
     }
 
-    // hae muuNimi, jolla tietty id
-    public static function find($id) {
+    /*
+     * Metodi, joka etsii muun nimen, jolla on jokin tietty id.
+     */
+
+    public static function etsiPerusteellaID($id) {
         $query = DB::connection()->prepare('SELECT * FROM muunimi WHERE id = :id LIMIT 1');
         $query->execute(array('id' => $id));
         $row = $query->fetch();
@@ -54,8 +62,11 @@ class MuuNimi extends BaseModel {
         return null;
     }
 
-    // hae muuNimi, jolla tietty drinkin id
-    public static function findByDrinkId($id) {
+    /*
+     * Metodi, joka etsii muut nimet drinkille drinkin id:n perusteella. 
+     */
+
+    public static function etsiPerusteellaDrinkkiID($id) {
         $query = DB::connection()->prepare('SELECT * FROM muunimi WHERE drinkki = :id');
         $query->execute(array('id' => $id));
         $rows = $query->fetchAll();
@@ -81,7 +92,7 @@ class MuuNimi extends BaseModel {
      * tietty drinkin id.
      */
 
-    public function poistaPerusteellaID($drinkkiID) {
+    public function poistaPerusteellaDrinkkiID($drinkkiID) {
         $query = DB::connection()->prepare('DELETE FROM MuuNimi WHERE drinkki = :drinkki');
         $query->execute(array('drinkki' => $drinkkiID));
     }

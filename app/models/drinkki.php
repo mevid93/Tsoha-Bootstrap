@@ -30,14 +30,14 @@ class Drinkki extends BaseModel {
             $drinkit[] = new Drinkki(array(
             'id' => $row['id'],
             'ensisijainennimi' => $row['ensisijainennimi'],
-            'muutnimet' => MuuNimi::findByDrinkId($row['id']),    
+            'muutnimet' => MuuNimi::etsiPerusteellaDrinkkiID($row['id']),    
             'lasi' => $row['lasi'],
             'kuvaus' => $row['kuvaus'],
             'lampotila' => $row['lampotila'],
             'lisayspaiva' => $row['lisayspaiva'],
             'lisaaja' => $row['lisaaja'],
             'hyvaksytty' => $row['hyvaksytty'],
-            'drinkkityyppi' => Drinkkityyppi::find($row['drinkkityyppi'])->nimi
+            'drinkkityyppi' => Drinkkityyppi::etsiPerusteellaID($row['drinkkityyppi'])->nimi
             ));
         }
 
@@ -56,14 +56,14 @@ class Drinkki extends BaseModel {
             $drinkit[] = new Drinkki(array(
             'id' => $row['id'],
             'ensisijainennimi' => $row['ensisijainennimi'],
-            'muutnimet' => MuuNimi::findByDrinkId($row['id']),    
+            'muutnimet' => MuuNimi::etsiPerusteellaDrinkkiID($row['id']),    
             'lasi' => $row['lasi'],
             'kuvaus' => $row['kuvaus'],
             'lampotila' => $row['lampotila'],
             'lisayspaiva' => $row['lisayspaiva'],
             'lisaaja' => $row['lisaaja'],
             'hyvaksytty' => $row['hyvaksytty'],
-            'drinkkityyppi' => Drinkkityyppi::find($row['drinkkityyppi'])->nimi
+            'drinkkityyppi' => Drinkkityyppi::etsiPerusteellaID($row['drinkkityyppi'])->nimi
             ));
         }
 
@@ -71,7 +71,7 @@ class Drinkki extends BaseModel {
     }
     
     // hae kaikki ehdotetut drinkit tietokannasta
-    public static function kaikkiHyvaksytyt() {
+    public static function kaikkiHyvaksymattomat() {
         // haetaan kaikki tiedot Drinkkit-taulusta
         $query = DB::connection()->prepare('SELECT * FROM Drinkki WHERE hyvaksytty = false');
         $query->execute();
@@ -82,14 +82,14 @@ class Drinkki extends BaseModel {
             $drinkit[] = new Drinkki(array(
             'id' => $row['id'],
             'ensisijainennimi' => $row['ensisijainennimi'],
-            'muutnimet' => MuuNimi::findByDrinkId($row['id']),    
+            'muutnimet' => MuuNimi::etsiPerusteellaDrinkkiID($row['id']),    
             'lasi' => $row['lasi'],
             'kuvaus' => $row['kuvaus'],
             'lampotila' => $row['lampotila'],
             'lisayspaiva' => $row['lisayspaiva'],
             'lisaaja' => $row['lisaaja'],
             'hyvaksytty' => $row['hyvaksytty'],
-            'drinkkityyppi' => Drinkkityyppi::find($row['drinkkityyppi'])->nimi
+            'drinkkityyppi' => Drinkkityyppi::etsiPerusteellaID($row['drinkkityyppi'])->nimi
             ));
         }
 
@@ -106,14 +106,14 @@ class Drinkki extends BaseModel {
             $drinkki = new Drinkki(array(
                 'id' => $row['id'],
                 'ensisijainennimi' => $row['ensisijainennimi'],
-                'muutnimet' => MuuNimi::findByDrinkId($row['id']), 
+                'muutnimet' => MuuNimi::etsiPerusteellaDrinkkiID($row['id']), 
                 'lasi' => $row['lasi'],
                 'kuvaus' => $row['kuvaus'],
                 'lampotila' => $row['lampotila'],
                 'lisayspaiva' => $row['lisayspaiva'],
                 'lisaaja' => $row['lisaaja'],
                 'hyvaksytty' => $row['hyvaksytty'],
-                'drinkkityyppi' => Drinkkityyppi::find($row['drinkkityyppi'])->nimi
+                'drinkkityyppi' => Drinkkityyppi::etsiPerusteellaID($row['drinkkityyppi'])->nimi
             ));
             return $drinkki;
         }
@@ -132,7 +132,7 @@ class Drinkki extends BaseModel {
             $drinkit[] = new Drinkki(array(
             'id' => $row['id'],
             'ensisijainennimi' => $row['ensisijainennimi'],
-            'muutnimet' => MuuNimi::findByDrinkId($row['id']),    
+            'muutnimet' => MuuNimi::etsiPerusteellaDrinkkiID($row['id']),    
             'lasi' => $row['lasi'],
             'kuvaus' => $row['kuvaus'],
             'lampotila' => $row['lampotila'],
@@ -157,7 +157,7 @@ class Drinkki extends BaseModel {
             $drinkit[] = new Drinkki(array(
             'id' => $row['id'],
             'ensisijainennimi' => $row['ensisijainennimi'],
-            'muutnimet' => MuuNimi::findByDrinkId($row['id']),    
+            'muutnimet' => MuuNimi::etsiPerusteellaDrinkkiID($row['id']),    
             'lasi' => $row['lasi'],
             'kuvaus' => $row['kuvaus'],
             'lampotila' => $row['lampotila'],

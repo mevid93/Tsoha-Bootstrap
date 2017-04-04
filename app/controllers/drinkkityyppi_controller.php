@@ -1,23 +1,33 @@
 <?php
 
 /*
- * Kontrolleri, joka hoitaa drinkkityyppien käsittelyn.
+ * Kontrolleri, joka sisältää tarvittavat metodit drinkkityyppien käsittelyyn.
+ * Sisältää muun muassa metodit drinkkityyppien listausnäkymän ja lisäysnäkymän
+ * renderöintiin ja drinkkityyppien lisäykseen ja poistoon. 
  */
 
 class DrinkkityyppiController extends BaseController {
+    /*
+     * Metodi, joka hoitaa drinkkityyppien listauksen ja näkymän luonnin.
+     */
 
-    // metodi, joka hoitaa drinkkityypien listauksen ja näkymän luonnin
-    public static function index() {
+    public static function listausNakyma() {
         $tyypit = Drinkkityyppi::kaikki();
         View::make('drinkkityyppi/drinkkityyppiLista.html', array('tyypit' => $tyypit));
     }
-    
-    // metodi, joka ohjaa drinkkityypin lisys sivulle
+
+    /*
+     * Metodi, joka hoitaa drinkkityypin lisäys sivun renderöinnin.
+     */
+
     public static function lisaysNakyma() {
         View::make('drinkkityyppi/drinkkityyppiLisays.html');
     }
 
-    // metodi, joka hoitaa uuden drinkkityypin lisäämisen tietokantaan
+    /*
+     * Metodi, joka hoitaa uuden drinkkityypin lisäämisen tietokantaan.
+     */
+
     public static function lisaa() {
         // POST-pyynnön muuttujat sijaisevat $_POST nimisessä assosiaatiolistassa
         $params = $_POST;
@@ -27,13 +37,21 @@ class DrinkkityyppiController extends BaseController {
             'kuvaus' => $params['kuvaus']
         ));
 
-        $tyyppi->tallenna();
+        $errors = $tyyppi->virheet();
 
-        // Ohjataan käyttäjä sovelluksen drinkkityyppien hallintaan
-        Redirect::to('/drinkkityyppi', array('message' => "Drinkkityyppi lisätty onnistuneesti"));
+        if (count($errors) == 0) {
+            $tyyppi->tallenna();
+            // Ohjataan käyttäjä sovelluksen drinkkityyppien hallintaan
+            Redirect::to('/drinkkityyppi', array('message' => "Drinkkityyppi lisätty onnistuneesti"));
+        }else{
+            View::make('drinkkityyppi/drinkkityyppiLisays.html', array('drinkkityyppi' => $tyyppi, 'errors' => $errors));
+        }
     }
-    
-    // metodi, joka hoitaa poistaa drinkkityypin tietokannasta
+
+    /*
+     * Metodi, joka hoitaa poistaa drinkkityypin tietokannasta.
+     */
+
     public static function poista() {
         // POST-pyynnön muuttujat sijaisevat $_POST nimisessä assosiaatiolistassa
         $params = $_POST;
@@ -42,15 +60,21 @@ class DrinkkityyppiController extends BaseController {
         // Ohjataan takaisin drinkkityyppien hallinta sivullle
         Redirect::to('/drinkkityyppi', array('message' => "Drinkkityypin poisto onnistui"));
     }
-    
-    // metodi, joka hoitaa näkyville muokkausnakyman
+
+    /*
+     * Metodi, joka hoitaa muokkausnäkymän renderöinnin.
+     */
+
     public static function muokkausNakyma($id) {
-        $tyyppi = Drinkkityyppi::find($id);
+        $tyyppi = Drinkkityyppi::etsiPerusteellaID($id);
         // Ohjataan drinkkityyppien muokkaus sivullle
         View::make('/drinkkityyppi/muokkaus.html', array('tyyppi' => $tyyppi));
     }
-    
-    // metodi, joka päivittää muokkauksen tietokantaan
+
+    /*
+     * Metodi, joka päivittää muokkauksen tietokantaan.
+     */
+
     public static function muokkaa() {
         // POST-pyynnön muuttujat sijaisevat $_POST nimisessä assosiaatiolistassa
         $params = $_POST;

@@ -64,3 +64,20 @@ Info napin väri
     background-color: #0A4D83;
     border-color: #0A4D83;
 }
+
+body {
+    background-color: #062F4F;
+    color: white;
+}
+
+a {
+    font-weight: bold;
+    color: white;
+    text-decoration: underline;
+}
+
+a:hover {
+    font-weight: bold;
+    color:  #B82601;
+    text-decoration: underline;
+}
