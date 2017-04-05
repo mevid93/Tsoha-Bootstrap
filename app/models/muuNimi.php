@@ -9,7 +9,7 @@
 class MuuNimi extends BaseModel {
 
     // atribuutit
-    public $id, $nimi, $drinkki, $validators;
+    public $id, $nimi, $drinkki;
 
     /*
      * Luokan konstruktori
@@ -29,15 +29,9 @@ class MuuNimi extends BaseModel {
         $query->execute();
         $rows = $query->fetchAll();
         $nimet = array();
-
         foreach ($rows as $row) {
-            $nimet[] = new MuuNimi(array(
-                'id' => $row['id'],
-                'nimi' => $row['nimi'],
-                'drinkki' => $row['drinkki']
-            ));
+            $nimet[] = self::luoMuuNimi($row);
         }
-
         return $nimet;
     }
 
@@ -49,16 +43,10 @@ class MuuNimi extends BaseModel {
         $query = DB::connection()->prepare('SELECT * FROM muunimi WHERE id = :id LIMIT 1');
         $query->execute(array('id' => $id));
         $row = $query->fetch();
-
         if ($row) {
-            $nimi = new MuuNimi(array(
-                'id' => $row['id'],
-                'nimi' => $row['nimi'],
-                'drinkki' => $row['drinkki']
-            ));
+            $nimi = self::luoMuuNimi($row);
             return $nimi;
         }
-
         return null;
     }
 
@@ -71,20 +59,25 @@ class MuuNimi extends BaseModel {
         $query->execute(array('id' => $id));
         $rows = $query->fetchAll();
         $nimet = array();
-
         foreach ($rows as $row) {
-            $nimet[] = new MuuNimi(array(
-                'id' => $row['id'],
-                'nimi' => $row['nimi'],
-                'drinkki' => $row['drinkki']
-            ));
+            $nimet[] = self::luoMuuNimi($row);
         }
-
         if (empty($nimet)) {
             return null;
         }
-
         return $nimet;
+    }
+
+    /*
+     * Apumetodi, joka luo yksittäsien muu nimi olion.
+     */
+
+    private static function luoMuuNimi($row) {
+        $nimi = new MuuNimi(array(
+        'id' => $row['id'],
+        'nimi' => $row['nimi'],
+        'drinkki' => $row['drinkki']));
+        return $nimi;
     }
 
     /*
@@ -92,7 +85,7 @@ class MuuNimi extends BaseModel {
      * tietty drinkin id.
      */
 
-    public function poistaPerusteellaDrinkkiID($drinkkiID) {
+    public static function poistaPerusteellaDrinkkiID($drinkkiID) {
         $query = DB::connection()->prepare('DELETE FROM MuuNimi WHERE drinkki = :drinkki');
         $query->execute(array('drinkki' => $drinkkiID));
     }
@@ -112,25 +105,8 @@ class MuuNimi extends BaseModel {
 
     public function validoiNimi() {
         $errors = array();
-        if (strlen($this->nimi) < 3) {
-            $errors[] = 'Nimen pituuden tulee olla vähintään kolme merkkiä';
-        }
-        if (strlen($this->nimi) > 50) {
-            $errors[] = 'Nimen pituuden tulee olla korkeintaan 50 merkkiä';
-        }
-        return $errors;
-    }
-
-    /*
-     *  Metodi, joka käy läpi kaikki validointi funktiot.
-     */
-
-    public function virheet() {
-        $errors = array();
-        foreach ($this->validators as $metodi) {
-            $validator_errors = $this->{$metodi}();
-            $errors = array_merge($errors, $validator_errors);
-        }
+        parent::validoi_string_epätyhjä($this->nimi, $errors, 'Muu drinkin nimi ei saa olla tyhjä');
+        parent::validoi_string_pituus($this->nimi, $errors, 3, 50, 'Nimen pituuden tulee olla vähintään 3 merkkiä', 'Nimen pituuden tulee olla korkeintaan 50 merkkiä');
         return $errors;
     }
 

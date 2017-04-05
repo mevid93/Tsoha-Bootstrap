@@ -15,7 +15,7 @@ class EhdotusController extends BaseController {
 
     public static function ehdotusNakyma() {
         $tyypit = Drinkkityyppi::kaikki();
-        $ainekset = Ainesosa::all();
+        $ainekset = Ainesosa::kaikkiAakkosjarjestyksessa();
         View::make('ehdotus/ehdota.html', array('tyypit' => $tyypit, 'ainekset' => $ainekset));
     }
 
@@ -27,37 +27,30 @@ class EhdotusController extends BaseController {
 
     public static function lisaa() {
         $params = $_POST;
-        //luodaan drinkki
-        $drinkki = self::luoDrinkki($params);
-        //luodaan muutnimet
-        $muunimi1 = self::luoMuuNimi($params['muunimi1']);
-        $muunimi2 = self::luoMuuNimi($params['muunimi2']);
-        // tarkistetaan virheet drinkissä
-        $errors = $drinkki->virheet();
-        // tarkistetaan virheet muunimissä
-        $errors = array_merge($errors, self::virheMuuNimessa($muunimi1));
-        $errors = array_merge($errors, self::virheMuuNimessa($muunimi2));
+        //luodaan array olioista
+        $oliot = self::luoOlioArray($params);
+        // tarkistetaan virheet
+        $errors = self::tarkistaOlioidenVirheet($oliot);
         // ohjataan käyttäjä eteenpäin virheiden määrän perusteella
         if (count($errors) == 0) {
-            $drinkki->tallenna();
-            self::tallennaMuuNimi($muunimi1, $drinkki);
-            self::tallennaMuuNimi($muunimi2, $drinkki);
+            // tallennetaan oliot
+            self::tallennaOliot($oliot);
             Redirect::to('/', array('message' => "Ehdotuksesi on lähetetty ylläpitäjän hyväksyttäväksi!"));
         } else {
-            $tyypit = Drinkkityyppi::kaikki();
-            $ainekset = Ainesosa::all();
-            View::make('ehdotus/ehdota.html', array('muunimi1' => $muunimi1, 'muunimi2' => $muunimi2, 'drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors));
+            // luodaan näkymä uudestaan 
+            self::ohjaaTakaisinEhdotusNakymaan($oliot, $errors, $params);
         }
     }
 
     /*
-     * Apumetodi, joka hoitaa drinkki olion luomisen.
+     * Apumetodi, joka hoitaa drinkki olion luomisen. Eroaa hieman Drinkki::luoDrinkki
+     * metodista, joten ei voi suoraan hyödyntää sitä.
      */
 
     private static function luoDrinkki($params) {
         $drinkki = new Drinkki(array(
             'ensisijainennimi' => $params['nimi'],
-            'drinkkityyppi' => Drinkkityyppi::findByName($params['tyyppi'])->id,
+            'drinkkityyppi' => Drinkkityyppi::etsiPerusteellaNimi($params['tyyppi'])->id,
             'lasi' => $params['lasi'],
             'kuvaus' => $params['kuvaus'],
             'lampotila' => $params['lampotila'],
@@ -69,41 +62,71 @@ class EhdotusController extends BaseController {
     }
 
     /*
-     * Apumetodi, joka hoitaa muunimi olion luomisen.
+     * Metodi, joka luo arrayn syötteenä saaduista parametreista ja palauttaa
+     * sen.
      */
 
-    private static function luoMuuNimi($nimi) {
-        if ($nimi == null) {
-            return null;
+    private static function luoOlioArray($params) {
+        $oliot = array();
+        $oliot[] = self::luoDrinkki($params);
+        if(strlen($params['muunimi1']) != 0){
+            $oliot[] = new MuuNimi(array('nimi' => $params['muunimi1']));
         }
-        $muunimi = new MuuNimi(array(
-            'nimi' => $nimi
-        ));
-        return $muunimi;
+        if(strlen($params['muunimi2']) != 0){
+            $oliot[] = new MuuNimi(array('nimi' => $params['muunimi2']));
+        }
+        return $oliot;
     }
 
     /*
-     * Apumetodi, joka tarkistaa virheet muunimi olioista.
+     * Metodi, jolla voidaan tarkistaa kaikkien olioiden virheet. Tämän 
+     * jälkeen palautetaan taulkko virheistä.
      */
 
-    private static function virheMuuNimessa($muunimi) {
-        if ($muunimi == null) {
-            return array();
+    private static function tarkistaOlioidenVirheet($oliot) {
+        $errors = array();
+        foreach ($oliot as $olio) {
+            $errors = array_merge($errors, $olio->virheet());
         }
-        return $muunimi->virheet();
+        return $errors;
     }
-    
+
     /*
-     * Apumetodi, joka tallentaa muun nimen.
+     * Metodi, jolla voidaan tallentaa oliot. Oliot ovat aina tietyssä
+     * järjestyksessä taulukossa.
      */
 
-    private static function tallennaMuuNimi($muunimi, $drinkki) {
-        if ($muunimi != null) {
-            $muunimi->drinkki = $drinkki->id;
-            if($muunimi->drinkki != null){
-                $muunimi->tallenna();
+    private static function tallennaOliot($oliot) {
+        // ensin joudutaan laittamaan kaikkien muunimi tyyppisten olioiden
+        // id kuntoon.
+        $drinkki = $oliot[0];
+        $drinkki->tallenna();
+        foreach ($oliot as $olio) {
+            if (is_a($olio, 'MuuNimi')) {
+                $olio->drinkki = $drinkki->id;
             }
         }
+        // tallennetaan vielä kaikki oliot
+        foreach ($oliot as $olio) {
+            if (!is_a($olio, 'Drinkki')) {
+                $olio->tallenna();
+            }
+        }
+    }
+
+    /*
+     * Metodi, jolla ohjaa käyttäjän takaisin ehdotusnäkymään mikäli 
+     * tapahtui virhe syötteissä.
+     */
+
+    private static function ohjaaTakaisinEhdotusNakymaan($oliot, $errors, $params) {
+        $tyypit = Drinkkityyppi::kaikki();
+        $ainekset = Ainesosa::all();
+        // määritellään palautteavat muuttujat olioista.
+        $drinkki = $oliot[0];
+        $muunimi1 = $oliot[1];
+        $muunimi2 = $oliot[2];
+        View::make('ehdotus/ehdota.html', array('muunimi1' => $muunimi1, 'muunimi2' => $muunimi2, 'drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors, 'maara1' => $params['maara1'], 'maara2' => $params['maara2'], 'maara3' => $params['maara3'], 'maara4' => $params['maara4'], 'maara5' => $params['maara5']));
     }
 
 }

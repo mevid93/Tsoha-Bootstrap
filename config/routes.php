@@ -50,11 +50,35 @@ $routes->get('/drinkki/:id/muokkaa', function($id) {
     DrinkkiController::muokkaa($id);
 });
 
+$routes->get('/ainesosa/', function() {
+    AinesosaController::listausNakyma();
+});
+
+$routes->get('/ainesosa/lisaa', function() {
+    AinesosaController::lisaysNakyma();
+});
+
+$routes->get('/ainesosa/muokkaa/:id', function($id) {
+    AinesosaController::muokkausNakyma($id);
+});
+
 
 // POST metodit
 
 $routes->post('/', function(){
     DrinkkiController::listaaHaunPerusteela(); 
+});
+
+$routes->post('/ainesosa/lisaa', function(){
+    AinesosaController::lisaa(); 
+});
+
+$routes->post('/ainesosa/:id/muokkaa', function($id){
+    AinesosaController::muokkaa($id); 
+});
+
+$routes->post('/ainesosa/poista', function(){
+    AinesosaController::poista(); 
 });
 
 $routes->post('/drinkki', function(){
@@ -73,8 +97,8 @@ $routes->post('/drinkkityyppi/lisaa', function(){
     DrinkkityyppiController::lisaa(); 
 });
 
-$routes->post('/drinkkityyppi/muokkaa', function(){
-    DrinkkityyppiController::muokkaa(); 
+$routes->post('/drinkkityyppi/:id/muokkaa', function($id){
+    DrinkkityyppiController::muokkaa($id); 
 });
 
 $routes->post('/drinkkityyppi/poista', function(){

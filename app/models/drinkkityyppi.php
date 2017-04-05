@@ -8,8 +8,8 @@
  */
 class Drinkkityyppi extends BaseModel {
 
-    // atribuutit
-    public $id, $nimi, $kuvaus, $validators;
+// atribuutit
+    public $id, $nimi, $kuvaus;
 
     /*
      * Luokan konstruktori.
@@ -29,15 +29,9 @@ class Drinkkityyppi extends BaseModel {
         $query->execute();
         $rows = $query->fetchAll();
         $tyypit = array();
-
         foreach ($rows as $row) {
-            $tyypit[] = new Drinkkityyppi(array(
-                'id' => $row['id'],
-                'nimi' => $row['nimi'],
-                'kuvaus' => $row['kuvaus']
-            ));
+            $tyypit[] = self::luoDrinkkityyppi($row);
         }
-
         return $tyypit;
     }
 
@@ -49,16 +43,10 @@ class Drinkkityyppi extends BaseModel {
         $query = DB::connection()->prepare('SELECT * FROM Drinkkityyppi WHERE id = :id LIMIT 1');
         $query->execute(array('id' => $id));
         $row = $query->fetch();
-
         if ($row) {
-            $tyyppi = new Drinkkityyppi(array(
-                'id' => $row['id'],
-                'nimi' => $row['nimi'],
-                'kuvaus' => $row['kuvaus']
-            ));
+            $tyyppi = self::luoDrinkkityyppi($row);
             return $tyyppi;
         }
-
         return null;
     }
 
@@ -70,17 +58,24 @@ class Drinkkityyppi extends BaseModel {
         $query = DB::connection()->prepare('SELECT * FROM Drinkkityyppi WHERE nimi = :nimi LIMIT 1');
         $query->execute(array('nimi' => $nimi));
         $row = $query->fetch();
-
         if ($row) {
-            $tyyppi = new Drinkkityyppi(array(
-                'id' => $row['id'],
-                'nimi' => $row['nimi'],
-                'kuvaus' => $row['kuvaus']
-            ));
+            $tyyppi = self::luoDrinkkityyppi($row);
             return $tyyppi;
         }
-
         return null;
+    }
+
+    /*
+     * Apumetodi, joka luo uuden drinkkityyppi-olion
+     */
+
+    private static function luoDrinkkityyppi($row) {
+        $tyyppi = new Drinkkityyppi(array(
+            'id' => $row['id'],
+            'nimi' => $row['nimi'],
+            'kuvaus' => $row['kuvaus']
+        ));
+        return $tyyppi;
     }
 
     /*
@@ -88,8 +83,7 @@ class Drinkkityyppi extends BaseModel {
      */
 
     public function tallenna() {
-        $query = DB::connection()->prepare('INSERT INTO Drinkkityyppi(nimi, kuvaus)
-                                            VALUES (:nimi, :kuvaus)');
+        $query = DB::connection()->prepare('INSERT INTO Drinkkityyppi(nimi, kuvaus) VALUES (:nimi, :kuvaus)');
         $query->execute(array('nimi' => $this->nimi, 'kuvaus' => $this->kuvaus));
     }
 
@@ -105,12 +99,11 @@ class Drinkkityyppi extends BaseModel {
     /*
      * Metodi, joka poistaa drinkkityypin tietokannasta. Samalla joudutaan poistamaan
      * myös kaikki drinkit, joilla on kyseinen drinkkityyppi ja muut nimet, joilla on
-     * drinkin id.
+     * drinkin id jne.
      */
 
     public function poista($id) {
-        $query = DB::connection()->prepare('DELETE FROM Drinkki WHERE drinkkityyppi = :id');
-        $query->execute(array('id' => $id));
+        Drinkki::poistaKaikkiJoillaDrinkkityyppi($id);
         $query = DB::connection()->prepare('DELETE FROM Drinkkityyppi WHERE id = :id');
         $query->execute(array('id' => $id));
     }
@@ -121,14 +114,11 @@ class Drinkkityyppi extends BaseModel {
 
     public function validoiNimi() {
         $errors = array();
-        if ($this->nimi == '' || $this->nimi == null) {
-            $errors[] = 'Nimi ei saa olla tyhjä';
-        }
-        if (strlen($this->nimi) < 3) {
-            $errors[] = 'Nimen pituuden tulee olla vähintään kolme merkkiä';
-        }
-        if (strlen($this->nimi) > 50) {
-            $errors[] = 'Nimen pituus saa olla korkeintaan 50 merkkiä';
+        $errors = parent::validoi_string_epätyhjä($this->nimi, $errors, 'Nimi ei saa olla tyhjä');
+        $errors = parent::validoi_string_pituus($this->nimi, $errors, 3, 50, 'Nimen pituuden tulee olla vähintään 3 merkkiä', 'Nimen pituus saa olla korkeintaan 50 merkkiä');
+        $tyyppi = self::etsiPerusteellaNimi($this->nimi);
+        if ($tyyppi != null && $tyyppi->id != $this->id) {
+            $errors[] = 'Kyseinen drinkkityypin nimi on jo käytössä';
         }
         return $errors;
     }
@@ -139,30 +129,8 @@ class Drinkkityyppi extends BaseModel {
 
     public function validoiKuvaus() {
         $errors = array();
-        if ($this->kuvaus == '' || $this->kuvaus == null) {
-            $errors[] = 'Drinkkityypin kuvaus ei saa olla tyhjä';
-        }
-        if (strlen($this->kuvaus) < 20) {
-            $errors[] = 'Kuvauksen pituuden tulee olla vähintään 20 merkkiä';
-        }
-        if (strlen($this->kuvaus) > 400) {
-            $errors[] = 'Kuvauksen pituuden tulee olla korkeintaan 400 merkkiä';
-        }
-        return $errors;
-    }
-
-    /*
-     *  Metodi, joka käy läpi kaikki validointi funtiot.
-     */
-
-    public function virheet() {
-        $errors = array();
-
-        foreach ($this->validators as $metodi) {
-            $validator_errors = $this->{$metodi}();
-            $errors = array_merge($errors, $validator_errors);
-        }
-
+        $errors = parent::validoi_string_epätyhjä($this->kuvaus, $errors, 'Drinkkityypin kuvaus ei saa olla tyhjä');
+        $errors = parent::validoi_string_pituus($this->kuvaus, $errors, 20, 400, 'Kuvauksen pituuden tulee olla vähintään 20 merkkiä', 'Kuvauksen pituuden tulee olla korkeintaan 400 merkkiä');
         return $errors;
     }
 

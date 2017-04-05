@@ -1,16 +1,36 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<h1>Ainesosan lisäys</h1>
+<br>
+<!--Listataan virheet jos niitä oli-->
+{% if errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for error in errors %}
+        <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+<form method="post" action="{{base_path}}/ainesosa/lisaa">
+
+    <div class="form-group">
+        <label>Nimi *</label>
+        <input name="nimi" class="form-control" value="{{ainesosa.nimi}}" type="text">
+    </div>
+
+    <div class="form-group">
+        <label>Kuvaus *</label>
+        <textarea name="kuvaus" class="form-control">{{ainesosa.kuvaus}}</textarea>
+    </div>
+    <div class="form-group">
+        * Pakolliset kohdat, jotka on täytettävä!
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Lisää ainesosa</button>
+    </div>
+
+</form>
+
+
+{% endblock %}

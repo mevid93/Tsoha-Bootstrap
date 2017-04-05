@@ -41,6 +41,7 @@
                         <li><a href="{{base_path}}">Etusivu</a></li>
                         <li><a href="{{base_path}}/drinkki">Selaa drinkkejä</a></li>
                         <li><a href="{{base_path}}/drinkkityyppi">Drinkkityypit</a></li>
+                        <li><a href="{{base_path}}/ainesosa">Ainesosat</a></li>
                         <!--Näkyy vain kirjautuneille käyttäjille-->
                         {% if user_logged_in %}
                         <li><a href="{{base_path}}/ehdota">Ehdota uutta drinkkiä</a></li>
@@ -59,7 +60,7 @@
                             <ul class="dropdown-menu">
                                 <li style="width: 250px;">
                                     <form class="navbar-form form" method="post" action="{{base_path}}/kirjauduUlos">
-                                        <a href="{{base_path}}/asetukset" class="btn btn-primary" role="button"> Asetukset </a>
+                                        <a href="{{base_path}}/asetukset" class="btn btn-primary form-control" role="button"> Asetukset </a>
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary form-control">Kirjaudu ulos</button>
                                         </div>

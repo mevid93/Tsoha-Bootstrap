@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Ehdota drinkkiä</h1>
 
 <!--Listataan virheet jos niitä oli-->
 {% if errors %}
@@ -13,7 +12,10 @@
 </div>
 {% endif %}
 
-<form method="post" action="{{base_path}}/ehdota">
+<h1>Muokkaa drinkkiä</h1>
+
+
+<form method="post" action="{{base_path}}/drinkki/{{drinkki.id}}/muokkaa">
 
     <div class="form-group">
         <label>Nimi *</label>
@@ -138,7 +140,7 @@
         HUOM! Mikäli et löytänyt tarvitsemaasi ainesosaa listasta, jätä tieto tästä drinkin kuvaukseen. Ylläpitäjä päättää lisätäänkö ainesosa valikoimaan.
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-primary">Lähetä ehdotus</button>
+        <button type="submit" class="btn btn-primary">Tallenna muutokset</button>
     </div>
 
 </form>

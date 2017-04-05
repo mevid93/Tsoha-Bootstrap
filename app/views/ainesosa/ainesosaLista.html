@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-
 <!--Listataan virheet jos niitä oli-->
 {% if errors %}
 <div class="alert alert-danger">
@@ -20,10 +19,10 @@
 </div>
 {% endif %}
 
-<h1>Drinkkityypit</h1>
+<h1>Ainesosat</h1>
 <br>
 {% if admin_logged_in %}
-<a href="{{base_path}}/drinkkityyppi/lisaa" class="btn btn-primary">Lisää drinkkityyppi</a>
+<a href="{{base_path}}/ainesosa/lisaa" class="btn btn-primary">Lisää ainesosa</a>
 {% endif %}
 <table class="table table-bordered" style="background-color: #813772;">
     <thead>
@@ -38,17 +37,17 @@
 
     <tbody>
         <!-- Listataan drinkityypit tähän -->
-        {% for tyyppi in tyypit %}
+        {% for aines in ainekset %}
         <tr>
-            <td>{{tyyppi.nimi}}</td>
-            <td>{{tyyppi.kuvaus}}</td>
+            <td>{{aines.nimi}}</td>
+            <td>{{aines.kuvaus}}</td>
             {% if admin_logged_in %}
             <td>
-                <form action="{{base_path}}/drinkkityyppi/muokkaa/{{tyyppi.id}}">
-                    <button name="id" value={{tyyppi.id}} type="submit" class="btn btn-primary">Muokkaa</button>
+                <form action="{{base_path}}/ainesosa/muokkaa/{{aines.id}}">
+                    <button name="id" value={{aines.id}} type="submit" class="btn btn-primary">Muokkaa</button>
                 </form>
-                <form method="post" action="{{base_path}}/drinkkityyppi/poista">
-                    <button name="id" value={{tyyppi.id}} type="submit" class="btn btn-primary">Poista</button>
+                <form method="post" action="{{base_path}}/ainesosa/poista">
+                    <button name="id" value={{aines.id}} type="submit" class="btn btn-primary">Poista</button>
                 </form>
             </td>
             {% endif %}

@@ -29,19 +29,14 @@ class DrinkkityyppiController extends BaseController {
      */
 
     public static function lisaa() {
-        // POST-pyynnön muuttujat sijaisevat $_POST nimisessä assosiaatiolistassa
         $params = $_POST;
-
         $tyyppi = new Drinkkityyppi(array(
             'nimi' => $params['nimi'],
             'kuvaus' => $params['kuvaus']
         ));
-
         $errors = $tyyppi->virheet();
-
         if (count($errors) == 0) {
             $tyyppi->tallenna();
-            // Ohjataan käyttäjä sovelluksen drinkkityyppien hallintaan
             Redirect::to('/drinkkityyppi', array('message' => "Drinkkityyppi lisätty onnistuneesti"));
         }else{
             View::make('drinkkityyppi/drinkkityyppiLisays.html', array('drinkkityyppi' => $tyyppi, 'errors' => $errors));
@@ -75,17 +70,21 @@ class DrinkkityyppiController extends BaseController {
      * Metodi, joka päivittää muokkauksen tietokantaan.
      */
 
-    public static function muokkaa() {
+    public static function muokkaa($id) {
         // POST-pyynnön muuttujat sijaisevat $_POST nimisessä assosiaatiolistassa
         $params = $_POST;
         $tyyppi = new Drinkkityyppi(array(
-            'id' => $params['id'],
+            'id' => $id,
             'nimi' => $params['nimi'],
             'kuvaus' => $params['kuvaus']
         ));
-        $tyyppi->muokkaa();
-        // Ohjataan takaisin drinkkityyppien hallinta sivullle
-        Redirect::to('/drinkkityyppi', array('message' => "Drinkkityypin muokkaus onnistui"));
+        $errors = $tyyppi->virheet();
+        if (count($errors) == 0) {
+            $tyyppi->muokkaa();
+            Redirect::to('/drinkkityyppi', array('message' => "Drinkkityypin muokkaus onnistui"));
+        } else {
+            View::make('drinkkityyppi/muokkaus.html', array('tyyppi' => $tyyppi, 'errors' => $errors));
+        }
     }
 
 }

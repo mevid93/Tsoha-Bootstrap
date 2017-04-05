@@ -28,7 +28,7 @@ class DrinkkiController extends BaseController {
         // POST-pyynnön muuttujat sijaisevat $_POST nimisessä assosiaatiolistassa
         $params = $_POST;
         if ($params['termi'] == null) {
-            Redirect::to('/', array('message' => 'Et syöttänyt hakutermiä!'));
+            Redirect::to('/', array('errors' => array('Et syöttänyt hakutermiä!')));
         } elseif ($params['ehto'] == "nimi") {
             $drinkit = Drinkki::etsiNimenPerusteella($params['termi']);
             View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
@@ -56,9 +56,10 @@ class DrinkkiController extends BaseController {
     // drinkin muokkauksesta huolehtiva metodi
     public static function muokkaa($id) {
         $tyypit = Drinkkityyppi::kaikki();
-        $ainekset = Ainesosa::all();
+        $ainekset = Ainesosa::kaikki();
         $drinkki = Drinkki::etsiPerusteellaID($id);
-        View::make('drinkki/muokkaa.html', array('drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset));
+        $nimet = MuuNimi::etsiPerusteellaDrinkkiID($id);
+        View::make('drinkki/muokkaus.html', array('drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset));
     }
 
     // drinkin päivitys tietokantaan
@@ -67,7 +68,7 @@ class DrinkkiController extends BaseController {
         $drinkki = new Drinkki(array(
             'id' => $id,
             'ensisijainennimi' => $params['nimi'],
-            'drinkkityyppi' => Drinkkityyppi::findByName($params['tyyppi'])->id,
+            'drinkkityyppi' => Drinkkityyppi::etsiPerusteellaNimi($params['tyyppi'])->id,
             'lasi' => $params['lasi'],
             'kuvaus' => $params['kuvaus'],
             'lampotila' => $params['lampotila'],
@@ -86,7 +87,7 @@ class DrinkkiController extends BaseController {
             $tyypit = Drinkkityyppi::kaikki();
             $ainekset = Ainesosa::all();
             // Drinkissä oli jotain vikaa
-            View::make('drinkki/muokkaa.html', array('drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors));
+            View::make('drinkki/muokkaus.html', array('drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors));
         }
     }
 

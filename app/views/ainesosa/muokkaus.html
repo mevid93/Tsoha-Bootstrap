@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Drinkkityypin lisäys</h1>
-<br>
 <!--Listataan virheet jos niitä oli-->
 {% if errors %}
 <div class="alert alert-danger">
@@ -12,22 +10,24 @@
     </ul>
 </div>
 {% endif %}
-<form method="post" action="{{base_path}}/drinkkityyppi/lisaa">
+<h1>Ainesosan muokkaus</h1>
+<br>
+<form method="post" action="{{base_path}}/ainesosa/{{ainesosa.id}}/muokkaa">
 
     <div class="form-group">
         <label>Nimi *</label>
-        <input name="nimi" class="form-control" value="{{drinkkityyppi.nimi}}" type="text">
+        <input name="nimi" class="form-control" value="{{ainesosa.nimi}}" type="text">
     </div>
 
     <div class="form-group">
         <label>Kuvaus *</label>
-        <textarea name="kuvaus" class="form-control">{{drinkkityyppi.kuvaus}}</textarea>
+        <textarea name="kuvaus" class="form-control">{{ainesosa.kuvaus}}</textarea>
     </div>
     <div class="form-group">
         * Pakolliset kohdat, jotka on täytettävä!
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-primary">Lisää drinkkityyppi</button>
+        <button type="submit" class="btn btn-primary">Tallenna muutokset</button>
     </div>
 
 </form>
