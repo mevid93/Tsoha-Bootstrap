@@ -58,7 +58,7 @@ sovelluksessa jonkin verran (Bootstrap). Sovellus toimii vain yhdellä tietokann
 
 <br />
 
-## Valmiit tunnukset joilla sovellukseen voi kirjautua (löytyy myös tietokantayhteys sivulta)
+## Valmiit tunnukset joilla sovellukseen voi kirjautua
 
 Tavallinen kirjautunut käyttäjä:
 - käyttäjätunnus: PohjoisenKarhunAlla
