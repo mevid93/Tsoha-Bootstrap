@@ -56,4 +56,16 @@ sovelluksessa jonkin verran (Bootstrap). Sovellus toimii vain yhdellä tietokann
 
 * [Linkki tietokantayhteys sivulle](http://mevidjes.users.cs.helsinki.fi/tsoha/tietokantayhteys)
 
+<br />
+
+## Valmiit tunnukset joilla sovellukseen voi kirjautua
+
+Tavallinen kirjautunut käyttäjä:
+- käyttäjätunnus: PohjoisenKarhunAlla
+- salasana: KarhuTäyttäOlutta
+
+Ylläpitäjä:
+- käyttäjätunnus: TeekkariElämää
+- salasana: Salasana1234
+
 
