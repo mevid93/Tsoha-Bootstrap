@@ -12,6 +12,7 @@ class EhdotuksetController extends BaseController {
      * Metodi, joka hoitaa ehdotusten listaamisen
      */
     public static function ehdotuksetNakyma() {
+        self::check_admin_logged_in();
         $drinkit = Drinkki::kaikkiHyvaksymattomat();
         View::make('ehdotus/ehdotusLista.html', array('drinkit' => $drinkit));
     }
@@ -20,6 +21,7 @@ class EhdotuksetController extends BaseController {
      * Metodi, joka hylkää ehdotuksen ja poistaa sen.
      */
     public static function hylkaa() {
+        self::check_admin_logged_in();
         $params = $_POST;
         $drinkki = Drinkki::etsiPerusteellaID($params['id']);
         $drinkki->poista();
@@ -30,6 +32,7 @@ class EhdotuksetController extends BaseController {
      * Metodi, joka hyväksyy ja lisää ehdotuksen tietokantaan.
      */
     public static function hyvaksy() {
+        self::check_admin_logged_in();
         $params = $_POST;
         $drinkki = Drinkki::etsiPerusteellaID($params['id']);
         $drinkki->merkitseHyvaksytyksi();

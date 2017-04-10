@@ -55,6 +55,7 @@ class DrinkkiController extends BaseController {
 
     // drinkin muokkauksesta huolehtiva metodi
     public static function muokkaa($id) {
+        parent::check_admin_logged_in();
         $tyypit = Drinkkityyppi::kaikki();
         $ainekset = Ainesosa::kaikki();
         $drinkki = Drinkki::etsiPerusteellaID($id);
@@ -64,6 +65,7 @@ class DrinkkiController extends BaseController {
 
     // drinkin päivitys tietokantaan
     public static function paivita($id) {
+        parent::check_admin_logged_in();
         $params = $_POST;
         $drinkki = new Drinkki(array(
             'id' => $id,
@@ -93,6 +95,7 @@ class DrinkkiController extends BaseController {
 
     // drinkin poistamisesta huolehtiva metodi
     public static function poista($id) {
+        parent::check_admin_logged_in();
         $drinkki = Drinkki::etsiPerusteellaID($id);
         $drinkki->poista();
         $drinkit = Drinkki::etsiKaikkiHyvaksytytAakkosjarjestyksessa();

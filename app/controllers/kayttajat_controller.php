@@ -6,19 +6,31 @@
  */
 
 class KayttajaController extends BaseController {
+    /*
+     * Metodi, joka hoitaa sellaisten rekisteröityneiden käyttäjien listaamisen, 
+     * jotka eivät ole ylläpitäjiä.
+     */
 
-    // metodi, joka hoitaa rekisteröityneiden käyttäjien listaamisen
-    public static function index() {
-        $kayttajat = Kayttaja::kaikkiEiYllapitajat();
+    public static function kayttajatNakyma() {
+        self::check_admin_logged_in();
+        $kayttajat = Kayttaja::kaikkiTavallisetKayttajat();
         View::make('muut/kayttajat.html', array('kayttajat' => $kayttajat));
     }
 
-    // metodi, joka hoitaa rekisteröitymisnäkymän renderöinnin
+    /*
+     * Metodi, joka hoitaa rekisteröitymisnäkymän renderöinnin.
+     */
+
     public static function rekisteroitymisNakyma() {
+        parent::check_already_logged_in();
         View::make('tili/rekisteroidy.html');
     }
 
-    // metodi joka suorittaa toiminnot kun käyttäjä yrittää kirjautumista sisään
+    /*
+     * Metodi, joka suorittaa sisäänkirjautumisyrityksen edellyttämät
+     * toiminnot.
+     */
+
     public static function hoidaSisaanKirjautuminen() {
         $params = $_POST;
         $user = Kayttaja::varmistaKirjautumistiedot($params['username'], $params['password']);
@@ -32,14 +44,20 @@ class KayttajaController extends BaseController {
         }
     }
 
-    // metodi joka suorittaa toiminnot kun käyttäjä kirjautuu ulos
+    /*
+     * Metodi, joka suorittaa uloskirjautumisen.
+     */
+
     public static function hoidaUlosKirjautuminen() {
         $params = $_POST;
         $_SESSION['user'] = null;
         Redirect::to('/', array('message' => 'Olet kirjautunut ulos!'));
     }
 
-    // metodi joka suorittaa toiminnot kun käyttäjä haluaa poistaa tilinsä
+    /*
+     * Metodi, joka suorittaa toiminnot kun käyttäjä haluaa poistaa tilinsä.
+     */
+
     public static function poistaKayttajatili() {
         $id = $_SESSION['user'];
         Kayttaja::poistaKayttaja($id);
@@ -47,7 +65,23 @@ class KayttajaController extends BaseController {
         Redirect::to('/', array('message' => 'Käyttäjätilisi on poistettu!'));
     }
 
-    // metodi joka tekee vaadittavat toimenpiteet uuden käyttäjätilin luomiseksi 
+    /*
+     * Metodi, joka suorittaa toiminnot kun ylläpitäjä haluaa poistaa
+     * jonkun sovelluksen käyttäjän.
+     */
+
+    public static function yllapitoPoistaKayttajatili() {
+        self::check_admin_logged_in();
+        $params = $_POST;
+        Kayttaja::poistaKayttaja($params['id']);
+        Redirect::to('/kayttajat', array('message' => 'Käyttäjätili poistettu onnistuneesti!'));
+    }
+
+    /*
+     * Metodi, joka luo uuden käyttäjätilin jos tiedot olivat validit. Muuten
+     * käyttäjä ohjataan takaisin rekisteröitymissivulle. 
+     */
+
     public static function luoKayttajatili() {
         $params = $_POST;
         $kayttaja = new Kayttaja(array(
@@ -58,23 +92,24 @@ class KayttajaController extends BaseController {
             'salasana' => $params['salasana1']
         ));
         $errors = $kayttaja->virheet();
-        if(strcmp($params['salasana1'], $params['salasana2']) != 0){
+        if (strcmp($params['salasana1'], $params['salasana2']) != 0) {
             $errors[] = "Salasanasi eivät täsmää";
         }
         if (count($errors) == 0) {
             $kayttaja->lisaaKayttaja();
-            // Ohjataan käyttäjä sovelluksen etusivulle
             Redirect::to('/', array('message' => "Käyttäjätililisi on luotu. Voit nyt kirjautua sisään."));
         } else {
-            // Käyttäjätilissä oli jotain vikaa
             View::make('tili/rekisteroidy.html', array('kayttaja' => $kayttaja, 'errors' => $errors));
         }
     }
 
-    // metodi, joka renderöi käyttäjätietojen muokkausvalikon käyttäjälle
+    /*
+     * Metodi, joka renderöi käyttäjätietojen muokkausvalikon.
+     */
+
     public static function muokkausNakyma() {
         if ($_SESSION['user']) {
-            $kayttaja = Kayttaja::findById($_SESSION['user']);
+            $kayttaja = Kayttaja::haePerusteellaID($_SESSION['user']);
             View::make('tili/asetukset.html', array('kayttaja' => $kayttaja));
         }
     }

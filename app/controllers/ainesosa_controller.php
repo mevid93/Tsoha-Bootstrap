@@ -21,6 +21,7 @@ class AinesosaController extends BaseController {
      */
 
     public static function lisaysNakyma() {
+        self::check_admin_logged_in();
         View::make('ainesosa/lisaaAinesosa.html');
     }
 
@@ -29,6 +30,7 @@ class AinesosaController extends BaseController {
      */
 
     public static function lisaa() {
+        self::check_admin_logged_in();
         $params = $_POST;
         $aines = new Ainesosa(array(
             'nimi' => $params['nimi'],
@@ -48,6 +50,7 @@ class AinesosaController extends BaseController {
      */
 
     public static function muokkausNakyma($id) {
+        self::check_admin_logged_in();
         $aines = Ainesosa::etsiPerusteellaID($id);
         View::make('/ainesosa/muokkaus.html', array('ainesosa' => $aines));
     }
@@ -57,6 +60,7 @@ class AinesosaController extends BaseController {
      */
 
     public static function muokkaa($id) {
+        self::check_admin_logged_in();
         $params = $_POST;
         $aines = new Ainesosa(array(
             'id' => $id,
@@ -77,6 +81,7 @@ class AinesosaController extends BaseController {
      */
 
     public static function poista() {
+        self::check_admin_logged_in();
         $params = $_POST;
         Ainesosa::poista($params['id']);
         Redirect::to('/ainesosa', array('message' => "Ainesosan poisto onnistui"));

@@ -21,6 +21,7 @@ class DrinkkityyppiController extends BaseController {
      */
 
     public static function lisaysNakyma() {
+        self::check_admin_logged_in();
         View::make('drinkkityyppi/drinkkityyppiLisays.html');
     }
 
@@ -29,6 +30,7 @@ class DrinkkityyppiController extends BaseController {
      */
 
     public static function lisaa() {
+        self::check_admin_logged_in();
         $params = $_POST;
         $tyyppi = new Drinkkityyppi(array(
             'nimi' => $params['nimi'],
@@ -49,6 +51,7 @@ class DrinkkityyppiController extends BaseController {
 
     public static function poista() {
         // POST-pyynnön muuttujat sijaisevat $_POST nimisessä assosiaatiolistassa
+        self::check_admin_logged_in();
         $params = $_POST;
         Drinkkityyppi::poista($params['id']);
 
@@ -61,6 +64,7 @@ class DrinkkityyppiController extends BaseController {
      */
 
     public static function muokkausNakyma($id) {
+        self::check_admin_logged_in();
         $tyyppi = Drinkkityyppi::etsiPerusteellaID($id);
         // Ohjataan drinkkityyppien muokkaus sivullle
         View::make('/drinkkityyppi/muokkaus.html', array('tyyppi' => $tyyppi));
@@ -71,6 +75,7 @@ class DrinkkityyppiController extends BaseController {
      */
 
     public static function muokkaa($id) {
+        self::check_admin_logged_in();
         // POST-pyynnön muuttujat sijaisevat $_POST nimisessä assosiaatiolistassa
         $params = $_POST;
         $tyyppi = new Drinkkityyppi(array(

@@ -31,7 +31,7 @@ $routes->get('/ehdotukset', function() {
 });
 
 $routes->get('/kayttajat', function() {
-    HelloWorldController::user_list();
+    KayttajaController::kayttajatNakyma();
 });
 
 $routes->get('/drinkkityyppi', function() {
@@ -127,6 +127,10 @@ $routes->post('/kirjauduUlos', function() {
 
 $routes->post('/asetukset', function() {
     KayttajaController::hoidaUlosKirjautuminen();
+});
+
+$routes->post('/kayttajat/poista', function() {
+    KayttajaController::yllapitoPoistaKayttajatili();
 });
 
 $routes->post('/poista', function() {

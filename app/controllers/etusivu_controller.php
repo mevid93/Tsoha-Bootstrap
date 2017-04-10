@@ -4,11 +4,13 @@
  * Kontrolleri, joka hoitaa etusivun käsittelyn.
  */
 
-  class EtusivuController extends BaseController{
+class EtusivuController extends BaseController {
+    /*
+     * Metodi, joka renderöi näkyville sovelluksen etusivun.
+     */
 
-    public static function index(){
-      // make-metodi renderöi app/views-kansiossa sijaitsevia tiedostoja
-   	  View::make('muut/etusivu.html');
+    public static function index() {
+        View::make('muut/etusivu.html');
     }
 
-  }
+}

@@ -14,6 +14,7 @@ class EhdotusController extends BaseController {
      */
 
     public static function ehdotusNakyma() {
+        self::check_logged_in();
         $tyypit = Drinkkityyppi::kaikki();
         $ainekset = Ainesosa::kaikkiAakkosjarjestyksessa();
         View::make('ehdotus/ehdota.html', array('tyypit' => $tyypit, 'ainekset' => $ainekset));
@@ -26,6 +27,7 @@ class EhdotusController extends BaseController {
      */
 
     public static function lisaa() {
+        self::check_logged_in();
         $params = $_POST;
         //luodaan array olioista
         $oliot = self::luoOlioArray($params);
