@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% if message %}
+<div class="alert alert-success">
+    <ul>
+        <li>{{message}}</li>
+    </ul>
+</div>
+{% endif %}
+
 <h1>Käyttäjien ehdottamat drinkit</h1>
 
 
@@ -9,8 +18,7 @@
             <th>Nimi</th>
             <th>Muut nimet</th>
             <th>Tyyppi</th>
-            <th>Suositeltu lasi</th>
-            <th>Lämpötila</th>
+            <th>Ainesosat</th>
             <th>Lisäyspäivä</th>
             <th>Lisääjä</th>
             <th>Hyväksy / Hylkää</th>
@@ -30,17 +38,19 @@
                 {% endfor %}
             </td>
             <td>{{drinkki.drinkkityyppi}}</td>
-            <td>{{drinkki.lasi}}</td>
-            <td>{{drinkki.lampotila}}</td>
+            <td>Listaus ei toimi vielä</td>
             <td>{{drinkki.lisayspaiva}}</td>
             <td>{{drinkki.lisaaja}}</td>
             <td>
-                <form method="post" action="{{base_path}}/ehdotukset/hyvaksy">
+                <div class="form-group" action="{{base_path}}/ehdotukset/hyvaksy">
                     <button name="id" value={{drinkki.id}} type="submit" class="btn btn-primary">Hyväksy</button>
-                </form>
-                <form method="post" action="{{base_path}}/ehdotukset/hylkaa">
-                    <button name="id" value={{drinkki.id}} type="submit" class="btn btn-primary">Hylkää</button>
-                </form>
+                    </form>
+                </div>
+                <div class="form-group">
+                     <form method="post" action="{{base_path}}/ehdotukset/hylkaa">
+                     <button name="id" value={{drinkki.id}} type="submit" class="btn btn-primary">Hylkää</button>
+                    </form>
+                </div>
             </td>
         </tr>
         {% endfor %}

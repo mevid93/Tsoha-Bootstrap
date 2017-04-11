@@ -84,7 +84,7 @@ class DrinkkiController extends BaseController {
         if (count($errors) == 0) {
             $drinkki->paivita();
             // Ohjataan käyttäjä sovelluksen etusivulle
-            Redirect::to('/drinkki/'. $id, array('drinkki' => $drinkki, 'message' => "Muutokset tallennettu!"));
+            Redirect::to('/drinkki/' . $id, array('drinkki' => $drinkki, 'message' => "Muutokset tallennettu!"));
         } else {
             $tyypit = Drinkkityyppi::kaikki();
             $ainekset = Ainesosa::all();
@@ -98,8 +98,12 @@ class DrinkkiController extends BaseController {
         parent::check_admin_logged_in();
         $drinkki = Drinkki::etsiPerusteellaID($id);
         $drinkki->poista();
-        $drinkit = Drinkki::etsiKaikkiHyvaksytytAakkosjarjestyksessa();
-        Redirect::to('/drinkki', array('drinkit' => $drinkit, 'message' => "Drinkin poisto onnistui!"));
+        if ($drinkki->hyvaksytty) {
+            $drinkit = Drinkki::etsiKaikkiHyvaksytytAakkosjarjestyksessa();
+            Redirect::to('/drinkki', array('drinkit' => $drinkit, 'message' => "Drinkin poisto onnistui!"));
+        }
+        $drinkit = Drinkki::kaikkiHyvaksymattomat();
+        Redirect::to('/ehdotukset', array('drinkit' => $drinkit, 'message' => "Drinkin poisto onnistui!"));
     }
 
 }

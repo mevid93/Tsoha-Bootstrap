@@ -33,10 +33,13 @@ class EhdotusController extends BaseController {
         $oliot = self::luoOlioArray($params);
         // tarkistetaan virheet
         $errors = self::tarkistaOlioidenVirheet($oliot);
+        // tarkistetaan ainesosien virheet
+        $errors = array_merge($errors, self::tarkistaAinesosatJaMaarat($params));
         // ohjataan käyttäjä eteenpäin virheiden määrän perusteella
         if (count($errors) == 0) {
             // tallennetaan oliot
             self::tallennaOliot($oliot);
+            self::tallennaAinesosat($oliot[0], $params);
             Redirect::to('/', array('message' => "Ehdotuksesi on lähetetty ylläpitäjän hyväksyttäväksi!"));
         } else {
             // luodaan näkymä uudestaan 
@@ -58,7 +61,7 @@ class EhdotusController extends BaseController {
             'lampotila' => $params['lampotila'],
             'lisayspaiva' => "Tämä päivä",
             'hyvaksytty' => false,
-            'lisaaja' => Kayttaja::findById($_SESSION['user'])->kayttajatunnus
+            'lisaaja' => Kayttaja::haePerusteellaID($_SESSION['user'])->kayttajatunnus
         ));
         return $drinkki;
     }
@@ -71,10 +74,10 @@ class EhdotusController extends BaseController {
     private static function luoOlioArray($params) {
         $oliot = array();
         $oliot[] = self::luoDrinkki($params);
-        if(strlen($params['muunimi1']) != 0){
+        if (strlen($params['muunimi1']) != 0) {
             $oliot[] = new MuuNimi(array('nimi' => $params['muunimi1']));
         }
-        if(strlen($params['muunimi2']) != 0){
+        if (strlen($params['muunimi2']) != 0) {
             $oliot[] = new MuuNimi(array('nimi' => $params['muunimi2']));
         }
         return $oliot;
@@ -99,8 +102,7 @@ class EhdotusController extends BaseController {
      */
 
     private static function tallennaOliot($oliot) {
-        // ensin joudutaan laittamaan kaikkien muunimi tyyppisten olioiden
-        // id kuntoon.
+        // laitetaan kaikkien muunimi tyyppisten olioiden drinkki-id kuntoon.
         $drinkki = $oliot[0];
         $drinkki->tallenna();
         foreach ($oliot as $olio) {
@@ -123,12 +125,70 @@ class EhdotusController extends BaseController {
 
     private static function ohjaaTakaisinEhdotusNakymaan($oliot, $errors, $params) {
         $tyypit = Drinkkityyppi::kaikki();
-        $ainekset = Ainesosa::all();
+        $ainekset = Ainesosa::kaikkiAakkosjarjestyksessa();
         // määritellään palautteavat muuttujat olioista.
         $drinkki = $oliot[0];
-        $muunimi1 = $oliot[1];
-        $muunimi2 = $oliot[2];
+        $muunimi1 = null;
+        $muunimi2 = null;
+        if (count($oliot) > 1) {
+            $muunimi1 = $oliot[1];
+        }
+        if (count($oliot) > 2) {
+            $muunimi2 = $oliot[2];
+        }
         View::make('ehdotus/ehdota.html', array('muunimi1' => $muunimi1, 'muunimi2' => $muunimi2, 'drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors, 'maara1' => $params['maara1'], 'maara2' => $params['maara2'], 'maara3' => $params['maara3'], 'maara4' => $params['maara4'], 'maara5' => $params['maara5']));
+    }
+
+    /*
+     * Metodi, joka tarkastaa, että ainesosien määrä on vähintään yksi, ja että
+     * jokaista ainesosaa kohden on annettu validi määrä.
+     */
+
+    private static function tarkistaAinesosatJaMaarat($params) {
+        $ainekset = array();
+        $errors = array();
+        for ($x = 1; $x <= 5; $x++) {
+            if ($params['aines' . $x] != null) {
+                $errors = array_merge($errors, self::tarkistaMaara($params['maara' . $x]));
+                if (in_array($params['aines' . $x], $ainekset)) {
+                    $errors[] = "Sama ainesosa valittu useampaan otteeseen!";
+                }
+                $ainekset[] = $params['aines' . $x];
+            }
+        }
+        if (count($ainekset) == 0) {
+            $errors[] = "Vähintään yksi ainesosa on annettava";
+        }
+        return $errors;
+    }
+
+    /*
+     * Metodi, joka tarkastaa, että ainesosien määrä on vähintään yksi, ja että
+     * jokaista ainesosaa kohden on annettu validi määrä.
+     */
+
+    private static function tarkistaMaara($maara) {
+        $errors = array();
+        if ($maara == null || $maara == '') {
+            $errors[] = "Ainesosien määriä puuttuu!";
+        }
+        if ($maara != null && (is_numeric($maara) == FALSE || $maara * 1 != (int) ($maara * 1))) {
+            $errors[] = "Määrän tulee olla kokonaisluku!";
+        }
+        return $errors;
+    }
+
+    /*
+     * Metodi, joka tarkastaa, että ainesosien määrä on vähintään yksi, ja että
+     * jokaista ainesosaa kohden on annettu validi määrä.
+     */
+
+    private static function tallennaAinesosat($drinkki, $params) {
+        for ($x = 1; $x <= 5; $x++) {
+            if ($params['aines' . $x] != null) {
+                Drinkinainesosat::lisaaDrinkinAinesosa($drinkki->id, Ainesosa::etsiPerusteellaNimi($params['aines' . $x])->id, $params['maara' . $x]);
+            }
+        } 
     }
 
 }

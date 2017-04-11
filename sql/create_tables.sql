@@ -61,5 +61,6 @@ CREATE TABLE Ainesosa(
 -- Luodaan liitos tietokantataulu drinkkien ja ainesosien väliin.
 CREATE TABLE DrinkinAinesosat(
     drinkki INTEGER REFERENCES Drinkki(id),
-    ainesosa INTEGER REFERENCES Ainesosa(id)
+    ainesosa INTEGER REFERENCES Ainesosa(id),
+    maara INTEGER NOT NULL
 );

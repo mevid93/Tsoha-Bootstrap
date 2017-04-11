@@ -46,8 +46,8 @@ VALUES ('Kerma', 'Kerma on perus elintarvike, jota saa kaupan kylmähyllyiltä.'
 
 
 -- Lisätään muutama ainesosa liitostauluun
-INSERT INTO DrinkinAinesosat(drinkki, ainesosa)
-VALUES (1, 2);
+INSERT INTO DrinkinAinesosat(drinkki, ainesosa, maara)
+VALUES (1, 2, 1);
 
-INSERT INTO DrinkinAinesosat(drinkki, ainesosa)
-VALUES (2, 1);
+INSERT INTO DrinkinAinesosat(drinkki, ainesosa, maara)
+VALUES (2, 1, 2);

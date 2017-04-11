@@ -1,5 +1,9 @@
 <?php
 
+function check_admin_logged_in(){
+    BaseController::get_admin_logged_in();
+}
+
 // GET metodit
 
 $routes->get('/', function() {
@@ -28,6 +32,10 @@ $routes->get('/ehdota', function() {
 
 $routes->get('/ehdotukset', function() {
     EhdotuksetController::ehdotuksetNakyma();
+});
+
+$routes->get('/ehdotukset/:id','check_admin_logged_in', function($id) {
+    DrinkkiController::naytaResepti($id);
 });
 
 $routes->get('/kayttajat', function() {

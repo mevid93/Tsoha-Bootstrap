@@ -25,7 +25,7 @@ class EhdotuksetController extends BaseController {
         $params = $_POST;
         $drinkki = Drinkki::etsiPerusteellaID($params['id']);
         $drinkki->poista();
-        Redirect::to('/ehdotukset', array('message' => "Poisto onnistui!"));
+        Redirect::to('/ehdotukset', array('message' => "Ehdotus hylätty!"));
     }
 
     /*

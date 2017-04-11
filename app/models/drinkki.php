@@ -47,7 +47,8 @@ class Drinkki extends BaseModel {
      */
 
     public function poista() {
-        MuuNimi::poistaPerusteellaDrinkkiID($this->id); // kun vielä lisätään ainesosa tuki niin tänne pitää lisätä poisto ainesosa taulusta
+        MuuNimi::poistaPerusteellaDrinkkiID($this->id); 
+        Drinkinainesosat::poistaPerusteellaDrinkkiID($this->id);
         $query = DB::connection()->prepare('DELETE FROM Drinkki WHERE id = :id');
         $query->execute(array('id' => $this->id));
     }
