@@ -126,7 +126,7 @@ $routes->post('/kirjauduUlos', function() {
 });
 
 $routes->post('/asetukset', function() {
-    KayttajaController::hoidaUlosKirjautuminen();
+    KayttajaController::muokkaaKayttajanAsetukset();
 });
 
 $routes->post('/kayttajat/poista', function() {

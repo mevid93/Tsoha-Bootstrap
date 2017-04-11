@@ -113,5 +113,27 @@ class KayttajaController extends BaseController {
             View::make('tili/asetukset.html', array('kayttaja' => $kayttaja));
         }
     }
+    
+    /*
+     * Metodi, joka tallentaa käyttäjän tiliin tekemät muutokset.
+     */
+
+    public static function muokkaaKayttajanAsetukset() {
+        self::check_logged_in();
+        $params = $_POST;
+        $user = Kayttaja::haePerusteellaID($_SESSION['user']);
+        $user->etunimi = $params['etunimi'];
+        $user->sukunimi = $params['sukunimi'];
+        $user->sahkoposti = $params['sahkoposti'];
+        $errors = $user->validoiEtunimi();
+        $errors = array_merge($errors, $user->validoiSukunimi());
+        $errors = array_merge($errors, $user->validoiSahkoposti());
+        if (count($errors) == 0) { 
+            $user->paivitaMuutokset();
+            Redirect::to('/', array('message' => "Muutokset tallennettu."));
+        }else{
+            View::make('tili/asetukset.html', array('kayttaja' => $user, 'errors' => $errors));
+        }
+    }
 
 }

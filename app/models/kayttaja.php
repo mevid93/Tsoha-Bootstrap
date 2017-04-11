@@ -31,6 +31,15 @@ class Kayttaja extends BaseModel {
     }
 
     /*
+     * Metodi, joka päivittää tietokantaan muutokset käyttäjässä.
+     */
+
+    public function paivitaMuutokset() {
+        $query = DB::connection()->prepare('UPDATE kayttaja SET etunimi = :etunimi, sukunimi = :sukunimi, sahkoposti = :sahkoposti WHERE id = :id');
+        $query->execute(array('etunimi' => $this->etunimi, 'sukunimi' => $this->sukunimi, 'sahkoposti' => $this->sahkoposti, 'id' => $this->id));
+    }
+
+    /*
      * Validointi metodi, joka tarkistaa etunimen.
      */
 
