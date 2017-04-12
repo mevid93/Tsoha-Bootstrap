@@ -6,6 +6,10 @@
  *
  */
 class Drinkinainesosat extends BaseModel {  // HUOM! Ei voi käyttää camelcase tyyliä, sillä ei jostain syystä muuten toimi.
+    
+    // mallin atribuutit
+    public $ainesosanNimi, $ainesosaID, $drinkkiID, $maara;
+
     /*
      *  Konstruktori metodi
      */
@@ -23,6 +27,7 @@ class Drinkinainesosat extends BaseModel {  // HUOM! Ei voi käyttää camelcase
         $query = DB::connection()->prepare('SELECT ainesosa.* FROM drinkki, ainesosa, drinkinainesosat WHERE drinkki.id = :id  AND drinkinainesosat.drinkki = drinkki.id AND drinkinainesosat.ainesosa = ainesosa.id');
         $query->execute(array('id' => $id));
         $rows = $query->fetchAll();
+        $ainekset = array();
         foreach ($rows as $row) {
             $ainekset[] = new Ainesosa(array(
                 'id' => $row['id'],
@@ -31,6 +36,28 @@ class Drinkinainesosat extends BaseModel {  // HUOM! Ei voi käyttää camelcase
             ));
         }
         return $ainekset;
+    }
+    
+    /*
+     * Metodi, joka hakee kaikki tietokannasta kaikki ainesosat,
+     * jotka kuuluvat johonkin tiettyyn drinkkiin (id), ja luo näistä
+     * taulukon DrinkinAinesosat olioita.
+     */
+
+    public static function haeAinesosatOliot($id) {
+        $query = DB::connection()->prepare('SELECT DISTINCT ainesosa.nimi AS nimi, ainesosa.id AS id, drinkinainesosat.maara AS maara FROM ainesosa, drinkinainesosat WHERE drinkinainesosat.drinkki = :id AND drinkinainesosat.ainesosa = ainesosa.id');
+        $query->execute(array('id' => $id));
+        $rows = $query->fetchAll();
+        $drinkinAinesosat = array();
+        foreach ($rows as $row) {
+            $drinkinAinesosat[] = new Drinkinainesosat(array(
+               'ainesosanNimi' => $row['nimi'], 
+               'ainesosaID' => $row['id'], 
+               'drinkkiID' => $id,
+               'maara' => $row['maara']
+            ));
+        }
+        return $drinkinAinesosat;
     }
 
     /*

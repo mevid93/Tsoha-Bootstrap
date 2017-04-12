@@ -28,7 +28,9 @@
 <h5><strong> Drinkkiin tulevat ainesosat </strong></h5>
 
 <ul>
-    <li>Ainesosat listaava ominaisuus työn alla...</li>
+    {% for drinkinainesosa in drinkinainesosat %}
+    <li>{{drinkinainesosa.maara}} cl &nbsp;&nbsp;  {{drinkinainesosa.ainesosanNimi}}</li>
+    {% endfor %}
 </ul>
 <br>
 

@@ -14,6 +14,9 @@ class EhdotuksetController extends BaseController {
     public static function ehdotuksetNakyma() {
         self::check_admin_logged_in();
         $drinkit = Drinkki::kaikkiHyvaksymattomat();
+        foreach ($drinkit as $drinkki){
+            $drinkki->aineslista = Drinkinainesosat::haeAinesosat($drinkki->id);
+        }
         View::make('ehdotus/ehdotusLista.html', array('drinkit' => $drinkit));
     }
 

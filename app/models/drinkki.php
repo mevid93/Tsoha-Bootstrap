@@ -8,7 +8,7 @@
 class Drinkki extends BaseModel {
 
     // mallin atribuutit
-    public $id, $ensisijainennimi, $muutnimet, $lasi, $kuvaus, $lampotila, $lisayspaiva, $lisaaja, $hyvaksytty, $drinkkityyppi;
+    public $id, $ensisijainennimi, $muutnimet, $lasi, $kuvaus, $lampotila, $lisayspaiva, $lisaaja, $hyvaksytty, $drinkkityyppi, $aineslista;
 
     /*
      * Konstruktori

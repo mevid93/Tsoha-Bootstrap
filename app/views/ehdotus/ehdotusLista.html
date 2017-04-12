@@ -38,19 +38,23 @@
                 {% endfor %}
             </td>
             <td>{{drinkki.drinkkityyppi}}</td>
-            <td>Listaus ei toimi vielä</td>
+            <td>
+                {% for aines in drinkki.aineslista %}
+                <ul>
+                    <li>{{aines.nimi}}</li>
+                </ul>
+                {% endfor %}
+
+            </td>
             <td>{{drinkki.lisayspaiva}}</td>
             <td>{{drinkki.lisaaja}}</td>
             <td>
-                <div class="form-group" action="{{base_path}}/ehdotukset/hyvaksy">
+                <form style="display: inline" method="post" action="{{base_path}}/ehdotukset/hyvaksy">
                     <button name="id" value={{drinkki.id}} type="submit" class="btn btn-primary">Hyväksy</button>
-                    </form>
-                </div>
-                <div class="form-group">
-                     <form method="post" action="{{base_path}}/ehdotukset/hylkaa">
-                     <button name="id" value={{drinkki.id}} type="submit" class="btn btn-primary">Hylkää</button>
-                    </form>
-                </div>
+                </form>
+                <form style="display: inline" method="post" action="{{base_path}}/ehdotukset/hylkaa">
+                    <button name="id" value={{drinkki.id}} type="submit" class="btn btn-primary">Hylkää</button>
+                </form>
             </td>
         </tr>
         {% endfor %}

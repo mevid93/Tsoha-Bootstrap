@@ -15,12 +15,13 @@ class DrinkkiController extends BaseController {
     // metodi, joka hoitaa yksittäisen drinkin näkymän näyttämisen
     public static function naytaResepti($id) {
         $drinkki = Drinkki::etsiPerusteellaID($id);
+        $drinkinainesosat = Drinkinainesosat::haeAinesosatOliot($id);
         // jos kirjoittaa suoraan urlin  niin voi yrittää hakea reseptiä jota 
         // ei oikeasti ole olemassa. Tässä tilanteessa ohjataan etusivulle.
         if ($drinkki == null) {
             Redirect::to('/', array('message' => "Kyseistä drinkkiä ei ole olemassa!"));
         }
-        View::make('drinkki/resepti.html', array('drinkki' => $drinkki));
+        View::make('drinkki/resepti.html', array('drinkki' => $drinkki, 'drinkinainesosat' => $drinkinainesosat));
     }
 
     // metodi, joka listaa drinkit nimeen kohdituvan hakutermin perusteella

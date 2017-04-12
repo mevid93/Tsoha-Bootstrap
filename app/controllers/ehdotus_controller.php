@@ -186,6 +186,7 @@ class EhdotusController extends BaseController {
     private static function tallennaAinesosat($drinkki, $params) {
         for ($x = 1; $x <= 5; $x++) {
             if ($params['aines' . $x] != null) {
+                Ainesosa::etsiPerusteellaNimi($params['aines' . $x])->id;
                 Drinkinainesosat::lisaaDrinkinAinesosa($drinkki->id, Ainesosa::etsiPerusteellaNimi($params['aines' . $x])->id, $params['maara' . $x]);
             }
         } 
