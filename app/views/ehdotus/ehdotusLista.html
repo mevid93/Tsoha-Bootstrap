@@ -44,7 +44,6 @@
                     <li>{{aines.nimi}}</li>
                 </ul>
                 {% endfor %}
-
             </td>
             <td>{{drinkki.lisayspaiva}}</td>
             <td>{{drinkki.lisaaja}}</td>
@@ -53,7 +52,7 @@
                     <button name="id" value={{drinkki.id}} type="submit" class="btn btn-primary">Hyväksy</button>
                 </form>
                 <form style="display: inline" method="post" action="{{base_path}}/ehdotukset/hylkaa">
-                    <button name="id" value={{drinkki.id}} type="submit" class="btn btn-primary">Hylkää</button>
+                    <button name="id" value={{drinkki.id}} type="submit" class="btn btn-danger">Hylkää</button>
                 </form>
             </td>
         </tr>

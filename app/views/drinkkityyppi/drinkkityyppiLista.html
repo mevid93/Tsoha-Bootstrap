@@ -44,11 +44,11 @@
             <td>{{tyyppi.kuvaus}}</td>
             {% if admin_logged_in %}
             <td>
-                <form action="{{base_path}}/drinkkityyppi/muokkaa/{{tyyppi.id}}">
-                    <button name="id" value={{tyyppi.id}} type="submit" class="btn btn-primary">Muokkaa</button>
+                <form style="display: inline" action="{{base_path}}/drinkkityyppi/muokkaa/{{tyyppi.id}}">
+                    <button name="id" value={{tyyppi.id}} type="submit" class="btn btn-warning">Muokkaa</button>
                 </form>
-                <form method="post" action="{{base_path}}/drinkkityyppi/poista">
-                    <button name="id" value={{tyyppi.id}} type="submit" class="btn btn-primary">Poista</button>
+                <form style="display: inline" method="post" action="{{base_path}}/drinkkityyppi/poista">
+                    <button name="id" value={{tyyppi.id}} type="submit" class="btn btn-danger">Poista</button>
                 </form>
             </td>
             {% endif %}

@@ -1,50 +1,71 @@
 {% extends "base.html" %}
 {% block content %}
+
 <h1>{{drinkki.ensisijainennimi}}</h1>
 
 <!-- Perustiedot tulee listana tähän -->
-<ul>
-    <li><strong>Nimi:</strong> {{drinkki.ensisijainennimi}}</li>
-    <li><strong>Tyyppi:</strong> {{drinkki.drinkkityyppi}}</li>
-    <li><strong>Lasi:</strong> {{drinkki.lasi}}</li>
-    <li><strong>Lämpötila:</strong> {{drinkki.lampotila}}</li>
-    <li><strong>Lisäyspäivä:</strong> {{drinkki.lisayspaiva}}</li>
-    <li><strong>Lisääjä:</strong> {{drinkki.lisaaja}}</li>
-</ul>
+<div class="panel panel-default">
+    <div class="panel-body" style="background-color: #813772;">
+        <ul>
+            <li><strong>Nimi:</strong> {{drinkki.ensisijainennimi}}</li>
+            <li><strong>Tyyppi:</strong> {{drinkki.drinkkityyppi}}</li>
+            <li><strong>Lasi:</strong> {{drinkki.lasi}}</li>
+            <li><strong>Lämpötila:</strong> {{drinkki.lampotila}}</li>
+            <li><strong>Lisäyspäivä:</strong> {{drinkki.lisayspaiva}}</li>
+            <li><strong>Lisääjä:</strong> {{drinkki.lisaaja}}</li>
+        </ul>
+    </div>
+</div>
 
 <br>
 
+<!-- If loop johon mennään jos muutnimet lista ei ole tyhjä-->
+{% if drinkki.muutnimet|length > 0 %}
 <!-- Muut nimet tulee listana tähän -->
-<h5><strong> Muut tunnetut nimet </strong></h5>
+<h4><strong> Muut tunnetut nimet </strong></h4>
 
-<ul>
-    {% for muunimi in drinkki.muutnimet %}
-    <li>{{muunimi.nimi}}</li>
-    {% endfor %}
-</ul>
+<div class="panel panel-default">
+    <div class="panel-body" style="background-color: #813772;">
+        <ul>
+            {% for muunimi in drinkki.muutnimet %}
+            <li>{{muunimi.nimi}}</li>
+            {% endfor %}
+        </ul>
+        <br>
+    </div>
+</div>
 <br>
+{% endif %}
 
 <!-- Tarvittavat ainesosat tulee listana tähän -->
-<h5><strong> Drinkkiin tulevat ainesosat </strong></h5>
+<h4><strong> Drinkkiin tulevat ainesosat </strong></h4>
 
-<ul>
-    {% for drinkinainesosa in drinkinainesosat %}
-    <li>{{drinkinainesosa.maara}} cl &nbsp;&nbsp;  {{drinkinainesosa.ainesosanNimi}}</li>
-    {% endfor %}
-</ul>
+<div class="panel panel-default">
+    <div class="panel-body" style="background-color: #813772;">
+        <ul>
+            {% for drinkinainesosa in drinkinainesosat %}
+            <li>{{drinkinainesosa.maara}} cl &nbsp;&nbsp;  {{drinkinainesosa.ainesosanNimi}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 <br>
 
 <!-- Kuvaus tulee tähän -->
-<p>
-<h5><strong>Kuvaus</strong></h5>
-{{drinkki.kuvaus}}
-</p>
+<h4><strong>Kuvaus</strong></h4>
+
+<div class="panel panel-default">
+    <div class="panel-body" style="background-color: #813772;">
+        <p>{{drinkki.kuvaus}}</p>
+    </div>
+</div>
 <br>
+
+<!--Muokkaus ja poisto painikkeet ylläpitäjälle-->
 {% if admin_logged_in %}
-<a href ="{{base_path}}/drinkki/{{drinkki.id}}/muokkaa"><button type="button">Muokkaa</button></a>
-<br>
+<a href ="{{base_path}}/drinkki/{{drinkki.id}}/muokkaa" class="btn btn-warning">Muokkaa</a>
 <form method="post" action="{{base_path}}/drinkki/{{drinkki.id}}/poista" style="display: inline-block;">
-  <button type="submit" class="btn btn-danger">Poista</button>
+    <button type="submit" class="btn btn-danger">Poista</button>
 </form>
 {% endif %}
 

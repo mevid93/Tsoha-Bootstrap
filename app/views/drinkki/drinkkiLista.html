@@ -31,10 +31,9 @@
     <thead style="background-color: black;">
         <tr>
             <th>Nimi</th>
-            <th>Muut tunnetut nimet</th>
+            <th>Muut nimet</th>
             <th>Tyyppi</th>
-            <th>Suositeltu lasi</th>
-            <th>Lämpötila</th>
+            <th>Ainesosat</th>
             <th>Lisäyspäivä</th>
             <th>Lisääjä</th>
         </tr>
@@ -53,8 +52,13 @@
                 {% endfor %}
             </td>
             <td>{{drinkki.drinkkityyppi}}</td>
-            <td>{{drinkki.lasi}}</td>
-            <td>{{drinkki.lampotila}}</td>
+            <td>
+                {% for aines in drinkki.aineslista %}
+                <ul>
+                    <li>{{aines.nimi}}</li>
+                </ul>
+                {% endfor %}
+            </td>
             <td>{{drinkki.lisayspaiva}}</td>
             <td>{{drinkki.lisaaja}}</td>
         </tr>

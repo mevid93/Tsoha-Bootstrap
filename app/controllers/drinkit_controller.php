@@ -9,6 +9,9 @@ class DrinkkiController extends BaseController {
     // metodi, joka hoitaa drinkkien listaamisen nimen mukaan aakkosjärjestyksessä
     public static function index() {
         $drinkit = Drinkki::etsiKaikkiHyvaksytytAakkosjarjestyksessa();
+        foreach ($drinkit as $drinkki) {
+            $drinkki->aineslista = Drinkinainesosat::haeAinesosat($drinkki->id);
+        }
         View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
     }
 
@@ -32,9 +35,15 @@ class DrinkkiController extends BaseController {
             Redirect::to('/', array('errors' => array('Et syöttänyt hakutermiä!')));
         } elseif ($params['ehto'] == "nimi") {
             $drinkit = Drinkki::etsiNimenPerusteella($params['termi']);
+            foreach ($drinkit as $drinkki) {
+                $drinkki->aineslista = Drinkinainesosat::haeAinesosat($drinkki->id);
+            }
             View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
         } elseif ($params['ehto'] == "aines") {
             $drinkit = Drinkki::etsiAinesosanPerusteella($params['termi']);
+            foreach ($drinkit as $drinkki) {
+                $drinkki->aineslista = Drinkinainesosat::haeAinesosat($drinkki->id);
+            }
             View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
         }
     }
@@ -44,13 +53,22 @@ class DrinkkiController extends BaseController {
         $params = $_POST;
         if ($params['jarjestys'] == "2") {
             $drinkit = Drinkki::etsiKaikkiHyvaksytytDrinkkityypinPerusteella($params['jarjestys']);
+            foreach ($drinkit as $drinkki) {
+                $drinkki->aineslista = Drinkinainesosat::haeAinesosat($drinkki->id);
+            }
             View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
         } elseif ($params['jarjestys'] == "3") {
             $drinkit = Drinkki::etsiNimenPerusteella($params['termi']);
+            foreach ($drinkit as $drinkki) {
+                $drinkki->aineslista = Drinkinainesosat::haeAinesosat($drinkki->id);
+            }
             View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
         }
         //perustapaus
         $drinkit = Drinkki::etsiKaikkiHyvaksytytAakkosjarjestyksessa();
+        foreach ($drinkit as $drinkki) {
+            $drinkki->aineslista = Drinkinainesosat::haeAinesosat($drinkki->id);
+        }
         View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
     }
 
