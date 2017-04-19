@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
+
 <!--Listataan virheet jos niitä oli-->
 {% if errors %}
 <div class="alert alert-danger">
@@ -12,16 +13,31 @@
 </div>
 {% endif %}
 
+
+<!--Listataan viestit jos niitä oli -->
+{% if message %}
+<div class="alert alert-success">
+    <ul>
+        <li>{{message}}</li>
+    </ul>
+</div>
+{% endif %}
+
+
+<!--Sivun pääotsikko-->
 <h1>Muokkaa drinkkiä</h1>
 
 
+<!--Drinkin muokkaukseen suunniteltu formi-->
 <form method="post" action="{{base_path}}/drinkki/{{drinkki.id}}/muokkaa">
 
+    <!--Drinkin nimi-->
     <div class="form-group">
         <label>Nimi *</label>
         <input name="nimi" class="form-control" value="{{drinkki.ensisijainennimi}}" type="text">
     </div>
 
+    <!--Drinkin muut nimet-->
     <div class="form-group">
         <label>Muut tunnetut nimet</label>
         <div class="row">
@@ -34,6 +50,7 @@
         </div>
     </div>
 
+    <!--Drinkityyppi-->
     <div class="form-group">
         <label for="sel0">Drinkkityyppi *</label>
         <select name="tyyppi" value="{{drinkki.lampotila}}" class="form-control" id="sel0">
@@ -43,11 +60,13 @@
         </select>
     </div>
 
+    <!--Suositeltu lasi drinkille-->
     <div class="form-group">
         <label>Lasi *</label>
         <input name="lasi" class="form-control" value="{{drinkki.lasi}}" type="text">
     </div>
 
+    <!--Suositeltu tarjoilu lämpötila-->
     <div class="form-group">
         <label for="sel">Lämpötila *</label>
         <select name="lampotila" class="form-control" id="sel">
@@ -59,6 +78,7 @@
         </select>
     </div>
 
+    <!--Drinkin ainesosat-->
     <div class="form-group">
         <label>Drinkin ainesosat (1...5)*</label></br>
         <div class="row">
@@ -130,13 +150,18 @@
         </div>
     </div>
 
+    <!-- Drinkin kuvaus-->
     <div class="form-group">
         <label>Kuvaus *</label>
         <textarea name="kuvaus" class="form-control">{{drinkki.kuvaus}}</textarea>
     </div>
+    
+    <!--Huomautus/info-->
     <div class="form-group">
         * Pakolliset kohdat, jotka on täytettävä!
     </div>
+    
+    <!--Tallenna muutokset-->
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Tallenna muutokset</button>
     </div>

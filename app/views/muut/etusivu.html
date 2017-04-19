@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block content %}
 
 <!--Listataan virheet jos niitä oli-->
@@ -13,6 +12,8 @@
 </div>
 {% endif %}
 
+
+<!--Listataan viestit jos niitä oli -->
 {% if message %}
 <div class="alert alert-success">
     <ul>
@@ -21,28 +22,28 @@
 </div>
 {% endif %}
 
+
+<!--Drinkkien hakuun suunniteltu formi-->
 <form method="post" action="{{base_path}}/"> 
 
     <div class="container">
-
         <div class="row">
-
-
             <div class="col-sm-6 col-sm-offset-3">
                 <div id="imaginary_container"> 
+                    
+                    <!--Alaotsikko-->
                     <h2>Drinkkihaku</h2>
-
-
+                    
+                    <!--Hakuehto-->
                     <select style="width: 150px;" name="ehto" class="form-control">
                         <option value="nimi">Nimi</option>
                         <option value="aines">Aines</option>
                     </select>
                     <br>
+                    
+                    <!--Hakutermi-->
                     <div class="input-group">
-
-
                         <input name="termi" class="form-control" placeholder="Hakutermi..." type="text">
-
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                         </span>

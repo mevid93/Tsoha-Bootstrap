@@ -7,7 +7,7 @@ function check_admin_logged_in(){
 // GET metodit
 
 $routes->get('/', function() {
-    EtusivuController::index();
+    EtusivuController::etusivuNakyma();
 });
 
 $routes->get('/drinkki', function() {

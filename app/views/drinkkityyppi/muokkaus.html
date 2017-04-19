@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+
+
 <!--Listataan virheet jos niitä oli-->
 {% if errors %}
 <div class="alert alert-danger">
@@ -10,9 +12,24 @@
     </ul>
 </div>
 {% endif %}
+
+
+<!--Listataan viestit jos niitä oli -->
+{% if message %}
+<div class="alert alert-success">
+    <ul>
+        <li>{{message}}</li>
+    </ul>
+</div>
+{% endif %}
+
+
+<!--Sivun pääotsikko-->
 <h1>Drinkkityypin muokkaus</h1>
 <br>
 
+
+<!--Drinkkityypin muokkaukseen suunniteltu formi-->
 <form method="post" action="{{base_path}}/drinkkityyppi/{{tyyppi.id}}/muokkaa">
     
     <div class="form-group">

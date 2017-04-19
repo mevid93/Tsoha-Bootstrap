@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+
+
 <!--Listataan virheet jos niitä oli-->
 {% if errors %}
 <div class="alert alert-danger">
@@ -11,6 +13,8 @@
 </div>
 {% endif %}
 
+
+<!--Listataan viestit jos niitä oli -->
 {% if message %}
 <div class="alert alert-success">
     <ul>
@@ -19,12 +23,22 @@
 </div>
 {% endif %}
 
+
+<!--Sivun pääotsikko-->
 <h1>Ainesosat</h1>
 <br>
+
+
+<!--Linkki ylläpitäjälle, josta pääsee uuden ainesosan lisäykseen-->
 {% if admin_logged_in %}
 <a href="{{base_path}}/ainesosa/lisaa" class="btn btn-primary">Lisää ainesosa</a>
 {% endif %}
+
+
+<!--Taulukko, jossa kaikki eri ainesosat on listattu-->
 <table class="table table-bordered" style="background-color: #813772;">
+    
+    <!--Sarakkeiden otsikot-->
     <thead>
         <tr style="background-color: black;">
             <th>Nimi</th>
@@ -35,8 +49,8 @@
         </tr>
     </thead>
 
+    <!--Sarakkeiden sisällöt riveittäin-->
     <tbody>
-        <!-- Listataan drinkityypit tähän -->
         {% for aines in ainekset %}
         <tr>
             <td>{{aines.nimi}}</td>
@@ -54,6 +68,7 @@
         </tr>
         {% endfor %}
     </tbody>
+    
 </table>
 
 {% endblock %}

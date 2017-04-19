@@ -1,9 +1,34 @@
 {% extends "base.html" %}
 {% block content %}
 
+
+<!--Listataan virheet jos niitä oli-->
+{% if errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for error in errors %}
+        <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+
+<!--Listataan viestit jos niitä oli -->
+{% if message %}
+<div class="alert alert-success">
+    <ul>
+        <li>{{message}}</li>
+    </ul>
+</div>
+{% endif %}
+
+
+<!--Sivun Pääotsikko-->
 <h1>{{drinkki.ensisijainennimi}}</h1>
 
-<!-- Perustiedot tulee listana tähän -->
+
+<!-- Lista drinkin perustiedoista-->
 <div class="panel panel-default">
     <div class="panel-body" style="background-color: #813772;">
         <ul>
@@ -16,14 +41,16 @@
         </ul>
     </div>
 </div>
-
 <br>
 
-<!-- If loop johon mennään jos muutnimet lista ei ole tyhjä-->
+
+<!--Tämä näytetään vain jos muita nimiä on-->
 {% if drinkki.muutnimet|length > 0 %}
-<!-- Muut nimet tulee listana tähän -->
+
+<!--Alaotsikko muille nimille-->
 <h4><strong> Muut tunnetut nimet </strong></h4>
 
+<!--Lista muista nimistä-->
 <div class="panel panel-default">
     <div class="panel-body" style="background-color: #813772;">
         <ul>
@@ -37,9 +64,11 @@
 <br>
 {% endif %}
 
-<!-- Tarvittavat ainesosat tulee listana tähän -->
+
+<!--Drinkkiin tarvittavat aineosat alaotsikko-->
 <h4><strong> Drinkkiin tulevat ainesosat </strong></h4>
 
+<!--Lista drinkkiin kuuluvista ainesosista-->
 <div class="panel panel-default">
     <div class="panel-body" style="background-color: #813772;">
         <ul>
@@ -51,15 +80,19 @@
 </div>
 <br>
 
-<!-- Kuvaus tulee tähän -->
+
+<!--Alaotsikko kuvaukselle-->
 <h4><strong>Kuvaus</strong></h4>
 
+
+<!--Kuvaus-->
 <div class="panel panel-default">
     <div class="panel-body" style="background-color: #813772;">
         <p>{{drinkki.kuvaus}}</p>
     </div>
 </div>
 <br>
+
 
 <!--Muokkaus ja poisto painikkeet ylläpitäjälle-->
 {% if admin_logged_in %}
@@ -68,6 +101,5 @@
     <button type="submit" class="btn btn-danger">Poista</button>
 </form>
 {% endif %}
-
 
 {% endblock %}

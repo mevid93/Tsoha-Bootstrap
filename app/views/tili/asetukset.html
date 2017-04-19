@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+
+
 <!--Listataan virheet jos niitä oli-->
 {% if errors %}
 <div class="alert alert-danger">
@@ -11,8 +13,22 @@
 </div>
 {% endif %}
 
+
+<!--Listataan viestit jos niitä oli -->
+{% if message %}
+<div class="alert alert-success">
+    <ul>
+        <li>{{message}}</li>
+    </ul>
+</div>
+{% endif %}
+
+
+<!--Sivun pääotsikko-->
 <h1>Muokkaa käyttäjätiliäsi</h1>
 
+
+<!--Käyttäjän tietojen muuttamiseen suunniteltu formi-->
 <form method="post" action="{{base_path}}/asetukset">
     <div class="form-group">
         <label>Etunimi</label>
@@ -31,9 +47,12 @@
     </div>
 </form>
 
+
+<!--Käyttäjän omatoimiseen tilin poistamiseen suunniteltu formi-->
 <form method="post" action="{{base_path}}/poista">
     <div class="form-group">
         <button type="submit" class="btn btn-danger btn-sm">Poista tili</button>
     </div>
 </form>
+
 {% endblock %}

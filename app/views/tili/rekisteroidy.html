@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Rekisteröi käyttäjätili</h1>
 
 <!--Listataan virheet jos niitä oli-->
 {% if errors %}
@@ -12,45 +11,63 @@
     </ul>
 </div>
 {% endif %}
-  
-  <!-- Kaikki lomakkeen elementit form-tagin sisään -->
-  <form method="post" action="{{base_path}}/rekisteroidy">
+
+
+<!--Listataan viestit jos niitä oli -->
+{% if message %}
+<div class="alert alert-success">
+    <ul>
+        <li>{{message}}</li>
+    </ul>
+</div>
+{% endif %}
+
+
+<!--Sivun pääotsikko-->
+<h1>Rekisteröi käyttäjätili</h1>
+
+
+<!-- Rekisteröitymiseen suunniteltu formi-->
+<form method="post" action="{{base_path}}/rekisteroidy">
+    
     <!-- Tekstikenttä etunimelle -->
     <div class="form-group">
-      <label>Etunimi</label>
-      <input name="etunimi" class="form-control" type="text">
+        <label>Etunimi</label>
+        <input name="etunimi" class="form-control" type="text">
     </div>
-    
+
     <!-- Tekstikenttä sukunimelle -->
     <div class="form-group">
-      <label>Sukunimi</label>
-      <input name="sukunimi" class="form-control" type="text">
+        <label>Sukunimi</label>
+        <input name="sukunimi" class="form-control" type="text">
     </div>
-    
+
     <!-- Tekstikenttä sähköpostille -->
     <div class="form-group">
-      <label>Sähköposti</label>
-      <input name="sahkoposti" class="form-control" type="text">
+        <label>Sähköposti</label>
+        <input name="sahkoposti" class="form-control" type="text">
     </div>
-    
+
     <!-- Tekstikenttä käyttäjätunnukselle -->
     <div class="form-group">
-      <label>Käyttäjätunnus</label>
-      <input name="kayttajatunnus" class="form-control" type="text">
+        <label>Käyttäjätunnus</label>
+        <input name="kayttajatunnus" class="form-control" type="text">
     </div>
 
     <!-- Salasanakenttä salasanalle -->
     <div class="form-group">
-      <label>Salasana</label>
-      <input name="salasana1" class="form-control" type="password">
-    </div>
-    
-    <!-- Salasanakenttä salasanan vahvistukselle -->
-    <div class="form-group">
-      <label>Vahvista salasana</label>
-      <input name="salasana2" class="form-control" type="password">
+        <label>Salasana</label>
+        <input name="salasana1" class="form-control" type="password">
     </div>
 
+    <!-- Salasanakenttä salasanan vahvistukselle -->
+    <div class="form-group">
+        <label>Vahvista salasana</label>
+        <input name="salasana2" class="form-control" type="password">
+    </div>
+
+    <!--Nappi, josta rekisteröityminen viimeistellään-->
     <button type="submit" class="btn btn-primary">Luo käyttäjätili</button>
-  </form>
+    
+</form>
 {% endblock %}

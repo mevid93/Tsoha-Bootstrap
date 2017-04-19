@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
+
 <!--Listataan virheet jos niitä oli-->
 {% if errors %}
 <div class="alert alert-danger">
@@ -12,6 +13,8 @@
 </div>
 {% endif %}
 
+
+<!--Listataan viestit jos niitä oli -->
 {% if message %}
 <div class="alert alert-success">
     <ul>
@@ -20,12 +23,22 @@
 </div>
 {% endif %}
 
+
+<!--Sivun pääotsikko-->
 <h1>Drinkkityypit</h1>
 <br>
+
+
+<!--Drinkkityypin lisäyslinkki ylläpitäjälle-->
 {% if admin_logged_in %}
 <a href="{{base_path}}/drinkkityyppi/lisaa" class="btn btn-primary">Lisää drinkkityyppi</a>
 {% endif %}
+
+
+<!--Taulukko jossa drinkkityypit on listattuna-->
 <table class="table table-bordered" style="background-color: #813772;">
+    
+    <!--Sarakkeiden otsikot-->
     <thead>
         <tr style="background-color: black;">
             <th>Nimi</th>
@@ -36,8 +49,8 @@
         </tr>
     </thead>
 
+    <!--Sarakkeiden sisällöt riveittäin-->
     <tbody>
-        <!-- Listataan drinkityypit tähän -->
         {% for tyyppi in tyypit %}
         <tr>
             <td>{{tyyppi.nimi}}</td>
@@ -55,6 +68,7 @@
         </tr>
         {% endfor %}
     </tbody>
+    
 </table>
 
 {% endblock %}

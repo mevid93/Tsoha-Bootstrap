@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Ehdota drinkkiä</h1>
+
 
 <!--Listataan virheet jos niitä oli-->
 {% if errors %}
@@ -13,13 +13,31 @@
 </div>
 {% endif %}
 
+
+<!--Listataan viestit jos niitä oli -->
+{% if message %}
+<div class="alert alert-success">
+    <ul>
+        <li>{{message}}</li>
+    </ul>
+</div>
+{% endif %}
+
+
+<!--Sivun pääotsikko-->
+<h1>Ehdota drinkkiä</h1>
+
+
+<!--Drinkin ehdottamiselle suunniteltu formi-->
 <form method="post" action="{{base_path}}/ehdota">
 
+    <!--Drinkin nimi-->
     <div class="form-group">
         <label>Nimi *</label>
         <input name="nimi" class="form-control" value="{{drinkki.ensisijainennimi}}" type="text">
     </div>
 
+    <!--Muut drinkin nimet-->
     <div class="form-group">
         <label>Muut tunnetut nimet</label>
         <div class="row">
@@ -32,6 +50,7 @@
         </div>
     </div>
 
+    <!--Drinkkityyppi-->
     <div class="form-group">
         <label for="sel0">Drinkkityyppi *</label>
         <select name="tyyppi" value="{{drinkki.lampotila}}" class="form-control" id="sel0">
@@ -41,11 +60,13 @@
         </select>
     </div>
 
+    <!--Suositeltu lasi drinkille-->
     <div class="form-group">
         <label>Lasi *</label>
         <input name="lasi" class="form-control" value="{{drinkki.lasi}}" type="text">
     </div>
 
+    <!--Drinkin suositeltu tarjoilu lämpötila-->
     <div class="form-group">
         <label for="sel">Lämpötila *</label>
         <select name="lampotila" class="form-control" id="sel">
@@ -57,6 +78,7 @@
         </select>
     </div>
 
+    <!--Drinkin ainesosat-->
     <div class="form-group">
         <label>Drinkin ainesosat (1...5)*</label></br>
         <div class="row">
@@ -128,15 +150,20 @@
         </div>
     </div>
 
+    <!--Drinkin kuvaus-->
     <div class="form-group">
         <label>Kuvaus *</label>
         <textarea name="kuvaus" class="form-control">{{drinkki.kuvaus}}</textarea>
     </div>
+    
+    <!--Huomautuksia/Info-->
     <div class="form-group">
         * Pakolliset kohdat, jotka on täytettävä!
         <br>
         HUOM! Mikäli et löytänyt tarvitsemaasi ainesosaa listasta, jätä tieto tästä drinkin kuvaukseen. Ylläpitäjä päättää lisätäänkö ainesosa valikoimaan.
     </div>
+    
+    <!--Lähetä ehdotus eteenpäin-->
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Lähetä ehdotus</button>
     </div>

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
+
 <!--Listataan virheet jos niitä oli-->
 {% if errors %}
 <div class="alert alert-danger">
@@ -12,6 +13,8 @@
 </div>
 {% endif %}
 
+
+<!--Listataan viestit jos niitä oli -->
 {% if message %}
 <div class="alert alert-success">
     <ul>
@@ -20,9 +23,16 @@
 </div>
 {% endif %}
 
+
+<!--Sivun pääotsikko-->
 <h1>Sovellukseen rekisteröityneet tavalliset käyttäjät</h1>
 <br>
+
+
+<!--Taulukko, johon on listattu kaikki sovelluksen tavalliset käyttäjät-->
 <table class="table table-bordered" style="background-color: #813772;">
+    
+    <!--Sarakkeiden otsikot-->
     <thead>
         <tr style="background-color: black;">
             <th>Käyttäjätunnus</th>
@@ -33,6 +43,7 @@
         </tr>
     </thead>
 
+    <!--Sarakkeiden sisältö riveittäin-->
     <tbody>
         {% for kayttaja in kayttajat %}
         <tr>
@@ -48,6 +59,7 @@
         </tr>
         {% endfor %}
     </tbody>
+    
 </table>
 
 {% endblock %}

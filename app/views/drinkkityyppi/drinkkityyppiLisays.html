@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Drinkkityypin lisäys</h1>
-<br>
+
+
 <!--Listataan virheet jos niitä oli-->
 {% if errors %}
 <div class="alert alert-danger">
@@ -12,6 +12,24 @@
     </ul>
 </div>
 {% endif %}
+
+
+<!--Listataan viestit jos niitä oli -->
+{% if message %}
+<div class="alert alert-success">
+    <ul>
+        <li>{{message}}</li>
+    </ul>
+</div>
+{% endif %}
+
+
+<!--Sivun pääotsikko-->
+<h1>Drinkkityypin lisäys</h1>
+<br>
+
+
+<!--Drinkkityypin lisäykseen suunniteltu formi-->
 <form method="post" action="{{base_path}}/drinkkityyppi/lisaa">
 
     <div class="form-group">

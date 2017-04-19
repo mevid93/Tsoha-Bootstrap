@@ -29,20 +29,14 @@ class EhdotusController extends BaseController {
     public static function lisaa() {
         self::check_logged_in();
         $params = $_POST;
-        //luodaan array olioista
         $oliot = self::luoOlioArray($params);
-        // tarkistetaan virheet
         $errors = self::tarkistaOlioidenVirheet($oliot);
-        // tarkistetaan ainesosien virheet
         $errors = array_merge($errors, self::tarkistaAinesosatJaMaarat($params));
-        // ohjataan käyttäjä eteenpäin virheiden määrän perusteella
         if (count($errors) == 0) {
-            // tallennetaan oliot
             self::tallennaOliot($oliot);
             self::tallennaAinesosat($oliot[0], $params);
             Redirect::to('/', array('message' => "Ehdotuksesi on lähetetty ylläpitäjän hyväksyttäväksi!"));
         } else {
-            // luodaan näkymä uudestaan 
             self::ohjaaTakaisinEhdotusNakymaan($oliot, $errors, $params);
         }
     }
