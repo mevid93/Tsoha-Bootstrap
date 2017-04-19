@@ -11,7 +11,7 @@ $routes->get('/', function() {
 });
 
 $routes->get('/drinkki', function() {
-    DrinkkiController::index();
+    DrinkkiController::listausNakymaAakkosjarjestyksessa();
 });
 
 $routes->get('/drinkki/:id', function($id) {
@@ -55,7 +55,7 @@ $routes->get('/drinkkityyppi/muokkaa/:id', function($id) {
 });
 
 $routes->get('/drinkki/:id/muokkaa', function($id) {
-    DrinkkiController::muokkaa($id);
+    DrinkkiController::muokkausNakyma($id);
 });
 
 $routes->get('/ainesosa/', function() {
@@ -90,7 +90,7 @@ $routes->post('/ainesosa/poista', function(){
 });
 
 $routes->post('/drinkki', function(){
-    DrinkkiController::indexJarjestys(); 
+    DrinkkiController::listaaJarjestykseen(); 
 });
 
 $routes->post('/drinkki/:id/muokkaa', function($id){
