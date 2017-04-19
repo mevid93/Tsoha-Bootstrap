@@ -57,12 +57,6 @@ class DrinkkiController extends BaseController {
                 $drinkki->aineslista = Drinkinainesosat::haeAinesosat($drinkki->id);
             }
             View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
-        } elseif ($params['jarjestys'] == "3") {
-            $drinkit = Drinkki::etsiNimenPerusteella($params['termi']);
-            foreach ($drinkit as $drinkki) {
-                $drinkki->aineslista = Drinkinainesosat::haeAinesosat($drinkki->id);
-            }
-            View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
         }
         //perustapaus
         $drinkit = Drinkki::etsiKaikkiHyvaksytytAakkosjarjestyksessa();
