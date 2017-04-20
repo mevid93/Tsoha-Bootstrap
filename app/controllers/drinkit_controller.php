@@ -79,7 +79,7 @@ class DrinkkiController extends BaseController {
     public static function muokkausNakyma($id) {
         parent::check_admin_logged_in();
         $tyypit = Drinkkityyppi::kaikki();
-        $ainekset = Ainesosa::kaikki();
+        $ainekset = Ainesosa::kaikkiAakkosjarjestyksessa();
         $drinkki = Drinkki::etsiPerusteellaID($id);
         $muunimi1 = null;
         $muunimi2 = null;

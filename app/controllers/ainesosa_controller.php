@@ -11,7 +11,7 @@ class AinesosaController extends BaseController {
      * Metodi, joka hoitaa ainesosien listauksen ja näkymän luonnin.
      */
     public static function listausNakyma() {
-        $ainekset = Ainesosa::kaikki();
+        $ainekset = Ainesosa::kaikkiAakkosjarjestyksessa();
         View::make('ainesosa/ainesosaLista.html', array('ainekset' => $ainekset));
     }
 

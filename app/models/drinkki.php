@@ -109,7 +109,7 @@ class Drinkki extends BaseModel {
      * tietokannasta drinkkityypin perusteella.
      */
     public static function etsiKaikkiHyvaksytytDrinkkityypinPerusteella() {
-        $query = DB::connection()->prepare('SELECT * FROM Drinkki WHERE hyvaksytty = true ORDER BY drinkkityyppi');
+        $query = DB::connection()->prepare('SELECT * FROM Drinkki WHERE hyvaksytty = true ORDER BY drinkkityyppi DESC');
         $query->execute();
         $rows = $query->fetchAll();
         $drinkit = array();
