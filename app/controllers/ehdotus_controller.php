@@ -1,18 +1,17 @@
 <?php
 
-/*
+/**
  * Kontrolleri, jonka tarkoitus on hoitaa drinkkiehdotuksen käsittely.
  * Kontrollerilla on muun muassa metodit ehdotusnäkymän renderöintiin ja
  * ehdotuksen lisäämiseen tietokantaan.
  */
-
 class EhdotusController extends BaseController {
-    /*
+
+    /**
      * Metodi, joka noutaa kaikki ainesosat ja drinkkityypit
      * ja antaa ne paramtereiksi kun muodostetaan drinkkien ehdottamiseen
      * suunniteltua näkymää.
      */
-
     public static function ehdotusNakyma() {
         self::check_logged_in();
         $tyypit = Drinkkityyppi::kaikki();
@@ -20,12 +19,11 @@ class EhdotusController extends BaseController {
         View::make('ehdotus/ehdota.html', array('tyypit' => $tyypit, 'ainekset' => $ainekset));
     }
 
-    /*
+    /**
      * Metodi, joka lisää käyttäjän luoman ehdotuksen tietokantaan, mikäli
      * ehdotuksessa ei ollut virheitä. Jos ehdotus sisältää virheitä, ohjataan
      * käyttäjä takaisin ehdotus näkymään ja virheilmoitukset listataan.
      */
-
     public static function lisaa() {
         self::check_logged_in();
         $params = $_POST;
@@ -41,11 +39,12 @@ class EhdotusController extends BaseController {
         }
     }
 
-    /*
+    /**
      * Apumetodi, joka hoitaa drinkki olion luomisen. Eroaa hieman Drinkki::luoDrinkki
      * metodista, joten ei voi suoraan hyödyntää sitä.
+     * 
+     * @param array $params assosiaatiolista drinkin parametreista
      */
-
     private static function luoDrinkki($params) {
         $drinkki = new Drinkki(array(
             'ensisijainennimi' => $params['nimi'],
@@ -60,11 +59,12 @@ class EhdotusController extends BaseController {
         return $drinkki;
     }
 
-    /*
+    /**
      * Metodi, joka luo arrayn syötteenä saaduista parametreista ja palauttaa
      * sen.
+     * 
+     * @param array $params assosiaatiolista muunimen parametreista
      */
-
     private static function luoOlioArray($params) {
         $oliot = array();
         $oliot[] = self::luoDrinkki($params);
@@ -77,11 +77,12 @@ class EhdotusController extends BaseController {
         return $oliot;
     }
 
-    /*
+    /**
      * Metodi, jolla voidaan tarkistaa kaikkien olioiden virheet. Tämän 
      * jälkeen palautetaan taulkko virheistä.
+     * 
+     * @param array $oliot taulukko olioista
      */
-
     private static function tarkistaOlioidenVirheet($oliot) {
         $errors = array();
         foreach ($oliot as $olio) {
@@ -90,11 +91,12 @@ class EhdotusController extends BaseController {
         return $errors;
     }
 
-    /*
+    /**
      * Metodi, jolla voidaan tallentaa oliot. Oliot ovat aina tietyssä
      * järjestyksessä taulukossa.
+     * 
+     * @param array $oliot taulukko olioista
      */
-
     private static function tallennaOliot($oliot) {
         // laitetaan kaikkien muunimi tyyppisten olioiden drinkki-id kuntoon.
         $drinkki = $oliot[0];
@@ -112,11 +114,14 @@ class EhdotusController extends BaseController {
         }
     }
 
-    /*
+    /**
      * Metodi, jolla ohjaa käyttäjän takaisin ehdotusnäkymään mikäli 
      * tapahtui virhe syötteissä.
+     * 
+     * @param array $oliot taulukko olioista
+     * @param array $errors taulukko eri virheilmoituksista
+     * @param array $params assosiaatiolista eri parametreista
      */
-
     private static function ohjaaTakaisinEhdotusNakymaan($oliot, $errors, $params) {
         $tyypit = Drinkkityyppi::kaikki();
         $ainekset = Ainesosa::kaikkiAakkosjarjestyksessa();
@@ -133,11 +138,12 @@ class EhdotusController extends BaseController {
         View::make('ehdotus/ehdota.html', array('muunimi1' => $muunimi1, 'muunimi2' => $muunimi2, 'drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors, 'maara1' => $params['maara1'], 'maara2' => $params['maara2'], 'maara3' => $params['maara3'], 'maara4' => $params['maara4'], 'maara5' => $params['maara5']));
     }
 
-    /*
+    /**
      * Metodi, joka tarkastaa, että ainesosien määrä on vähintään yksi, ja että
      * jokaista ainesosaa kohden on annettu validi määrä.
+     * 
+     * @param array $params assosiaatiolista eri parametreista
      */
-
     public static function tarkistaAinesosatJaMaarat($params) {
         $ainekset = array();
         $errors = array();
@@ -156,11 +162,12 @@ class EhdotusController extends BaseController {
         return $errors;
     }
 
-    /*
+    /**
      * Metodi, joka tarkastaa, että ainesosien määrä on vähintään yksi, ja että
      * jokaista ainesosaa kohden on annettu validi määrä.
+     * 
+     * @param string $maara ainesosan määrää tekstimuodossa
      */
-
     private static function tarkistaMaara($maara) {
         $errors = array();
         if ($maara == null || $maara == '') {
@@ -172,18 +179,20 @@ class EhdotusController extends BaseController {
         return $errors;
     }
 
-    /*
+    /**
      * Metodi, joka tarkastaa, että ainesosien määrä on vähintään yksi, ja että
      * jokaista ainesosaa kohden on annettu validi määrä.
+     * 
+     * @param Drinkki $drinkki drinkki-olio
+     * @param array $params assosiaatiolista eri parametreista
      */
-
     public static function tallennaAinesosat($drinkki, $params) {
         for ($x = 1; $x <= 5; $x++) {
             if ($params['aines' . $x] != null) {
                 Ainesosa::etsiPerusteellaNimi($params['aines' . $x])->id;
                 Drinkinainesosat::lisaaDrinkinAinesosa($drinkki->id, Ainesosa::etsiPerusteellaNimi($params['aines' . $x])->id, $params['maara' . $x]);
             }
-        } 
+        }
     }
 
 }

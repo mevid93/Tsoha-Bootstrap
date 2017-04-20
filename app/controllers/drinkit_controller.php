@@ -1,15 +1,14 @@
 <?php
 
-/*
+/**
  * Kontrolleri, joka hoitaa drinkkien käsittelyn.
  */
-
 class DrinkkiController extends BaseController {
-    /*
+
+    /**
      * Metodi, joka hoitaa drinkkien listaamisen nimen 
      * mukaan aakkosjärjestyksessä.
      */
-
     public static function listausNakymaAakkosjarjestyksessa() {
         $drinkit = Drinkki::etsiKaikkiHyvaksytytAakkosjarjestyksessa();
         foreach ($drinkit as $drinkki) {
@@ -18,10 +17,11 @@ class DrinkkiController extends BaseController {
         View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
     }
 
-    /*
+    /**
      * Metodi, joka hoitaa yksittäisen drinkin reseptinäkymän näyttämisen.
+     * 
+     * @param integer $id drinkin tunnus
      */
-
     public static function naytaResepti($id) {
         $drinkki = Drinkki::etsiPerusteellaID($id);
         $drinkinainesosat = Drinkinainesosat::haeAinesosatOliot($id);
@@ -31,10 +31,9 @@ class DrinkkiController extends BaseController {
         View::make('drinkki/resepti.html', array('drinkki' => $drinkki, 'drinkinainesosat' => $drinkinainesosat));
     }
 
-    /*
+    /**
      * Metodi, joka listaa drinkit nimeen kohdituvan hakutermin perusteella.
      */
-
     public static function listaaHaunPerusteela() {
         $params = $_POST;
         if ($params['termi'] == null) {
@@ -53,10 +52,9 @@ class DrinkkiController extends BaseController {
         View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
     }
 
-    /*
+    /**
      * Metodi, joka hoitaa drinkkien listaamisen haluttuun järjestykseen.
      */
-
     public static function listaaJarjestykseen() {
         $params = $_POST;
         if ($params['jarjestys'] == "2") {
@@ -73,10 +71,11 @@ class DrinkkiController extends BaseController {
         View::make('drinkki/drinkkiLista.html', array('drinkit' => $drinkit));
     }
 
-    /*
+    /**
      * Metodi, joka huolehtii drinkin muokkausnäkymän renderöinnistä. 
+     * 
+     * @param integer $id drinkin tunnus
      */
-
     public static function muokkausNakyma($id) {
         parent::check_admin_logged_in();
         $tyypit = Drinkkityyppi::kaikki();
@@ -94,10 +93,11 @@ class DrinkkiController extends BaseController {
         View::make('drinkki/muokkaus.html', array('drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'muunimi1' => $muunimi1, "muunimi2" => $muunimi2, 'maara1' => $maarat[0], 'maara2' => $maarat[1], 'maara3' => $maarat[2], 'maara4' => $maarat[3], 'maara5' => $maarat[4]));
     }
 
-    /*
+    /**
      * Metodi, joka hoitaa drinkin poistamisen tietokannasta. 
+     * 
+     * @param integer $id drinkin tunnus
      */
-
     public static function poista($id) {
         parent::check_admin_logged_in();
         $drinkki = Drinkki::etsiPerusteellaID($id);
@@ -110,10 +110,11 @@ class DrinkkiController extends BaseController {
         Redirect::to('/ehdotukset', array('drinkit' => $drinkit, 'message' => "Drinkin poisto onnistui!"));
     }
 
-    /*
+    /**
      * Metodi, joka päivittää drinkin tietokannassa.
+     * 
+     * @param integer $id drinkin tunnus
      */
-
     public static function paivita($id) {
         parent::check_admin_logged_in();
         $params = $_POST;
@@ -131,10 +132,12 @@ class DrinkkiController extends BaseController {
         }
     }
 
-    /*
+    /**
      * Apumetodi, joka muokkaa vanhaa drinkkiä ja palauttaa muokatun version.
+     * 
+     * @param array $params assosiaatiolista drinkin eri parameterista
+     * @params integer $id drinkin tunnus
      */
-
     private static function luoMuokattuDrinkki($params, $id) {
         $drinkki = Drinkki::etsiPerusteellaID($id);
         $drinkki->ensisijainennimi = $params['nimi'];
@@ -145,10 +148,12 @@ class DrinkkiController extends BaseController {
         return $drinkki;
     }
 
-    /*
+    /**
      * Apumetodi, joka luo muunimi olion.
+     * 
+     * @param string $nimi drinkin toinen nimi
+     * @param integer $drinkkiID drinkin tunnus
      */
-
     private static function luoMuuNimi($nimi, $drinkkiID) {
         if ($nimi == null || $nimi == '') {
             return null;
@@ -157,10 +162,13 @@ class DrinkkiController extends BaseController {
         return $muunimi;
     }
 
-    /*
+    /**
      * Apumetodi, joka tarkastaa virheet.
+     * 
+     * @param Drinkki $drinkki drinkki-olio
+     * @param MuuNimi $muunimi1 muunimi-olio
+     * @param MuuNimi $muunimi2 muunimi-olio
      */
-
     private static function tarkastaVirheetOlioista($drinkki, $muunimi1, $muunimi2) {
         $errors = array();
         $errors = $drinkki->virheet();
@@ -173,31 +181,40 @@ class DrinkkiController extends BaseController {
         return $errors;
     }
 
-    /*
+    /**
      * Apumetodi, jolla ohjaa käyttäjän takaisin muokkausnäkymään mikäli 
      * tapahtui virhe syötteissä.
+     * 
+     * @param Drinkki $drinkki drinkki-olio
+     * @param MuuNimi $muunimi1 muunimi-olio
+     * @param MuuNimi $muunimi2 muunimi-olio
+     * @param array $errors lista eri virheilmoituksia
      */
-
     private static function ohjaaTakaisinMuokkausNakymaan($drinkki, $muunimi1, $muunimi2, $errors, $params) {
         $tyypit = Drinkkityyppi::kaikki();
         $ainekset = Ainesosa::kaikkiAakkosjarjestyksessa();
         View::make('drinkki/muokkaus.html', array('muunimi1' => $muunimi1, 'muunimi2' => $muunimi2, 'drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors, 'maara1' => $params['maara1'], 'maara2' => $params['maara2'], 'maara3' => $params['maara3'], 'maara4' => $params['maara4'], 'maara5' => $params['maara5']));
     }
 
-    /*
+    /**
      * Apumetodi, joka suorittaa muokkaukset tietokantatauluihin.
+     * 
+     * @param Drinkki $drinkki drinkki-olio
+     * @param MuuNimi $muunimi1 muunimi-olio
+     * @param MuuNimi $muunimi2 muunimi-olio
+     * @param array $params assosiaatiolista drinkin parametreista
      */
-    
-    private static function suoritaTietokantaoperaatiot($drinkki, $muunimi1, $muunimi2, $params){
+    private static function suoritaTietokantaoperaatiot($drinkki, $muunimi1, $muunimi2, $params) {
         $drinkki->paivita();
         MuuNimi::poistaPerusteellaDrinkkiID($drinkki->id);
-        if($muunimi1 != null){
+        if ($muunimi1 != null) {
             $muunimi1->tallenna();
         }
-        if($muunimi2 != null){
+        if ($muunimi2 != null) {
             $muunimi2->tallenna();
         }
         Drinkinainesosat::poistaPerusteellaDrinkkiID($drinkki->id);
         EhdotusController::tallennaAinesosat($drinkki, $params);
     }
+
 }

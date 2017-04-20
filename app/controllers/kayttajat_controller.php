@@ -1,36 +1,33 @@
 <?php
 
-/*
+/**
  * Kontrolleri, joka hoitaa käyttäjien käsittelyn. Tämä on 
  * vain ylläpitäjille tarkoitettu.
  */
-
 class KayttajaController extends BaseController {
-    /*
+
+    /**
      * Metodi, joka hoitaa sellaisten rekisteröityneiden käyttäjien listaamisen, 
      * jotka eivät ole ylläpitäjiä.
      */
-
     public static function kayttajatNakyma() {
         self::check_admin_logged_in();
         $kayttajat = Kayttaja::kaikkiTavallisetKayttajat();
         View::make('muut/kayttajat.html', array('kayttajat' => $kayttajat));
     }
 
-    /*
+    /**
      * Metodi, joka hoitaa rekisteröitymisnäkymän renderöinnin.
      */
-
     public static function rekisteroitymisNakyma() {
         parent::check_already_logged_in();
         View::make('tili/rekisteroidy.html');
     }
 
-    /*
+    /**
      * Metodi, joka suorittaa sisäänkirjautumisyrityksen edellyttämät
      * toiminnot.
      */
-
     public static function hoidaSisaanKirjautuminen() {
         $params = $_POST;
         $user = Kayttaja::varmistaKirjautumistiedot($params['username'], $params['password']);
@@ -44,20 +41,18 @@ class KayttajaController extends BaseController {
         }
     }
 
-    /*
+    /**
      * Metodi, joka suorittaa uloskirjautumisen.
      */
-
     public static function hoidaUlosKirjautuminen() {
         $params = $_POST;
         $_SESSION['user'] = null;
         Redirect::to('/', array('message' => 'Olet kirjautunut ulos!'));
     }
 
-    /*
+    /**
      * Metodi, joka suorittaa toiminnot kun käyttäjä haluaa poistaa tilinsä.
      */
-
     public static function poistaKayttajatili() {
         $id = $_SESSION['user'];
         Kayttaja::poistaKayttaja($id);
@@ -65,11 +60,10 @@ class KayttajaController extends BaseController {
         Redirect::to('/', array('message' => 'Käyttäjätilisi on poistettu!'));
     }
 
-    /*
+    /**
      * Metodi, joka suorittaa toiminnot kun ylläpitäjä haluaa poistaa
      * jonkun sovelluksen käyttäjän.
      */
-
     public static function yllapitoPoistaKayttajatili() {
         self::check_admin_logged_in();
         $params = $_POST;
@@ -77,11 +71,10 @@ class KayttajaController extends BaseController {
         Redirect::to('/kayttajat', array('message' => 'Käyttäjätili poistettu onnistuneesti!'));
     }
 
-    /*
+    /**
      * Metodi, joka luo uuden käyttäjätilin jos tiedot olivat validit. Muuten
      * käyttäjä ohjataan takaisin rekisteröitymissivulle. 
      */
-
     public static function luoKayttajatili() {
         $params = $_POST;
         $kayttaja = new Kayttaja(array(
@@ -103,21 +96,19 @@ class KayttajaController extends BaseController {
         }
     }
 
-    /*
+    /**
      * Metodi, joka renderöi käyttäjätietojen muokkausvalikon.
      */
-
     public static function muokkausNakyma() {
         if ($_SESSION['user']) {
             $kayttaja = Kayttaja::haePerusteellaID($_SESSION['user']);
             View::make('tili/asetukset.html', array('kayttaja' => $kayttaja));
         }
     }
-    
-    /*
+
+    /**
      * Metodi, joka tallentaa käyttäjän tiliin tekemät muutokset.
      */
-
     public static function muokkaaKayttajanAsetukset() {
         self::check_logged_in();
         $params = $_POST;
@@ -128,10 +119,10 @@ class KayttajaController extends BaseController {
         $errors = $user->validoiEtunimi();
         $errors = array_merge($errors, $user->validoiSukunimi());
         $errors = array_merge($errors, $user->validoiSahkoposti());
-        if (count($errors) == 0) { 
+        if (count($errors) == 0) {
             $user->paivitaMuutokset();
             Redirect::to('/', array('message' => "Muutokset tallennettu."));
-        }else{
+        } else {
             View::make('tili/asetukset.html', array('kayttaja' => $user, 'errors' => $errors));
         }
     }
