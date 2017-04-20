@@ -50,12 +50,16 @@
         </div>
     </div>
 
-    <!--Drinkityyppi-->
+    <!--Drinkkityyppi-->
     <div class="form-group">
         <label for="sel0">Drinkkityyppi *</label>
         <select name="tyyppi" value="{{drinkki.lampotila}}" class="form-control" id="sel0">
             {% for tyyppi in tyypit %}
+            {% if tyyppi.nimi == drinkki.drinkkityyppi %}
+            <option selected="selected">{{tyyppi.nimi}}</option>
+            {% else %}
             <option>{{tyyppi.nimi}}</option>
+            {% endif %}
             {% endfor %}
         </select>
     </div>
