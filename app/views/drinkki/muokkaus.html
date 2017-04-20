@@ -66,15 +66,35 @@
         <input name="lasi" class="form-control" value="{{drinkki.lasi}}" type="text">
     </div>
 
-    <!--Suositeltu tarjoilu lämpötila-->
+    <!--Drinkin suositeltu tarjoilu lämpötila-->
     <div class="form-group">
         <label for="sel">Lämpötila *</label>
         <select name="lampotila" class="form-control" id="sel">
+            {% if drinkki.lampotila == "Jäinen" %}
+            <option selected="selected">Jäinen</option>
+            {% else %}
             <option>Jäinen</option>
+            {% endif %}
+            {% if drinkki.lampotila == "Viileä" %}
+            <option selected="selected">Viileä</option>
+            {% else %}
             <option>Viileä</option>
+            {% endif %}
+            {% if drinkki.lampotila == "Huoneenlämpöinen" %}
+            <option selected="selected">Huoneenlämpöinen</option>
+            {% else %}
             <option>Huoneenlämpöinen</option>
+            {% endif %}
+            {% if drinkki.lampotila == "Lämmin" %}
+            <option selected="selected">Lämmin</option>
+            {% else %}
             <option>Lämmin</option>
+            {% endif %}
+            {% if drinkki.lampotila == "Kuuma" %}
+            <option selected="selected">Kuuma</option>
+            {% else %}
             <option>Kuuma</option>
+            {% endif %}
         </select>
     </div>
 
@@ -86,8 +106,12 @@
                 <label for="sel1">Ainesosa</label>
                 <select name = "aines1" class="form-control" id="sel1">
                     <option selected></selected>
-                        {% for aines in ainekset %}
+                    {% for aines in ainekset %}
+                    {% if aines1 == aines.nimi %}
+                    <option selected="selected">{{aines.nimi}}</option>
+                    {% else %}
                     <option>{{aines.nimi}}</option>
+                    {% endif %}
                     {% endfor %}
                 </select>
             </div>
@@ -100,8 +124,12 @@
             <div class="form-group col-xs-6">
                 <select name = "aines2" class="form-control" id="sel2">
                     <option selected></selected>
-                        {% for aines in ainekset %}
+                    {% for aines in ainekset %}
+                    {% if aines2 == aines.nimi %}
+                    <option selected="selected">{{aines.nimi}}</option>
+                    {% else %}
                     <option>{{aines.nimi}}</option>
+                    {% endif %}
                     {% endfor %}
                 </select>
             </div>
@@ -113,8 +141,12 @@
             <div class="form-group col-xs-6">
                 <select name = "aines3" class="form-control" id="sel3">
                     <option selected></selected>
-                        {% for aines in ainekset %}
+                    {% for aines in ainekset %}
+                    {% if aines3 == aines.nimi %}
+                    <option selected="selected">{{aines.nimi}}</option>
+                    {% else %}
                     <option>{{aines.nimi}}</option>
+                    {% endif %}
                     {% endfor %}
                 </select>
             </div>
@@ -126,8 +158,12 @@
             <div class="form-group col-xs-6">
                 <select name = "aines4" class="form-control" id="sel4">
                     <option selected></selected>
-                        {% for aines in ainekset %}
+                    {% for aines in ainekset %}
+                    {% if aines4 == aines.nimi %}
+                    <option selected="selected">{{aines.nimi}}</option>
+                    {% else %}
                     <option>{{aines.nimi}}</option>
+                    {% endif %}
                     {% endfor %}
                 </select>
             </div>
@@ -139,8 +175,12 @@
             <div class="form-group col-xs-6">
                 <select name = "aines5" class="form-control" id="sel5">
                     <option selected></selected>
-                        {% for aines in ainekset %}
+                    {% for aines in ainekset %}
+                    {% if aines5 == aines.nimi %}
+                    <option selected="selected">{{aines.nimi}}</option>
+                    {% else %}
                     <option>{{aines.nimi}}</option>
+                    {% endif %}
                     {% endfor %}
                 </select>
             </div>

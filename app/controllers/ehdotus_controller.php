@@ -135,7 +135,10 @@ class EhdotusController extends BaseController {
         if (count($oliot) > 2) {
             $muunimi2 = $oliot[2];
         }
-        View::make('ehdotus/ehdota.html', array('muunimi1' => $muunimi1, 'muunimi2' => $muunimi2, 'drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors, 'maara1' => $params['maara1'], 'maara2' => $params['maara2'], 'maara3' => $params['maara3'], 'maara4' => $params['maara4'], 'maara5' => $params['maara5']));
+        View::make('ehdotus/ehdota.html', array('muunimi1' => $muunimi1, 'muunimi2' => $muunimi2, 'drinkki' => $drinkki, 
+            'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors, 'aines1' =>$params['aines1'], 'aines2' =>$params['aines2'], 
+            'aines3' =>$params['aines3'], 'aines4' =>$params['aines4'], 'aines5' =>$params['aines5'], 'maara1' => $params['maara1'], 'maara2' => $params['maara2'], 
+            'maara3' => $params['maara3'], 'maara4' => $params['maara4'], 'maara5' => $params['maara5']));
     }
 
     /**

@@ -90,7 +90,11 @@ class DrinkkiController extends BaseController {
             $muunimi2 = $drinkki->muutnimet[1];
         }
         $maarat = Drinkinainesosat::ainesosienMaarat($id);
-        View::make('drinkki/muokkaus.html', array('drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'muunimi1' => $muunimi1, "muunimi2" => $muunimi2, 'maara1' => $maarat[0], 'maara2' => $maarat[1], 'maara3' => $maarat[2], 'maara4' => $maarat[3], 'maara5' => $maarat[4]));
+        $ainesosat = Drinkinainesosat::ainesosatLista($id);
+        View::make('drinkki/muokkaus.html', array('drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 
+            'muunimi1' => $muunimi1, "muunimi2" => $muunimi2, 'maara1' => $maarat[0], 'maara2' => $maarat[1], 'maara3' => $maarat[2], 
+            'maara4' => $maarat[3], 'maara5' => $maarat[4], 'aines1' => $ainesosat[0], 'aines2' => $ainesosat[1], 'aines3' => $ainesosat[2],
+                'aines4' => $ainesosat[3], 'aines5' => $ainesosat[4]));
     }
 
     /**
@@ -193,7 +197,11 @@ class DrinkkiController extends BaseController {
     private static function ohjaaTakaisinMuokkausNakymaan($drinkki, $muunimi1, $muunimi2, $errors, $params) {
         $tyypit = Drinkkityyppi::kaikki();
         $ainekset = Ainesosa::kaikkiAakkosjarjestyksessa();
-        View::make('drinkki/muokkaus.html', array('muunimi1' => $muunimi1, 'muunimi2' => $muunimi2, 'drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors, 'maara1' => $params['maara1'], 'maara2' => $params['maara2'], 'maara3' => $params['maara3'], 'maara4' => $params['maara4'], 'maara5' => $params['maara5']));
+        View::make('drinkki/muokkaus.html', array('muunimi1' => $muunimi1, 'muunimi2' => $muunimi2, 'drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors, 
+            'aines1' => $params['aines1'], 'aines2' => $params['aines2'], 'aines3' => $params['aines3'], 
+            'aines4' => $params['aines4'], 'aines5' => $params['aines5'], 'maara1' => $params['maara1'], 
+            'maara2' => $params['maara2'], 'maara3' => $params['maara3'], 'maara4' => $params['maara4'], 
+            'maara5' => $params['maara5']));
     }
 
     /**

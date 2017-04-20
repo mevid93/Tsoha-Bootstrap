@@ -61,6 +61,26 @@ class Drinkinainesosat extends BaseModel {  // HUOM! Ei voi käyttää camelcase
         }
         return $drinkinAinesosat;
     }
+    
+    /**
+     * Metodi, joka hakee kaikki tietokannasta kaikki ainesosat,
+     * jotka kuuluvat johonkin tiettyyn drinkkiin (id). Jos ainesosia on alle
+     * 5 niin loput indeksit täytetään arvoilla null.
+     * 
+     * 
+     * @param integer $id drinkin tunnus
+     */
+    public static function ainesosatLista($id) {
+        $ainesosat = self::haeAinesosat($id);
+        $lista = array();
+        foreach($ainesosat as $aines){
+            $lista[] = $aines->nimi;
+        }
+        while(count($lista) < 5){
+            $lista[] = null;
+        }
+        return $lista;
+    }
 
     /**
      * Metodi, joka lisää liitostauluun uuden rivin (ainesosa, drinkki,määrä)
