@@ -102,5 +102,22 @@ class Drinkinainesosat extends BaseModel {  // HUOM! Ei voi käyttää camelcase
         $query = DB::connection()->prepare('DELETE FROM drinkinainesosat WHERE drinkki = :id');
         $query->execute(array('id' => $id));
     }
+    
+    /*
+     * Metodi, joka palautaa listan ainesosien määristä.
+     */
+    
+    public static function ainesosienMaarat($drinkkiID){
+        $query = DB::connection()->prepare('SELECT drinkinainesosat.* FROM drinkinainesosat WHERE drinkki = :drinkki');
+        $query->execute(array('drinkki' => $drinkkiID));
+        $rows = $query->fetchAll();
+        foreach ($rows as $row) {
+            $maarat[] = $row['maara'];
+        }
+        while(count($maarat) < 5){
+            $maarat[] = null;
+        }
+        return $maarat;
+    }
 
 }

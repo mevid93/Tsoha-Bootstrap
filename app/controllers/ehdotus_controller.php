@@ -138,7 +138,7 @@ class EhdotusController extends BaseController {
      * jokaista ainesosaa kohden on annettu validi määrä.
      */
 
-    private static function tarkistaAinesosatJaMaarat($params) {
+    public static function tarkistaAinesosatJaMaarat($params) {
         $ainekset = array();
         $errors = array();
         for ($x = 1; $x <= 5; $x++) {
@@ -177,7 +177,7 @@ class EhdotusController extends BaseController {
      * jokaista ainesosaa kohden on annettu validi määrä.
      */
 
-    private static function tallennaAinesosat($drinkki, $params) {
+    public static function tallennaAinesosat($drinkki, $params) {
         for ($x = 1; $x <= 5; $x++) {
             if ($params['aines' . $x] != null) {
                 Ainesosa::etsiPerusteellaNimi($params['aines' . $x])->id;

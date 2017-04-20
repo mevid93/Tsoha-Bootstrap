@@ -90,7 +90,8 @@ class DrinkkiController extends BaseController {
         if (count($drinkki->muutnimet) > 1) {
             $muunimi2 = $drinkki->muutnimet[1];
         }
-        View::make('drinkki/muokkaus.html', array('drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'muunimi1' => $muunimi1, "muunimi2" => $muunimi2));
+        $maarat = Drinkinainesosat::ainesosienMaarat($id);
+        View::make('drinkki/muokkaus.html', array('drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'muunimi1' => $muunimi1, "muunimi2" => $muunimi2, 'maara1' => $maarat[0], 'maara2' => $maarat[1], 'maara3' => $maarat[2], 'maara4' => $maarat[3], 'maara5' => $maarat[4]));
     }
 
     /*
@@ -116,25 +117,87 @@ class DrinkkiController extends BaseController {
     public static function paivita($id) {
         parent::check_admin_logged_in();
         $params = $_POST;
+        $drinkki = self::luoMuokattuDrinkki($params, $id);
+        $muunimi1 = self::luoMuuNimi($params['muunimi1'], $id);
+        $muunimi2 = self::luoMuuNimi($params['muunimi2'], $id);
+        $errors = self::tarkastaVirheetOlioista($drinkki, $muunimi1, $muunimi2);
+        $errors = array_merge($errors, EhdotusController::tarkistaAinesosatJaMaarat($params));
+        if (count($errors) == 0) {
+            self::suoritaTietokantaoperaatiot($drinkki, $muunimi1, $muunimi2, $params);
+            $drinkki->drinkkityyppi = Drinkkityyppi::etsiPerusteellaNimi($params['tyyppi'])->nimi;
+            Redirect::to('/drinkki/' . $id, array('drinkki' => $drinkki, 'message' => "Muutokset tallennettu!"));
+        } else {
+            self::ohjaaTakaisinMuokkausNakymaan($drinkki, $muunimi1, $muunimi2, $errors, $params);
+        }
+    }
+
+    /*
+     * Apumetodi, joka muokkaa vanhaa drinkkiä ja palauttaa muokatun version.
+     */
+
+    private static function luoMuokattuDrinkki($params, $id) {
         $drinkki = Drinkki::etsiPerusteellaID($id);
         $drinkki->ensisijainennimi = $params['nimi'];
         $drinkki->drinkkityyppi = Drinkkityyppi::etsiPerusteellaNimi($params['tyyppi'])->id;
         $drinkki->lasi = $params['lasi'];
         $drinkki->kuvaus = $params['kuvaus'];
         $drinkki->lampotila = $params['lampotila'];
-
-        $errors = $drinkki->virheet();
-
-        if (count($errors) == 0) {
-            $drinkki->paivita();
-            $drinkki->drinkkityyppi = Drinkkityyppi::etsiPerusteellaNimi($params['tyyppi'])->nimi;
-            Redirect::to('/drinkki/' . $id, array('drinkki' => $drinkki, 'message' => "Muutokset tallennettu!"));
-        } else {
-            $tyypit = Drinkkityyppi::kaikki();
-            $ainekset = Ainesosa::all();
-            $drinkki->drinkkityyppi = Drinkkityyppi::etsiPerusteellaID($id)->nimi;
-            View::make('drinkki/muokkaus.html', array('drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors));
-        }
+        return $drinkki;
     }
 
+    /*
+     * Apumetodi, joka luo muunimi olion.
+     */
+
+    private static function luoMuuNimi($nimi, $drinkkiID) {
+        if ($nimi == null || $nimi == '') {
+            return null;
+        }
+        $muunimi = new MuuNimi(array('$nimi' => $nimi, 'drinkki' => $drinkkiID));
+        return $muunimi;
+    }
+
+    /*
+     * Apumetodi, joka tarkastaa virheet.
+     */
+
+    private static function tarkastaVirheetOlioista($drinkki, $muunimi1, $muunimi2) {
+        $errors = array();
+        $errors = $drinkki->virheet();
+        if ($muunimi1 != null) {
+            $errors = array_merge($errors, $muunimi1->virheet());
+        }
+        if ($muunimi2 != null) {
+            $errors = array_merge($errors, $muunimi2->virheet());
+        }
+        return $errors;
+    }
+
+    /*
+     * Apumetodi, jolla ohjaa käyttäjän takaisin muokkausnäkymään mikäli 
+     * tapahtui virhe syötteissä.
+     */
+
+    private static function ohjaaTakaisinMuokkausNakymaan($drinkki, $muunimi1, $muunimi2, $errors, $params) {
+        $tyypit = Drinkkityyppi::kaikki();
+        $ainekset = Ainesosa::kaikkiAakkosjarjestyksessa();
+        View::make('drinkki/muokkaus.html', array('muunimi1' => $muunimi1, 'muunimi2' => $muunimi2, 'drinkki' => $drinkki, 'tyypit' => $tyypit, 'ainekset' => $ainekset, 'errors' => $errors, 'maara1' => $params['maara1'], 'maara2' => $params['maara2'], 'maara3' => $params['maara3'], 'maara4' => $params['maara4'], 'maara5' => $params['maara5']));
+    }
+
+    /*
+     * Apumetodi, joka suorittaa muokkaukset tietokantatauluihin.
+     */
+    
+    private static function suoritaTietokantaoperaatiot($drinkki, $muunimi1, $muunimi2, $params){
+        $drinkki->paivita();
+        MuuNimi::poistaPerusteellaDrinkkiID($drinkki->id);
+        if($muunimi1 != null){
+            $muunimi1->tallenna();
+        }
+        if($muunimi2 != null){
+            $muunimi2->tallenna();
+        }
+        Drinkinainesosat::poistaPerusteellaDrinkkiID($drinkki->id);
+        EhdotusController::tallennaAinesosat($drinkki, $params);
+    }
 }
