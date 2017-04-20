@@ -10,19 +10,19 @@ class Kayttaja extends BaseModel {
     // atribuutit
     public $id, $etunimi, $sukunimi, $sahkoposti, $kayttajatunnus, $salasana, $yllapitaja;
 
-    /*
+    /**
      * Konstruktori metodi.
+     * 
+     * @param array $attributes taulukko käyttäjän atribuuteista
      */
-
     public function __construct($attributes) {
         parent::__construct($attributes);
         $this->validators = array('validoiEtunimi', 'validoiSukunimi', 'validoiSahkoposti', 'validoiKayttajatunnus', 'validoiSalasana');
     }
 
-    /*
+    /**
      * Metodi, joka tallentaa käyttäjän tietokantaan.
      */
-
     public function lisaaKayttaja() {
         $query = DB::connection()->prepare('INSERT INTO Kayttaja(etunimi, sukunimi, sahkoposti, kayttajatunnus, salasana)
                                             VALUES (:etunimi, :sukunimi, :sahkoposti, :kayttajatunnus, :salasana)');
@@ -30,19 +30,17 @@ class Kayttaja extends BaseModel {
             'kayttajatunnus' => $this->kayttajatunnus, 'salasana' => $this->salasana));
     }
 
-    /*
+    /**
      * Metodi, joka päivittää tietokantaan muutokset käyttäjässä.
      */
-
     public function paivitaMuutokset() {
         $query = DB::connection()->prepare('UPDATE kayttaja SET etunimi = :etunimi, sukunimi = :sukunimi, sahkoposti = :sahkoposti WHERE id = :id');
         $query->execute(array('etunimi' => $this->etunimi, 'sukunimi' => $this->sukunimi, 'sahkoposti' => $this->sahkoposti, 'id' => $this->id));
     }
 
-    /*
+    /**
      * Validointi metodi, joka tarkistaa etunimen.
      */
-
     public function validoiEtunimi() {
         $errors = array();
         $errors = parent::validoi_string_epätyhjä($this->etunimi, $errors, 'Etunimi ei saa olla tyhjä');
@@ -50,10 +48,9 @@ class Kayttaja extends BaseModel {
         return $errors;
     }
 
-    /*
+    /**
      * Validointi metodi, joka tarkistaa sukunimen.
      */
-
     public function validoiSukunimi() {
         $errors = array();
         $errors = parent::validoi_string_epätyhjä($this->sukunimi, $errors, 'Sukunimi ei saa olla tyhjä');
@@ -61,10 +58,9 @@ class Kayttaja extends BaseModel {
         return $errors;
     }
 
-    /*
+    /**
      * Validointi metodi, joka tarkistaa sähkopostin.
      */
-
     public function validoiSahkoposti() {
         $errors = array();
         $errors = parent::validoi_string_epätyhjä($this->sahkoposti, $errors, 'Sähkopostiosoite ei saa olla tyhjä');
@@ -72,10 +68,9 @@ class Kayttaja extends BaseModel {
         return $errors;
     }
 
-    /*
+    /**
      * Validointi metodi, joka tarkistaa käyttäjätunnuksen. 
      */
-
     public function validoiKayttajatunnus() {
         $errors = array();
         $errors = parent::validoi_string_epätyhjä($this->kayttajatunnus, $errors, 'Käyttäjätunnus ei saa olla tyhjä');
@@ -86,10 +81,9 @@ class Kayttaja extends BaseModel {
         return $errors;
     }
 
-    /*
+    /**
      * Validointi metodi, joka tarkistaa salasanan. 
      */
-
     public function validoiSalasana() {
         $errors = array();
         $errors = parent::validoi_string_epätyhjä($this->salasana, $errors, 'Salasana ei saa olla tyhjä');
@@ -97,10 +91,9 @@ class Kayttaja extends BaseModel {
         return $errors;
     }
 
-    /*
+    /**
      * Metodi, joka hakee kaikki tavalliset käyttäjät tietokannasta.
      */
-
     public static function kaikkiTavallisetKayttajat() {
         $query = DB::connection()->prepare('SELECT * FROM kayttaja WHERE yllapitaja = false');
         $query->execute();
@@ -112,10 +105,11 @@ class Kayttaja extends BaseModel {
         return $kayttajat;
     }
 
-    /*
+    /**
      * Metodi, joka hakee käyttäjän, jolla on tietty id.
+     * 
+     * @param integer $id kayttajan tunnus
      */
-
     public static function haePerusteellaID($id) {
         $query = DB::connection()->prepare('SELECT * FROM kayttaja WHERE id = :id LIMIT 1');
         $query->execute(array('id' => $id));
@@ -127,10 +121,11 @@ class Kayttaja extends BaseModel {
         return null;
     }
 
-    /*
+    /**
      * Metodi, joka hakee käyttäjän, jolla on tietty käyttäjätunnus.
+     * 
+     * @param string $name kayttajan kayttajatunnus
      */
-
     public static function haePerusteellaKayttajatunnus($name) {
         $query = DB::connection()->prepare('SELECT * FROM kayttaja WHERE kayttajatunnus = :kayttajatunnus LIMIT 1');
         $query->execute(array('kayttajatunnus' => $name));
@@ -142,10 +137,11 @@ class Kayttaja extends BaseModel {
         return null;
     }
 
-    /*
+    /**
      * Metodi, joka luo käyttäjä olion.
+     * 
+     * @param array $row assosiaatiolista kayrrajan parametreja
      */
-
     public static function luoKayttaja($row) {
         $kayttaja = new Kayttaja(array(
             'id' => $row['id'],
@@ -159,20 +155,23 @@ class Kayttaja extends BaseModel {
         return $kayttaja;
     }
 
-    /*
+    /**
      * Metodi, joka poistaa käyttäjän, jolla on tietty id.
+     * 
+     * @param integer $id kayttajan tunnus
      */
-
     public static function poistaKayttaja($id) {
         $query = DB::connection()->prepare('DELETE FROM kayttaja WHERE id = :id');
         $query->execute(array('id' => $id));
     }
 
-    /*
+    /**
      * Metodi, joka tarkistaa käyttäjätunnuksen ja salasanan ja palauttaa sitä
      * vastaavan käyttäjän, mikäli se on olemassa.
+     * 
+     * @param string $username kayttajatunnus
+     * @param string $password salasana
      */
-
     public static function varmistaKirjautumistiedot($username, $password) {
         $query = DB::connection()->prepare('SELECT * FROM kayttaja WHERE kayttajatunnus = :kayttajatunnus AND salasana = :salasana LIMIT 1');
         $query->execute(array('kayttajatunnus' => $username, 'salasana' => $password));

@@ -10,19 +10,19 @@ class Drinkki extends BaseModel {
     // mallin atribuutit
     public $id, $ensisijainennimi, $muutnimet, $lasi, $kuvaus, $lampotila, $lisayspaiva, $lisaaja, $hyvaksytty, $drinkkityyppi, $aineslista;
 
-    /*
-     * Konstruktori
+    /**
+     * Konstruktori metodi.
+     * 
+     * @param array $attributes taulukkos drinkin parametreista
      */
-
     public function __construct($attributes) {
         parent::__construct($attributes);
         $this->validators = array('validoiNimi', 'validoiLasi', 'validoiKuvaus');
     }
 
-    /*
-     * Lisää drinkki tietokantaan.
+    /**
+     * Metodi, joka lisää drinkin tietokantaan.
      */
-
     public function tallenna() {
         $query = DB::connection()->prepare('INSERT INTO Drinkki(ensisijainenNimi, lasi, kuvaus, lampotila, lisayspaiva, lisaaja, drinkkityyppi)
                                             VALUES (:ensisijainenNimi, :lasi, :kuvaus, :lampotila, NOW(), :lisaaja, :drinkkityyppi)  RETURNING id');
@@ -32,40 +32,36 @@ class Drinkki extends BaseModel {
         $this->id = $row['id'];
     }
 
-    /*
-     * Päivitä muutoksia drinkkiin tietokannassa.
+    /**
+     * Metodi, joka päivittää muutokset drinkkiin tietokannassa.
      */
-
     public function paivita() {
         $query = DB::connection()->prepare('UPDATE Drinkki SET ensisijainennimi = :ensisijainennimi, lasi = :lasi, kuvaus = :kuvaus, lampotila = :lampotila, drinkkityyppi = :drinkkityyppi WHERE id = :id');
         $query->execute(array('ensisijainennimi' => $this->ensisijainennimi, 'lasi' => $this->lasi, 'kuvaus' => $this->kuvaus, 'lampotila' => $this->lampotila, 'drinkkityyppi' => $this->drinkkityyppi, 'id' => $this->id));
     }
 
-    /*
-     * Poista drinkki tietokannasta ja muut mahdolliset nimet muunimi-tietokannasta
-     * Poistetaan myös DrinkinIanesosat taulusta sellaiset johon drinkki liittyy.
+    /**
+     * Metodi, joka poistaa drinkin tietokannasta ja muut drinkkiin liittyvät
+     * tiedot muista tauluista.
      */
-
     public function poista() {
-        MuuNimi::poistaPerusteellaDrinkkiID($this->id); 
+        MuuNimi::poistaPerusteellaDrinkkiID($this->id);
         Drinkinainesosat::poistaPerusteellaDrinkkiID($this->id);
         $query = DB::connection()->prepare('DELETE FROM Drinkki WHERE id = :id');
         $query->execute(array('id' => $this->id));
     }
 
-    /*
-     * Merkitse jokin tietokannassa oleva resepti hyväksytyksi. 
+    /**
+     * Metodi, joka merkitsee tietokannassa olevan reseptin hyväksytyksi. 
      */
-
     public function merkitseHyvaksytyksi() {
         $query = DB::connection()->prepare('UPDATE Drinkki SET hyvaksytty = true WHERE id = :id');
         $query->execute(array('id' => $this->id));
     }
 
-    /*
-     * Validoi drinkin nimi.
+    /**
+     * Metodi, joka validoi drinkin nimen.
      */
-
     public function validoiNimi() {
         $errors = array();
         $errors = parent::validoi_string_epätyhjä($this->ensisijainennimi, $errors, 'Nimi ei saa olla tyhjä');
@@ -73,10 +69,9 @@ class Drinkki extends BaseModel {
         return $errors;
     }
 
-    /*
-     * Validoi drinkkilasi.
+    /**
+     * Metodi, joka validoi drinkkilasin.
      */
-
     public function validoiLasi() {
         $errors = array();
         $errors = parent::validoi_string_epätyhjä($this->lasi, $errors, 'Suositeltu lasin nimi ei saa olla tyhjä');
@@ -84,10 +79,9 @@ class Drinkki extends BaseModel {
         return $errors;
     }
 
-    /*
-     * Validoi kuvaus.
+    /**
+     * Metodi, joka validoi kuvauksen.
      */
-
     public function validoiKuvaus() {
         $errors = array();
         $errors = parent::validoi_string_epätyhjä($this->kuvaus, $errors, 'Drinkin kuvaus ei saa olla tyhjä');
@@ -95,12 +89,11 @@ class Drinkki extends BaseModel {
         return $errors;
     }
 
-    /*
-     * Hae kaikki hyväksytyt drinkit tietokannasta aakkosjärjestyksessä.
+    /**
+     * Metodi, joka hakee kaikki hyväksytyt drinkit 
+     * tietokannasta aakkosjärjestyksessä.
      */
-
     public static function etsiKaikkiHyvaksytytAakkosjarjestyksessa() {
-        // haetaan kaikki tiedot Drinkkit-taulusta
         $query = DB::connection()->prepare('SELECT * FROM Drinkki WHERE hyvaksytty = true ORDER BY ensisijainennimi');
         $query->execute();
         $rows = $query->fetchAll();
@@ -111,12 +104,11 @@ class Drinkki extends BaseModel {
         return $drinkit;
     }
 
-    /*
-     * Hae kaikki hyväksytyt drinkit tietokannasta drinkkityypin perusteella.
+    /**
+     * Metodi, jokaa hakee kaikki hyväksytyt drinkit 
+     * tietokannasta drinkkityypin perusteella.
      */
-
     public static function etsiKaikkiHyvaksytytDrinkkityypinPerusteella() {
-        // haetaan kaikki tiedot Drinkkit-taulusta
         $query = DB::connection()->prepare('SELECT * FROM Drinkki WHERE hyvaksytty = true ORDER BY drinkkityyppi');
         $query->execute();
         $rows = $query->fetchAll();
@@ -127,12 +119,10 @@ class Drinkki extends BaseModel {
         return $drinkit;
     }
 
-    /*
-     * Hae kaikki ehdotetut drinkit tietokannasta.
+    /**
+     * Metodi, joka hakee kaikki drinkkiehdotukset tietokannasta.
      */
-
     public static function kaikkiHyvaksymattomat() {
-        // haetaan kaikki tiedot Drinkkit-taulusta
         $query = DB::connection()->prepare('SELECT * FROM Drinkki WHERE hyvaksytty = false');
         $query->execute();
         $rows = $query->fetchAll();
@@ -143,10 +133,11 @@ class Drinkki extends BaseModel {
         return $drinkit;
     }
 
-    /*
-     * Hae drinkki, jolla tietty id.
+    /**
+     * Metodi, joka hakee drinkin, jolla on tietty id.
+     * 
+     * @param integer $id drinkin tunnus
      */
-
     public static function etsiPerusteellaID($id) {
         $query = DB::connection()->prepare('SELECT * FROM Drinkki WHERE id = :id LIMIT 1');
         $query->execute(array('id' => $id));
@@ -158,10 +149,11 @@ class Drinkki extends BaseModel {
         return null;
     }
 
-    /*
-     * Hae drinkit joiden nimeen sisältyy hakutermi.
+    /**
+     * Metodi, joka Hakee drinkit joiden nimeen sisältyy hakutermi.
+     * 
+     * @param string $nimi drinkin nimeen kohdistuva hakutermi
      */
-
     public static function etsiNimenPerusteella($nimi) {
         $query = DB::connection()->prepare("SELECT DISTINCT Drinkki.* FROM Drinkki, MuuNimi WHERE ensisijainennimi LIKE '%'|| :nimi ||'%' OR (Drinkki.id = MuuNimi.drinkki AND MuuNimi.nimi LIKE '%'|| :nimi ||'%')");
         $query->execute(array('nimi' => $nimi));
@@ -173,10 +165,11 @@ class Drinkki extends BaseModel {
         return $drinkit;
     }
 
-    /*
-     * Hae drinkit joihin on käytetty jotain tiettyä ainesosaa.
+    /**
+     * Metodi, joka hakee drinkit joihin on käytetty jotain tiettyä ainesosaa.
+     * 
+     * @param string $aines ainesosan nimeen kohdistuva hakutermi
      */
-
     public static function etsiAinesosanPerusteella($aines) {
         $query = DB::connection()->prepare("SELECT Drinkki.* FROM Drinkki, Ainesosa, DrinkinAinesosat WHERE DrinkinAinesosat.drinkki = Drinkki.id AND DrinkinAinesosat.ainesosa = Ainesosa.id AND Ainesosa.nimi LIKE '%'|| :aines ||'%'");
         $query->execute(array('aines' => $aines));
@@ -188,10 +181,13 @@ class Drinkki extends BaseModel {
         return $drinkit;
     }
 
-    /*
-     * Poista drinkki tietokannasta ja muut mahdolliset nimet.
+    /**
+     * Metodi, joka poistaa kaikki sellaiset drinkit tietokannasta, joilla
+     * on kyseinen drinkkityyppi. Samalla poistetaan drinkkeihin liittyvät
+     * tiedot muista tietokantatauluista. 
+     * 
+     * @param integer $drinkkityyppi drinkkityypin tunnus
      */
-
     public static function poistaKaikkiJoillaDrinkkityyppi($drinkkityyppi) {
         $query = DB::connection()->prepare('SELECT * FROM Drinkki WHERE drinkkityyppi = :drinkkityyppi');
         $query->execute(array('drinkkityyppi' => $drinkkityyppi));
@@ -202,10 +198,12 @@ class Drinkki extends BaseModel {
         }
     }
 
-    /*
-     * Metodi, joka luo patametrien perusteella yhden drinkki olion ja palauttaa sen.
+    /**
+     * Metodi, joka luo patametrien perusteella yhden 
+     * drinkki-olion ja palauttaa sen.
+     * 
+     * @param array $row assosiaatiolista drinkin parametreista
      */
-
     public static function luoDrinkki($row) {
         $drinkki = new Drinkki(array(
             'id' => $row['id'],
