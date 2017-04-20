@@ -124,7 +124,7 @@ class DrinkkiController extends BaseController {
         $errors = array_merge($errors, EhdotusController::tarkistaAinesosatJaMaarat($params));
         if (count($errors) == 0) {
             self::suoritaTietokantaoperaatiot($drinkki, $muunimi1, $muunimi2, $params);
-            $drinkki->drinkkityyppi = Drinkkityyppi::etsiPerusteellaNimi($params['tyyppi'])->nimi;
+            $drinkki = Drinkki::etsiPerusteellaID($id);
             Redirect::to('/drinkki/' . $id, array('drinkki' => $drinkki, 'message' => "Muutokset tallennettu!"));
         } else {
             self::ohjaaTakaisinMuokkausNakymaan($drinkki, $muunimi1, $muunimi2, $errors, $params);
@@ -153,7 +153,7 @@ class DrinkkiController extends BaseController {
         if ($nimi == null || $nimi == '') {
             return null;
         }
-        $muunimi = new MuuNimi(array('$nimi' => $nimi, 'drinkki' => $drinkkiID));
+        $muunimi = new MuuNimi(array('nimi' => $nimi, 'drinkki' => $drinkkiID));
         return $muunimi;
     }
 
