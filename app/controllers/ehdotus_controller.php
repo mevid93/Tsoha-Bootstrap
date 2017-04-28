@@ -174,10 +174,17 @@ class EhdotusController extends BaseController {
     private static function tarkistaMaara($maara) {
         $errors = array();
         if ($maara == null || $maara == '') {
-            $errors[] = "Ainesosien määriä puuttuu!";
+            $errors[] = "Ainesosan määrä puuttuu!";
         }
         if ($maara != null && (is_numeric($maara) == FALSE || $maara * 1 != (int) ($maara * 1))) {
-            $errors[] = "Määrän tulee olla kokonaisluku!";
+            $errors[] = "Määrän tulee olla kokonaisluku";
+        }else{
+            if((int) $maara < 1){
+              $errors[] = "Määrän tulee olla vähintään 1";  
+            }
+            if((int) $maara > 1000){
+                $errors[] = "Määrä saa olla korkeintaan 1000";
+            }
         }
         return $errors;
     }

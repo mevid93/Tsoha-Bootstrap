@@ -44,6 +44,13 @@ class Ainesosa extends BaseModel {
      * @param integer $id ainesosan tunnus
      */
     public function poista($id) {
+        $query = DB::connection()->prepare('SELECT DISTINCT Drinkki.* FROM Drinkki, DrinkinAinesosat, Ainesosa WHERE Drinkki.id = DrinkinAinesosat.drinkki AND DrinkinAinesosat.ainesosa = :id');
+        $query->execute(array('id' => $id));
+        $rows = $query->fetchAll();
+        foreach ($rows as $row){
+            $drinkki = Drinkki::luoDrinkki($row);
+            $drinkki->poista();
+        }
         $query = DB::connection()->prepare('DELETE FROM Ainesosa WHERE id = :id');
         $query->execute(array('id' => $id));
     }
