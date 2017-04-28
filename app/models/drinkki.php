@@ -155,7 +155,7 @@ class Drinkki extends BaseModel {
      * @param string $nimi drinkin nimeen kohdistuva hakutermi
      */
     public static function etsiNimenPerusteella($nimi) {
-        $query = DB::connection()->prepare("SELECT DISTINCT Drinkki.* FROM Drinkki, MuuNimi WHERE ensisijainennimi LIKE '%'|| :nimi ||'%' OR (Drinkki.id = MuuNimi.drinkki AND MuuNimi.nimi LIKE '%'|| :nimi ||'%')");
+        $query = DB::connection()->prepare("SELECT DISTINCT Drinkki.* FROM Drinkki, MuuNimi WHERE LOWER(ensisijainennimi) LIKE '%'|| LOWER(:nimi) ||'%' OR (Drinkki.id = MuuNimi.drinkki AND LOWER(MuuNimi.nimi) LIKE '%'|| LOWER(:nimi) ||'%')");
         $query->execute(array('nimi' => $nimi));
         $rows = $query->fetchAll();
         $drinkit = array();
@@ -171,7 +171,7 @@ class Drinkki extends BaseModel {
      * @param string $aines ainesosan nimeen kohdistuva hakutermi
      */
     public static function etsiAinesosanPerusteella($aines) {
-        $query = DB::connection()->prepare("SELECT Drinkki.* FROM Drinkki, Ainesosa, DrinkinAinesosat WHERE DrinkinAinesosat.drinkki = Drinkki.id AND DrinkinAinesosat.ainesosa = Ainesosa.id AND Ainesosa.nimi LIKE '%'|| :aines ||'%'");
+        $query = DB::connection()->prepare("SELECT Drinkki.* FROM Drinkki, Ainesosa, DrinkinAinesosat WHERE DrinkinAinesosat.drinkki = Drinkki.id AND DrinkinAinesosat.ainesosa = Ainesosa.id AND LOWER(Ainesosa.nimi) LIKE '%'|| LOWER(:aines) ||'%'");
         $query->execute(array('aines' => $aines));
         $rows = $query->fetchAll();
         $drinkit = array();
